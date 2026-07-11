@@ -90,6 +90,16 @@
             50% { opacity: 1; }
         }
 
+        @keyframes scroll-scenery-reverse {
+            0% { background-position-x: -400px; }
+            100% { background-position-x: 0px; }
+        }
+
+        @keyframes scroll-road-reverse {
+            0% { stroke-dashoffset: 40; }
+            100% { stroke-dashoffset: 0; }
+        }
+
         .animated-scenery {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="60" viewBox="0 0 100 60"><path d="M 0 60 L 20 40 L 40 60 L 60 30 L 80 60 Z" fill="%23f5eade" opacity="0.4"/><circle cx="90" cy="50" r="4" fill="%23e8d7c3" opacity="0.6"/><circle cx="15" cy="55" r="5" fill="%23e8d7c3" opacity="0.6"/></svg>');
             background-repeat: repeat-x;
@@ -101,6 +111,13 @@
         }
         .scenic-state-walking .scrolling-road-lines {
             animation: scroll-road 0.6s linear infinite;
+        }
+
+        .scenic-state-walking-reverse .animated-scenery {
+            animation: scroll-scenery-reverse 18s linear infinite;
+        }
+        .scenic-state-walking-reverse .scrolling-road-lines {
+            animation: scroll-road-reverse 0.6s linear infinite;
         }
 
         .scenic-state-waiting .animated-scenery {
@@ -1583,19 +1600,22 @@
                 }
             }
 
-            // Route animation state computation
             let currentScenicState = 'waving'; 
 
             if (isPlanActiveNow) {
                 if (earlyTransitToTask) {
-                    banner.classList.add('scenic-state-walking');
-                    currentScenicState = (earlyTransitToTask.activityType === 'transit' || earlyTransitToTask.activityType === 'homebound') ? 'transit' : 'walking';
+                    if (earlyTransitToTask.activityType === 'homebound') {
+                        banner.classList.add('scenic-state-walking-reverse');
+                    } else {
+                        banner.classList.add('scenic-state-walking');
+                    }
+                    currentScenicState = (earlyTransitToTask.activityType === 'transit' || earlyTransitToTask.activityType === 'homebound') ? earlyTransitToTask.activityType : 'walking';
                 } else if (hasActiveTaskRightNow) {
                     if (activeTaskStyle === 'transit') {
                         banner.classList.add('scenic-state-walking');
                         currentScenicState = 'transit';
                     } else if (activeTaskStyle === 'homebound') {
-                        banner.classList.add('scenic-state-walking');
+                        banner.classList.add('scenic-state-walking-reverse');
                         currentScenicState = 'homebound';
                     } else if (activeTaskStyle === 'resting') {
                         road.classList.add('hidden');
@@ -1661,7 +1681,8 @@
 
             activeCompanions.forEach(char => {
                 const isFlipped = !!char.isFlipped;
-                const flipStyle = isFlipped ? 'transform: scaleX(-1);' : '';
+                const finalFlip = (scenicState === 'homebound') ? !isFlipped : isFlipped;
+                const flipStyle = finalFlip ? 'transform: scaleX(-1);' : '';
                 
                 let imgData = null;
                 let fallbackIcon = "👋";

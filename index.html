@@ -171,7 +171,7 @@
 
     <main class="max-w-6xl mx-auto px-4 mt-8">
 
-        <div id="scenic-banner-container" class="scenic-state-walking w-full rounded-3xl p-6 mb-8 shadow-md border border-amber-100/60 relative overflow-hidden h-64 flex flex-col justify-between transition-all duration-700">
+        <div id="scenic-banner-container" class="scenic-state-walking w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border border-amber-100/60 relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700">
             
             <!-- Twinkling stars (Only visible in Night/Evening) -->
             <div id="night-stars" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700">
@@ -180,6 +180,8 @@
                 <div class="absolute w-1 h-1 bg-white rounded-full top-20 left-1/3 animate-pulse"></div>
                 <div class="absolute w-2 h-2 bg-white rounded-full top-8 left-2/3 animate-[star-twinkle_2.5s_infinite]"></div>
                 <div class="absolute w-1 h-1 bg-white rounded-full top-16 right-48 animate-pulse"></div>
+                <div class="absolute w-1 h-1 bg-white rounded-full top-28 left-1/4 animate-pulse"></div>
+                <div class="absolute w-1.5 h-1.5 bg-yellow-100 rounded-full top-14 right-1/3 animate-[star-twinkle_2s_infinite]"></div>
             </div>
 
             <!-- Dynamic Sun & Luminous Moon Orb -->
@@ -216,42 +218,42 @@
                 </svg>
             </div>
 
-            <div class="z-10 flex flex-col sm:flex-row justify-between items-start w-full pointer-events-auto gap-2">
+            <div class="z-10 flex flex-col md:flex-row justify-between items-start w-full pointer-events-auto gap-3">
                 <!-- Simulation Info Panel & Time Slider Controls -->
-                <div class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-orange-100 shadow-sm flex flex-wrap items-center gap-3">
-                    <div>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Clock (HH:MM:SS)</p>
+                <div class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl border border-orange-100 shadow-sm flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <div class="shrink-0">
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Clock (HH:MM:SS)</p>
                         <div class="flex items-center gap-1.5">
-                            <span id="banner-clock-time" class="text-sm font-extrabold text-slate-800 cute-title">12:00:00 PM</span>
-                            <span id="banner-period-badge" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase">Noon</span>
+                            <span id="banner-clock-time" class="text-xs sm:text-sm font-extrabold text-slate-800 cute-title">12:00:00 PM</span>
+                            <span id="banner-period-badge" class="text-[8px] bg-amber-100 text-amber-800 px-1 py-0.5 rounded font-bold uppercase">Noon</span>
                         </div>
                     </div>
                     <!-- Scrub slider -->
                     <div class="flex items-center gap-2 border-l border-slate-100 pl-3">
                         <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
-                        <input id="time-slider" type="range" min="0" max="1439" value="720" oninput="handleTimeSliderChange(this.value)" class="w-24 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                        <input id="time-slider" type="range" min="0" max="1439" value="720" oninput="handleTimeSliderChange(this.value)" class="w-20 sm:w-28 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500">
                         <i data-lucide="moon" class="w-3.5 h-3.5 text-indigo-500"></i>
                     </div>
                     <!-- Toggles -->
-                    <div class="flex flex-col gap-0.5 border-l border-slate-100 pl-3">
+                    <div class="flex flex-col gap-0.5 border-l border-slate-100 pl-3 text-[10px]">
                         <label class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold cursor-pointer">
                             <input type="checkbox" id="live-clock-toggle" checked onchange="toggleLiveClock(this.checked)" class="rounded text-amber-500 focus:ring-amber-400 w-3 h-3">
-                            <span>Live Local Time</span>
+                            <span>Live Time</span>
                         </label>
                         <label class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold cursor-pointer">
                             <input type="checkbox" id="sync-itinerary-time" checked class="rounded text-amber-500 focus:ring-amber-400 w-3 h-3">
-                            <span>Sync Active Task</span>
+                            <span>Sync Task</span>
                         </label>
                         <label class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold cursor-pointer" title="Forces plan to behave as if today is the planned itinerary date to test animations!">
                             <input type="checkbox" id="force-simulate-today" checked class="rounded text-amber-500 focus:ring-amber-400 w-3 h-3" onchange="updateSkyScenery()">
-                            <span class="text-amber-700 font-bold">Simulate Travel Day</span>
+                            <span class="text-amber-700 font-bold">Simulate Day</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="hidden md:block text-right">
-                    <h3 id="scenic-status-title" class="cute-title text-slate-800 text-sm font-extrabold tracking-wide uppercase">Active Journey</h3>
-                    <p id="scenic-status-desc" class="text-[10px] text-slate-500 font-semibold italic">Where are we wandering next?</p>
+                <div class="hidden md:block text-right bg-white/60 backdrop-blur-xs px-2.5 py-1.5 rounded-xl border border-white/40">
+                    <h3 id="scenic-status-title" class="cute-title text-slate-800 text-xs font-extrabold tracking-wide uppercase">Active Journey</h3>
+                    <p id="scenic-status-desc" class="text-[9px] text-slate-500 font-semibold italic">Where are we wandering next?</p>
                 </div>
             </div>
 
@@ -261,7 +263,7 @@
                 <div id="character-state-normal" class="flex items-end gap-6 transition-all duration-500">
                     <!-- BOY 1: BRANNY -->
                     <div class="flex flex-col items-center">
-                        <svg viewBox="0 0 64 74" class="w-16 h-20 drop-shadow-md overflow-visible">
+                        <svg viewBox="0 0 64 74" class="w-14 h-18 sm:w-16 sm:h-20 drop-shadow-md overflow-visible">
                             <g class="leg-l" style="transform-origin: 23px 60px;">
                                 <rect x="20" y="60" width="6" height="12" rx="3" fill="#f43f5e" />
                                 <ellipse cx="25" cy="71" rx="5" ry="3" fill="#1e293b" />
@@ -295,12 +297,12 @@
                                 </g>
                             </g>
                         </svg>
-                        <div class="mt-1 bg-amber-100 text-amber-900 text-[9px] font-extrabold px-2.5 py-0.5 rounded-full shadow-xs border border-amber-200 uppercase tracking-wide">Branny 🐰</div>
+                        <div class="mt-1 bg-amber-100 text-amber-900 text-[8px] font-extrabold px-2 py-0.5 rounded-full shadow-xs border border-amber-200 uppercase tracking-wide">Branny 🐰</div>
                     </div>
 
                     <!-- BOY 2: CARLO -->
                     <div class="flex flex-col items-center" style="margin-left: -6px;">
-                        <svg viewBox="0 0 64 74" class="w-16 h-20 drop-shadow-md overflow-visible">
+                        <svg viewBox="0 0 64 74" class="w-14 h-18 sm:w-16 sm:h-20 drop-shadow-md overflow-visible">
                             <g class="leg-l" style="transform-origin: 23px 60px;">
                                 <rect x="20" y="60" width="6" height="12" rx="3" fill="#10b981" />
                                 <ellipse cx="25" cy="71" rx="5" ry="3" fill="#1e293b" />
@@ -332,16 +334,19 @@
                                 </g>
                             </g>
                         </svg>
-                        <div class="mt-1 bg-cyan-100 text-cyan-900 text-[9px] font-extrabold px-2.5 py-0.5 rounded-full shadow-xs border border-cyan-200 uppercase tracking-wide">Carlo 🧢</div>
+                        <div class="mt-1 bg-cyan-100 text-cyan-900 text-[8px] font-extrabold px-2 py-0.5 rounded-full shadow-xs border border-cyan-200 uppercase tracking-wide">Carlo 🧢</div>
                     </div>
                 </div>
 
-                <!-- STATE B: SLEEPING ON THE BED -->
+                <!-- STATE B: SLEEPING ON THE BED WITH RICH BEDROOM GLOW OVERLAY -->
                 <div id="character-state-sleeping" class="hidden absolute bottom-2 flex flex-col items-center">
+                    <!-- Soft nightlamp glow overlay to make the sleeping setup beautifully visible against dark black sky -->
+                    <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-300/10 rounded-full blur-2xl pointer-events-none"></div>
+                    
                     <div class="relative w-52 h-28">
                         <div class="absolute left-0 bottom-0 w-2.5 h-14 bg-amber-800 rounded-t-lg"></div>
                         <div class="absolute right-0 bottom-0 w-2.5 h-10 bg-amber-800 rounded-t-lg"></div>
-                        <div class="absolute bottom-1 left-2 w-48 h-10 bg-slate-100 rounded-md border border-slate-200"></div>
+                        <div class="absolute bottom-1 left-2 w-48 h-10 bg-slate-100 rounded-md border border-slate-200 shadow-inner"></div>
                         <div class="absolute bottom-6 left-4 w-12 h-5 bg-white border border-slate-200 rounded-xl"></div>
                         <div class="absolute bottom-6 left-18 w-12 h-5 bg-white border border-slate-200 rounded-xl"></div>
                         
@@ -350,19 +355,19 @@
                                 <div class="w-1.5 h-4 bg-white rounded-t-full rotate-[-15deg]"></div>
                                 <div class="w-1.5 h-4 bg-white rounded-t-full rotate-[15deg]"></div>
                             </div>
-                            <div class="w-8 h-8 bg-[#fed7aa] rounded-full flex items-center justify-center">
+                            <div class="w-8 h-8 bg-[#fed7aa] rounded-full flex items-center justify-center border border-amber-900/10 shadow-xs">
                                 <span class="text-[8px] font-extrabold text-slate-700">u_u</span>
                             </div>
                         </div>
 
                         <div class="absolute left-19 bottom-4 flex flex-col items-center scale-90 z-10">
                             <div class="w-6 h-2 bg-pink-500 rounded-t-full -mb-0.5"></div>
-                            <div class="w-8 h-8 bg-[#fed7aa] rounded-full flex items-center justify-center">
+                            <div class="w-8 h-8 bg-[#fed7aa] rounded-full flex items-center justify-center border border-amber-900/10 shadow-xs">
                                 <span class="text-[8px] font-extrabold text-slate-700">u_u</span>
                             </div>
                         </div>
 
-                        <div class="absolute bottom-0 left-2 w-48 h-9 bg-rose-400 rounded-md border-t-2 border-rose-300 opacity-95 z-20">
+                        <div class="absolute bottom-0 left-2 w-48 h-9 bg-rose-400 rounded-md border-t-2 border-rose-300 opacity-95 z-20 shadow-xs">
                             <div class="w-full h-2 bg-rose-300/40 flex justify-around items-center">
                                 <span class="text-[7px] text-white">⭐</span>
                                 <span class="text-[7px] text-white">⭐</span>
@@ -481,8 +486,8 @@
                     </div>
                 </div>
 
-                <!-- Speech Bubble -->
-                <div class="bg-white/95 px-3.5 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center gap-1.5 whitespace-nowrap z-20">
+                <!-- Speech Bubble (Fully Responsive, no-wrap removed to wrap seamlessly on small phones) -->
+                <div class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal sm:whitespace-nowrap text-center sm:text-left">
                     <span>💬</span>
                     <span id="scenic-speech-bubble-text" class="cute-title">Ready for our journey!</span>
                 </div>
@@ -1224,8 +1229,10 @@
             const heightPx = Math.sin(radian) * 120 + 30;
             celestialGroup.style.bottom = `${heightPx}px`;
 
-            banner.className = "w-full rounded-3xl p-6 mb-8 shadow-md border relative overflow-hidden h-64 flex flex-col justify-between transition-all duration-700 ";
+            // Reset scenery to baseline class containing Tailwind gradient initializer tag
+            banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-gradient-to-b ";
             stars.classList.add('opacity-0');
+            stars.classList.remove('opacity-60', 'opacity-100');
             sun.classList.add('hidden');
             moon.classList.add('hidden');
             road.classList.remove('opacity-0');
@@ -1244,19 +1251,26 @@
                 periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase";
             } else if (period === "Evening") {
                 if (simulatedTimeMinutes < 1140) {
-                    banner.classList.add('from-slate-700', 'via-indigo-900', 'to-amber-900/60', 'border-slate-700/40');
+                    banner.classList.add('from-indigo-950', 'via-purple-950', 'to-orange-900', 'border-indigo-900/30');
+                    stars.classList.remove('opacity-0');
+                    stars.classList.add('opacity-60');
                 } else if (simulatedTimeMinutes < 1230) {
-                    banner.classList.add('from-slate-800', 'via-slate-900', 'to-indigo-950', 'border-slate-800/40');
+                    banner.classList.add('from-slate-900', 'via-indigo-950', 'to-purple-950', 'border-slate-900/40');
+                    stars.classList.remove('opacity-0');
+                    stars.classList.add('opacity-100');
                 } else {
-                    banner.classList.add('from-slate-900', 'via-slate-950', 'to-zinc-950', 'border-slate-900/40');
+                    banner.classList.add('from-slate-950', 'via-slate-900', 'to-indigo-950', 'border-slate-950/40');
+                    stars.classList.remove('opacity-0');
+                    stars.classList.add('opacity-100');
                 }
                 moon.classList.remove('hidden');
-                stars.classList.remove('opacity-0');
                 periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase";
             } else {
-                banner.classList.add('from-slate-950', 'via-blue-950', 'to-indigo-900', 'border-slate-800/40');
+                // Night (10:00 PM - 6:00 AM) - Dark midnight sky
+                banner.classList.add('from-black', 'via-slate-950', 'to-zinc-950', 'border-zinc-800/60');
                 moon.classList.remove('hidden');
                 stars.classList.remove('opacity-0');
+                stars.classList.add('opacity-100');
                 periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase";
             }
 
@@ -1924,7 +1938,7 @@
                                                 ` : ''}
 
                                                 ${row.completed && row.completedTime ? `
-                                                    <span class="inline-flex items-center gap-1 text-[11px] font-black px-2 py-0.5 bg-sky-100 text-sky-800 rounded-lg border border-sky-200 shadow-3xs" title="Logged completion timing">
+                                                    <span class="inline-flex items-center gap-1 text-[10px] font-black px-1.5 py-0.5 bg-sky-100 text-sky-800 rounded-lg border border-sky-200 shadow-3xs" title="Logged completion timing">
                                                         <span>⏱️ Checked at: ${row.completedTime}</span>
                                                     </span>
                                                 ` : ''}

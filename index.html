@@ -17,21 +17,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts for Cute and Modern Typography -->
+    <!-- Google Fonts for Cute and Modern Typography (HTML Fallback) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=300..700&family=Plus+Jakarta+Sans:wght=300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS @import Fallback for reliable font rendering on iOS standalones */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap');
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
             background-color: #fcf8f2;
             background-image: radial-gradient(#f3e8d9 1px, transparent 1px);
             background-size: 24px 24px;
         }
+        
         .cute-title {
-            font-family: 'Fredoka', sans-serif;
+            font-family: 'Fredoka', cursive, sans-serif !important;
+            font-weight: 600;
         }
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -152,6 +158,24 @@
         
         .car-bounce-anim { animation: car-bump 0.4s infinite ease-in-out; }
         .wheel-spin-anim { animation: wheel-spin 0.5s infinite linear; }
+
+        /* Fixes for iOS Safari input stretching & overlap */
+        input[type="date"], 
+        input[type="time"],
+        select {
+            min-width: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Standardize height alignment for native date/time pickers on iPhone */
+        input[type="date"]::-webkit-date-and-time-value,
+        input[type="time"]::-webkit-date-and-time-value {
+            min-height: 1.25em;
+            text-align: left;
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
@@ -495,7 +519,7 @@
                     </div>
                 </div>
 
-                <!-- Speech Bubble (Fully Responsive, wrapping text seamlessly on narrow iPhone/mobile viewports) -->
+                <!-- Speech Bubble (Fully Responsive on narrow mobile viewports) -->
                 <div class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
                     <span class="shrink-0">💬</span>
                     <span id="scenic-speech-bubble-text" class="cute-title text-[11px] sm:text-xs">Ready for our journey!</span>
@@ -544,25 +568,28 @@
                             </div>
                         </div>
 
+                        <!-- Fixed Date/Currency Section to prevent iPhone 15 Overlaps -->
                         <div class="grid grid-cols-2 gap-3">
-                            <div>
+                            <div class="min-w-0">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">When? 📅</label>
-                                <div class="relative">
+                                <div class="relative min-w-0">
                                     <input type="date" id="plan-date" required
-                                        class="w-full px-3 py-3 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-2xl outline-none transition duration-200 text-sm font-semibold text-slate-700">
+                                        class="w-full px-3 py-3 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-2xl outline-none transition duration-200 text-sm font-semibold text-slate-700 min-w-0">
                                 </div>
                             </div>
-                            <div>
+                            <div class="min-w-0">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Currency 💵</label>
-                                <select id="plan-currency" class="w-full px-3 py-3 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-2xl outline-none transition duration-200 text-sm font-semibold text-slate-700">
-                                    <option value="$">$ USD</option>
-                                    <option value="€">€ EUR</option>
-                                    <option value="£">£ GBP</option>
-                                    <option value="¥">¥ JPY</option>
-                                    <option value="₱">₱ PHP</option>
-                                    <option value="₩">₩ KRW</option>
-                                    <option value="₹">₹ INR</option>
-                                </select>
+                                <div class="relative min-w-0">
+                                    <select id="plan-currency" class="w-full px-3 py-3 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-2xl outline-none transition duration-200 text-sm font-semibold text-slate-700 min-w-0">
+                                        <option value="$">$ USD</option>
+                                        <option value="€">€ EUR</option>
+                                        <option value="£">£ GBP</option>
+                                        <option value="¥">¥ JPY</option>
+                                        <option value="₱">₱ PHP</option>
+                                        <option value="₩">₩ KRW</option>
+                                        <option value="₹">₹ INR</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
@@ -571,25 +598,25 @@
                             <div class="grid grid-cols-4 gap-2">
                                 <label class="cursor-pointer">
                                     <input type="radio" name="plan-theme" value="beach" checked class="peer sr-only">
-                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-cyan-50 peer-checked:text-cyan-600 peer-checked:ring-2 peer-checked:ring-cyan-300 border border-transparent transition text-xs font-semibold">
+                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-cyan-50 peer-checked:text-cyan-600 peer-checked:ring-2 peer-checked:ring-cyan-300 border border-transparent transition text-xs font-semibold cute-title">
                                         <div class="text-lg">🏖️</div> Beach
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="plan-theme" value="city" class="peer sr-only">
-                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-300 border border-transparent transition text-xs font-semibold">
+                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-300 border border-transparent transition text-xs font-semibold cute-title">
                                         <div class="text-lg">🌆</div> City
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="plan-theme" value="nature" class="peer sr-only">
-                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 peer-checked:ring-2 peer-checked:ring-emerald-300 border border-transparent transition text-xs font-semibold">
+                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 peer-checked:ring-2 peer-checked:ring-emerald-300 border border-transparent transition text-xs font-semibold cute-title">
                                         <div class="text-lg">🌲</div> Nature
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="plan-theme" value="food" class="peer sr-only">
-                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-rose-50 peer-checked:text-rose-600 peer-checked:ring-2 peer-checked:ring-rose-300 border border-transparent transition text-xs font-semibold">
+                                    <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-rose-50 peer-checked:text-rose-600 peer-checked:ring-2 peer-checked:ring-rose-300 border border-transparent transition text-xs font-semibold cute-title">
                                         <div class="text-lg">🍜</div> Foodie
                                     </div>
                                 </label>
@@ -633,10 +660,10 @@
                     </h3>
                     <p class="text-slate-500 text-xs mb-4">Export your plans to a raw JSON backup file, or upload an existing backup to restore everything instantly!</p>
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="exportItinerariesToJSON()" class="bg-white hover:bg-slate-100 text-slate-700 font-bold py-2 px-3 border border-slate-200 hover:border-slate-300 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-2xs">
+                        <button onclick="exportItinerariesToJSON()" class="bg-white hover:bg-slate-100 text-slate-700 font-bold py-2 px-3 border border-slate-200 hover:border-slate-300 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-2xs cute-title">
                             <i data-lucide="download" class="w-4 h-4 text-amber-500"></i> Export JSON
                         </button>
-                        <button onclick="triggerJSONImportFile()" class="bg-white hover:bg-slate-100 text-slate-700 font-bold py-2 px-3 border border-slate-200 hover:border-slate-300 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-2xs">
+                        <button onclick="triggerJSONImportFile()" class="bg-white hover:bg-slate-100 text-slate-700 font-bold py-2 px-3 border border-slate-200 hover:border-slate-300 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-2xs cute-title">
                             <i data-lucide="upload" class="w-4 h-4 text-pink-500"></i> Import JSON
                         </button>
                         <input type="file" id="json-import-input" class="hidden" accept=".json" onchange="handleJSONImport(event)">
@@ -749,8 +776,8 @@
                     </div>
                 </div>
                 <div class="bg-white px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-2 border-t border-slate-100">
-                    <button type="button" onclick="closeWarningModal()" class="w-full sm:w-auto px-4 py-2.5 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition duration-200">Nevermind</button>
-                    <button type="button" id="modal-confirm-btn" class="w-full sm:w-auto px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold rounded-xl shadow-xs transition duration-200">Yes, Delete It</button>
+                    <button type="button" onclick="closeWarningModal()" class="w-full sm:w-auto px-4 py-2.5 bg-slate-100 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-200 transition duration-200 cute-title">Nevermind</button>
+                    <button type="button" id="modal-confirm-btn" class="w-full sm:w-auto px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold rounded-xl shadow-xs transition duration-200 cute-title">Yes, Delete It</button>
                 </div>
             </div>
         </div>
@@ -769,11 +796,11 @@
                         <input type="text" id="edit-plan-place" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">When?</label>
                             <input type="date" id="edit-plan-date" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Currency</label>
                             <select id="edit-plan-currency" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
                                 <option value="$">$ USD</option>
@@ -791,25 +818,25 @@
                         <div class="grid grid-cols-4 gap-2">
                             <label class="cursor-pointer">
                                 <input type="radio" name="edit-plan-theme" value="beach" class="peer sr-only">
-                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-cyan-50 peer-checked:text-cyan-600 peer-checked:ring-2 peer-checked:ring-cyan-300 text-xs font-semibold">
+                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-cyan-50 peer-checked:text-cyan-600 peer-checked:ring-2 peer-checked:ring-cyan-300 text-xs font-semibold cute-title">
                                     <div class="text-lg">🏖️</div> Beach
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="edit-plan-theme" value="city" class="peer sr-only">
-                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-300 text-xs font-semibold">
+                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-300 text-xs font-semibold cute-title">
                                     <div class="text-lg">🌆</div> City
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="edit-plan-theme" value="nature" class="peer sr-only">
-                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 peer-checked:ring-2 peer-checked:ring-emerald-300 text-xs font-semibold">
+                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 peer-checked:ring-2 peer-checked:ring-emerald-300 text-xs font-semibold cute-title">
                                     <div class="text-lg">🌲</div> Nature
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="edit-plan-theme" value="food" class="peer sr-only">
-                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-rose-50 peer-checked:text-rose-600 peer-checked:ring-2 peer-checked:ring-rose-300 text-xs font-semibold">
+                                <div class="p-2.5 text-center rounded-xl bg-slate-50 hover:bg-slate-100 peer-checked:bg-rose-50 peer-checked:text-rose-600 peer-checked:ring-2 peer-checked:ring-rose-300 text-xs font-semibold cute-title">
                                     <div class="text-lg">🍜</div> Foodie
                                 </div>
                             </label>
@@ -817,8 +844,8 @@
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end gap-2">
-                    <button onclick="closeEditPlanModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Cancel</button>
-                    <button onclick="handleSaveEditedPlan()" class="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-xl shadow-xs">Save Changes</button>
+                    <button onclick="closeEditPlanModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cute-title">Cancel</button>
+                    <button onclick="handleSaveEditedPlan()" class="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold text-sm rounded-xl shadow-xs cute-title">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -841,40 +868,44 @@
                         <div class="grid grid-cols-4 gap-1.5">
                             <label class="cursor-pointer">
                                 <input type="radio" name="row-activity-type" value="explore" checked onchange="handleActivityTypeRadioChange('explore')" class="peer sr-only">
-                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-amber-400 peer-checked:bg-amber-50 transition text-[11px] font-bold text-slate-700">
+                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-amber-400 peer-checked:bg-amber-50 transition text-[11px] font-bold text-slate-700 cute-title">
                                     <div class="text-base">🚶‍♂️</div> Journey
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="row-activity-type" value="transit" onchange="handleActivityTypeRadioChange('transit')" class="peer sr-only">
-                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-blue-400 peer-checked:bg-blue-50 transition text-[11px] font-bold text-slate-700">
+                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-blue-400 peer-checked:bg-blue-50 transition text-[11px] font-bold text-slate-700 cute-title">
                                     <div class="text-base">🚗</div> Transit
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="row-activity-type" value="resting" onchange="handleActivityTypeRadioChange('resting')" class="peer sr-only">
-                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-rose-400 peer-checked:bg-rose-50 transition text-[11px] font-bold text-slate-700">
+                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-rose-400 peer-checked:bg-rose-50 transition text-[11px] font-bold text-slate-700 cute-title">
                                     <div class="text-base">🏨</div> Resting
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="row-activity-type" value="homebound" onchange="handleActivityTypeRadioChange('homebound')" class="peer sr-only">
-                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-teal-400 peer-checked:bg-teal-50 transition text-[11px] font-bold text-slate-700">
+                                <div class="p-2 text-center rounded-xl bg-slate-50 border-2 border-slate-100 peer-checked:border-teal-400 peer-checked:bg-teal-50 transition text-[11px] font-bold text-slate-700 cute-title">
                                     <div class="text-base">🏡</div> Pauwi
                                 </div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Time Fields -->
+                    <!-- Time Fields with iPhone Protection Wrap -->
                     <div class="grid grid-cols-2 gap-3 bg-amber-50/40 p-3 rounded-2xl border border-amber-100">
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">Start Time ⏰</label>
-                            <input type="time" id="row-time" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700">
+                            <div class="min-w-0">
+                                <input type="time" id="row-time" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
+                            </div>
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">End Time 🏁</label>
-                            <input type="time" id="row-endtime" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700">
+                            <div class="min-w-0">
+                                <input type="time" id="row-endtime" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
+                            </div>
                         </div>
                     </div>
 
@@ -885,11 +916,11 @@
 
                     <!-- Transportation Routing Input Fields -->
                     <div id="row-transit-routing" class="grid grid-cols-2 gap-3 hidden">
-                        <div>
+                        <div class="min-w-0">
                             <label id="lbl-transit-from" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">From (Original Place) 🏁</label>
                             <input type="text" id="row-transit-from" placeholder="e.g. Hotel Kyoto" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <label id="lbl-transit-to" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">To (Destination Place) 🎯</label>
                             <input type="text" id="row-transit-to" placeholder="e.g. Kiyomizudera Temple" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
                         </div>
@@ -902,13 +933,13 @@
 
                     <!-- Budget Costing Fields -->
                     <div class="grid grid-cols-2 gap-3">
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Estimated Cost (<span class="modal-currency-indicator">$</span>)</label>
-                            <input type="number" id="row-cost" placeholder="0.00" min="0" step="any" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
+                            <input type="number" id="row-cost" placeholder="0.00" min="0" step="any" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700 min-w-0">
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Category 🏷️</label>
-                            <select id="row-cost-category" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700">
+                            <select id="row-cost-category" class="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-sm font-semibold text-slate-700 min-w-0">
                                 <option value="free">🎉 Free / No Cost</option>
                                 <option value="food">🍜 Food & Drink</option>
                                 <option value="transit">🚗 Transport / Flights</option>
@@ -926,8 +957,8 @@
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end gap-2">
-                    <button onclick="closeRowModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Cancel</button>
-                    <button id="row-modal-save-btn" onclick="handleSaveRow()" class="px-4 py-2 bg-gradient-to-r from-amber-400 to-pink-500 hover:from-amber-500 hover:to-pink-600 text-white font-bold text-sm rounded-xl shadow-xs">Add to Day</button>
+                    <button onclick="closeRowModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cute-title">Cancel</button>
+                    <button id="row-modal-save-btn" onclick="handleSaveRow()" class="px-4 py-2 bg-gradient-to-r from-amber-400 to-pink-500 hover:from-amber-500 hover:to-pink-600 text-white font-bold text-sm rounded-xl shadow-xs cute-title">Add to Day</button>
                 </div>
             </div>
         </div>
@@ -958,8 +989,8 @@
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end gap-2">
-                    <button onclick="closeActualPriceModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Keep Free / Default</button>
-                    <button onclick="handleSaveActualSpentPrice()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl shadow-xs transition duration-150">Log Price & Finish</button>
+                    <button onclick="closeActualPriceModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cute-title">Keep Free / Default</button>
+                    <button onclick="handleSaveActualSpentPrice()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl shadow-xs transition duration-150 cute-title">Log Price & Finish</button>
                 </div>
             </div>
         </div>
@@ -1249,15 +1280,15 @@
             if (period === "Morning") {
                 banner.classList.add('from-rose-200', 'via-amber-100', 'to-sky-100', 'border-amber-200/40');
                 sun.classList.remove('hidden');
-                periodBadge.className = "text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase";
+                periodBadge.className = "text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Noon") {
                 banner.classList.add('from-sky-300', 'via-cyan-100', 'to-[#fffaf2]', 'border-cyan-200/40');
                 sun.classList.remove('hidden');
-                periodBadge.className = "text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-bold uppercase";
+                periodBadge.className = "text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Afternoon") {
                 banner.classList.add('from-amber-200', 'via-orange-200', 'to-[#fff8f0]', 'border-orange-200/40');
                 sun.classList.remove('hidden');
-                periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase";
+                periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Evening") {
                 if (simulatedTimeMinutes < 1140) {
                     banner.classList.add('from-indigo-950', 'via-purple-950', 'to-orange-900', 'border-indigo-900/30');
@@ -1273,14 +1304,14 @@
                     stars.classList.add('opacity-100');
                 }
                 moon.classList.remove('hidden');
-                periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase";
+                periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else {
-                // Night (10:00 PM - 6:00 AM) - Dark midnight sky
+                // Night (10:00 PM - 6:00 AM) - True Dark Black Midnight Sky
                 banner.classList.add('from-black', 'via-slate-950', 'to-zinc-950', 'border-zinc-800/60');
                 moon.classList.remove('hidden');
                 stars.classList.remove('opacity-0');
                 stars.classList.add('opacity-100');
-                periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase";
+                periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             }
 
             const stateNormal = document.getElementById('character-state-normal');
@@ -1573,7 +1604,7 @@
 
             if (activePlans.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-6 text-slate-400 text-xs">
+                    <div class="text-center py-6 text-slate-400 text-xs font-semibold">
                         No active plans. Use the form above to start!
                     </div>
                 `;
@@ -1585,7 +1616,7 @@
 
             if (archivedPlans.length === 0) {
                 archivedContainer.innerHTML = `
-                    <div class="text-center py-6 text-slate-400 text-xs">
+                    <div class="text-center py-6 text-slate-400 text-xs font-semibold">
                         No archived plans yet.
                     </div>
                 `;
@@ -1634,7 +1665,7 @@
                     <div class="flex items-center gap-2.5 min-w-0">
                         <span class="text-xl shrink-0">${theme.emoji}</span>
                         <div class="text-left min-w-0">
-                            <h4 class="font-bold text-xs sm:text-sm text-slate-800 truncate group-hover:text-amber-600 transition">${escapeHTML(plan.place)}</h4>
+                            <h4 class="font-bold text-xs sm:text-sm text-slate-800 truncate group-hover:text-amber-600 transition cute-title">${escapeHTML(plan.place)}</h4>
                             <div class="flex items-center gap-2 mt-0.5 flex-wrap">
                                 <p class="text-[10px] text-slate-400 font-semibold shrink-0">${dateSummary}</p>
                                 ${planActual > 0 ? `
@@ -1645,7 +1676,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="shrink-0 text-[10px] font-bold ${theme.badgeBg} ${theme.badgeColor} px-2 py-0.5 rounded-lg">
+                    <span class="shrink-0 text-[10px] font-bold ${theme.badgeBg} ${theme.badgeColor} px-2 py-0.5 rounded-lg cute-title">
                         ${totalDays} ${totalDays === 1 ? 'Day' : 'Days'}
                     </span>
                 </div>
@@ -1865,7 +1896,7 @@
 
                             ${!activePlan.archived ? `
                                 <div class="flex items-center gap-1.5">
-                                    <button onclick="triggerRowModal(${dayIndex})" class="bg-white border-2 border-slate-100 hover:border-amber-200 hover:bg-amber-50 text-slate-700 font-bold py-2 px-3.5 rounded-xl transition duration-150 text-xs flex items-center gap-1">
+                                    <button onclick="triggerRowModal(${dayIndex})" class="bg-white border-2 border-slate-100 hover:border-amber-200 hover:bg-amber-50 text-slate-700 font-bold py-2 px-3.5 rounded-xl transition duration-150 text-xs flex items-center gap-1 cute-title">
                                         <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Activity
                                     </button>
                                     <button onclick="triggerDeleteDayWarning(${dayIndex})" class="text-rose-400 hover:text-rose-600 hover:bg-rose-50 p-2 rounded-xl transition" title="Delete Day">
@@ -1878,7 +1909,7 @@
 
                     <div class="divide-y divide-slate-100">
                         ${totalRows === 0 ? `
-                            <div class="p-8 text-center text-slate-400 text-xs">
+                            <div class="p-8 text-center text-slate-400 text-xs font-semibold">
                                 <i data-lucide="sparkles" class="w-6 h-6 mx-auto mb-1.5 text-slate-300"></i>
                                 No activities listed yet for this day.
                             </div>

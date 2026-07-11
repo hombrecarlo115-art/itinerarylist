@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WanderPlan - Cute SaaS Itinerary Planner</title>
+    
+    <!-- iOS Web App Mode Capabilities -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="WanderPlan">
+    
+    <!-- Cute Custom iOS Home Screen App Icon (Base64 SVG URL) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180' width='180' height='180'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23fbbf24'/><stop offset='50%25' stop-color='%23f43f5e'/><stop offset='100%25' stop-color='%23ec4899'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23grad)'/><circle cx='90' cy='90' r='52' fill='white' opacity='0.9'/><path d='M90 48 C71 48 56 63 56 82 C56 108 90 136 90 136 C90 136 124 108 124 82 C124 63 109 48 90 48 Z' fill='%23f43f5e'/><circle cx='90' cy='80' r='14' fill='white'/><path d='M142 38 L145 44 L151 45 L146 49 L148 55 L142 52 L136 55 L138 49 L133 45 L139 44 Z' fill='%23fffb1e'/><path d='M38 128 L40 132 L44 133 L41 136 L42 140 L38 138 L34 140 L35 136 L32 133 L36 132 Z' fill='%23fffb1e'/><path d='M90 76 Q92 72 96 76 T100 76' stroke='%23f43f5e' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -11,7 +20,7 @@
     <!-- Google Fonts for Cute and Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=300..700&family=Plus+Jakarta+Sans:wght=300..800&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -171,7 +180,7 @@
 
     <main class="max-w-6xl mx-auto px-4 mt-8">
 
-        <div id="scenic-banner-container" class="scenic-state-walking w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border border-amber-100/60 relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700">
+        <div id="scenic-banner-container" class="scenic-state-walking w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border border-amber-100/60 relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-gradient-to-b">
             
             <!-- Twinkling stars (Only visible in Night/Evening) -->
             <div id="night-stars" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700">
@@ -338,9 +347,9 @@
                     </div>
                 </div>
 
-                <!-- STATE B: SLEEPING ON THE BED WITH RICH BEDROOM GLOW OVERLAY -->
+                <!-- STATE B: SLEEPING ON THE BED WITH RICH BEDSIDE NIGHTLIGHT GLOW -->
                 <div id="character-state-sleeping" class="hidden absolute bottom-2 flex flex-col items-center">
-                    <!-- Soft nightlamp glow overlay to make the sleeping setup beautifully visible against dark black sky -->
+                    <!-- Soft golden nightlamp glow aura to make the bed beautifully visible against pitch black night -->
                     <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-300/10 rounded-full blur-2xl pointer-events-none"></div>
                     
                     <div class="relative w-52 h-28">
@@ -375,9 +384,9 @@
                             </div>
                         </div>
 
-                        <div class="absolute left-8 top-0 text-amber-500 font-extrabold text-xs pointer-events-none select-none anim-zz-1">zZZ</div>
-                        <div class="absolute left-16 top-4 text-amber-500 font-extrabold text-sm pointer-events-none select-none anim-zz-2">zZZ</div>
-                        <div class="absolute left-24 top-1 text-amber-500 font-extrabold text-xs pointer-events-none select-none anim-zz-3">zZZ</div>
+                        <div class="absolute left-8 top-0 text-amber-400 font-extrabold text-xs pointer-events-none select-none anim-zz-1">zZZ</div>
+                        <div class="absolute left-16 top-4 text-amber-400 font-extrabold text-sm pointer-events-none select-none anim-zz-2">zZZ</div>
+                        <div class="absolute left-24 top-1 text-amber-400 font-extrabold text-xs pointer-events-none select-none anim-zz-3">zZZ</div>
                     </div>
                 </div>
 
@@ -486,10 +495,10 @@
                     </div>
                 </div>
 
-                <!-- Speech Bubble (Fully Responsive, no-wrap removed to wrap seamlessly on small phones) -->
-                <div class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal sm:whitespace-nowrap text-center sm:text-left">
-                    <span>💬</span>
-                    <span id="scenic-speech-bubble-text" class="cute-title">Ready for our journey!</span>
+                <!-- Speech Bubble (Fully Responsive, wrapping text seamlessly on narrow iPhone/mobile viewports) -->
+                <div class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
+                    <span class="shrink-0">💬</span>
+                    <span id="scenic-speech-bubble-text" class="cute-title text-[11px] sm:text-xs">Ready for our journey!</span>
                 </div>
             </div>
         </div>
@@ -1229,8 +1238,8 @@
             const heightPx = Math.sin(radian) * 120 + 30;
             celestialGroup.style.bottom = `${heightPx}px`;
 
-            // Reset scenery to baseline class containing Tailwind gradient initializer tag
-            banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-gradient-to-b ";
+            // Reset scenery classes and ensure 'bg-gradient-to-b' is always initialized
+            banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[25rem] md:min-h-[17rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-gradient-to-b";
             stars.classList.add('opacity-0');
             stars.classList.remove('opacity-60', 'opacity-100');
             sun.classList.add('hidden');
@@ -1288,7 +1297,7 @@
 
             const activePlan = itineraries.find(p => p.id === activePlanId);
             
-            // Check calendar dates to restrict the live dynamics unless today is the planned date
+            // Check calendar dates to restrict live dynamics unless simulated
             const today = new Date();
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1378,7 +1387,6 @@
             // Render animation states
             if (isPlanActiveNow) {
                 if (earlyTransitToTask) {
-                    // Moving early! Override to transit style
                     road.classList.remove('opacity-0');
                     banner.classList.add('scenic-state-walking');
                     
@@ -1407,7 +1415,6 @@
                         stateNormal.classList.remove('hidden');
                     }
                 } else {
-                    // Standard timeline idles
                     if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
                         stateSleeping.classList.remove('hidden');
                         banner.classList.add('scenic-state-waiting');
@@ -1423,7 +1430,6 @@
                     }
                 }
             } else {
-                // Future/casual plan date - idle standard wait
                 if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
                     stateSleeping.classList.remove('hidden');
                     banner.classList.add('scenic-state-waiting');

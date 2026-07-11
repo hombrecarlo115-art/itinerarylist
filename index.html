@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-title" content="WanderPlan">
     
     <!-- Custom iOS Home Screen App Icon -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180' width='180' height='180'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23fbbf24'/><stop offset='50%25' stop-color='%23f43f5e'/><stop offset='100%25' stop-color='%23ec4899'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23grad)'/><circle cx='90' cy='90' r='52' fill='white' opacity='0.9'/><path d='M90 48 C71 48 56 63 56 82 C56 108 90 136 90 136 C90 136 124 108 124 82 C124 63 109 48 90 48 Z' fill='%23f43f5e'/><circle cx='90' cy='80' r='14' fill='white'/><path d='M142 38 L145 44 L151 45 L146 49 L148 55 L142 52 L136 55 L138 49 L133 45 L139 44 Z' fill='%23fffb1e'/><path d='M38 128 L40 132 L44 133 L41 136 L42 140 L38 138 L34 140 L35 136 L32 133 L36 132 Z' fill='%23fffb1e'/><path d='M90 76 Q92 72 96 76 T100 76' stroke='%23f43f5e' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+    <link class="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180' width='180' height='180'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23fbbf24'/><stop offset='50%25' stop-color='%23f43f5e'/><stop offset='100%25' stop-color='%23ec4899'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23grad)'/><circle cx='90' cy='90' r='52' fill='white' opacity='0.9'/><path d='M90 48 C71 48 56 63 56 82 C56 108 90 136 90 136 C90 136 124 108 124 82 C124 63 109 48 90 48 Z' fill='%23f43f5e'/><circle cx='90' cy='80' r='14' fill='white'/><path d='M142 38 L145 44 L151 45 L146 49 L148 55 L142 52 L136 55 L138 49 L133 45 L139 44 Z' fill='%23fffb1e'/><path d='M38 128 L40 132 L44 133 L41 136 L42 140 L38 138 L34 140 L35 136 L32 133 L36 132 Z' fill='%23fffb1e'/><path d='M90 76 Q92 72 96 76 T100 76' stroke='%23f43f5e' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -324,14 +324,14 @@
                 </div>
             </div>
 
-            <!-- DYNAMIC COMPANIONS ALIGNMENT TRACK -->
-            <div class="relative w-full h-32 flex items-end justify-center md:justify-start md:px-12 z-10 pb-2">
+            <!-- DYNAMIC COMPANIONS ALIGNMENT TRACK (Fixed to absolute position at bottom of the banner) -->
+            <div class="absolute inset-x-0 bottom-0 h-48 flex items-end justify-center md:justify-start md:px-16 z-10 pb-[12px]">
                 <div id="active-companions-row" class="flex flex-row items-end gap-6 justify-center md:justify-start">
                     <!-- Dynamic multi-companions side-by-side -->
                 </div>
 
-                <!-- Speech Bubble (Optimized to stay beautifully in place) -->
-                <div id="speech-bubble-wrapper" class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-24 left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
+                <!-- Speech Bubble (Optimized to sit perfectly above the companion sprites and name badges) -->
+                <div id="speech-bubble-wrapper" class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-[170px] sm:bottom-[215px] left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
                     <span class="shrink-0">💬</span>
                     <span id="scenic-speech-bubble-text" class="cute-title text-[11px] sm:text-xs">Ready for our journey!</span>
                 </div>
@@ -1472,31 +1472,32 @@
             banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[22rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-gradient-to-b";
             stars.classList.add('opacity-0');
             stars.classList.remove('opacity-60', 'opacity-100');
-            sun.classList.add('hidden');
-            moon.classList.add('hidden');
-            road.classList.remove('opacity-0');
+            sun.classList.remove('hidden');
+            moon.classList.remove('hidden');
+            
+            road.classList.remove('hidden');
 
             if (period === "Morning") {
                 banner.classList.add('from-rose-200', 'via-amber-100', 'to-sky-100', 'border-amber-200/40');
-                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
                 periodBadge.className = "text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Noon") {
                 banner.classList.add('from-sky-300', 'via-cyan-100', 'to-[#fffaf2]', 'border-cyan-200/40');
-                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
                 periodBadge.className = "text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Afternoon") {
                 banner.classList.add('from-amber-200', 'via-orange-200', 'to-[#fff8f0]', 'border-orange-200/40');
-                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
                 periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else if (period === "Evening") {
                 banner.classList.add('from-indigo-950', 'via-purple-950', 'to-orange-900', 'border-indigo-900/30');
                 stars.classList.remove('opacity-0');
                 stars.classList.add('opacity-60');
-                moon.classList.remove('hidden');
+                sun.classList.add('hidden');
                 periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
             } else {
                 banner.classList.add('from-black', 'via-slate-950', 'to-zinc-950', 'border-zinc-800/60');
-                moon.classList.remove('hidden');
+                sun.classList.add('hidden');
                 stars.classList.remove('opacity-0');
                 stars.classList.add('opacity-100');
                 periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
@@ -1597,7 +1598,7 @@
                         banner.classList.add('scenic-state-walking');
                         currentScenicState = 'homebound';
                     } else if (activeTaskStyle === 'resting') {
-                        road.classList.add('opacity-0');
+                        road.classList.add('hidden');
                         banner.classList.add('scenic-state-waiting');
                         currentScenicState = 'sleeping';
                     } else {
@@ -1608,11 +1609,11 @@
                     if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
                         currentScenicState = 'sleeping';
                         banner.classList.add('scenic-state-waiting');
-                        road.classList.add('opacity-0');
+                        road.classList.add('hidden');
                     } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes <= 480) {
                         currentScenicState = 'preparing';
                         banner.classList.add('scenic-state-waiting');
-                        road.classList.add('opacity-0');
+                        road.classList.add('hidden');
                     } else {
                         banner.classList.add('scenic-state-waiting');
                         currentScenicState = 'waving';
@@ -1622,11 +1623,11 @@
                 if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
                     currentScenicState = 'sleeping';
                     banner.classList.add('scenic-state-waiting');
-                    road.classList.add('opacity-0');
+                    road.classList.add('hidden');
                 } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes <= 480) {
                     currentScenicState = 'preparing';
                     banner.classList.add('scenic-state-waiting');
-                    road.classList.add('opacity-0');
+                    road.classList.add('hidden');
                 } else {
                     currentScenicState = 'waving';
                     banner.classList.add('scenic-state-waiting');
@@ -1700,13 +1701,13 @@
                 }
 
                 const charEl = document.createElement('div');
-                charEl.className = "flex flex-col items-center relative transition-all duration-300";
+                charEl.className = "flex flex-col items-center justify-end relative transition-all duration-300";
                 
                 let zzzMarkup = '';
                 if (scenicState === 'sleeping') {
                     zzzMarkup = `
-                        <div class="absolute -left-3 -top-4 text-amber-400 font-extrabold text-[10px] pointer-events-none select-none anim-zz-1">zZZ</div>
-                        <div class="absolute -right-3 -top-1 text-amber-400 font-extrabold text-xs pointer-events-none select-none anim-zz-2">zZZ</div>
+                        <div class="absolute -left-3 -top-6 text-amber-400 font-extrabold text-[10px] pointer-events-none select-none anim-zz-1">zZZ</div>
+                        <div class="absolute -right-3 -top-3 text-amber-400 font-extrabold text-xs pointer-events-none select-none anim-zz-2">zZZ</div>
                     `;
                 }
 
@@ -1714,22 +1715,26 @@
                 const bounceClass = '';
 
                 charEl.innerHTML = `
-                    <div class="flex flex-col items-center ${bounceClass}">
+                    <div class="flex flex-col items-center justify-end ${bounceClass}">
                         ${zzzMarkup}
+                        
+                        <!-- Name Badge positioned ABOVE character to stop floating separation -->
+                        <div class="mb-2 ${bgBadge} text-[9px] sm:text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs border uppercase tracking-wide">
+                            ${escapeHTML(char.name)}
+                        </div>
+
+                        <!-- Prominent, Enlarged Companion Asset resting directly on floor line -->
                         ${imgData ? `
-                            <img class="h-14 sm:h-18 w-auto object-contain drop-shadow-md rounded-2xl" 
+                            <img class="h-28 sm:h-40 w-auto object-contain drop-shadow-md rounded-2xl" 
                                  style="${flipStyle}" 
                                  src="${imgData}" 
                                  alt="${escapeHTML(char.name)}">
                         ` : `
-                            <div class="${borderTheme} font-extrabold text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-3xs cute-title" style="${flipStyle}">
-                                <span class="text-xs">${fallbackIcon}</span> 
+                            <div class="${borderTheme} font-extrabold text-[11px] sm:text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-3xs cute-title" style="${flipStyle}">
+                                <span class="text-sm sm:text-base">${fallbackIcon}</span> 
                                 <span>${escapeHTML(char.name)}</span>
                             </div>
                         `}
-                        <div class="mt-1 ${bgBadge} text-[8px] font-extrabold px-2 py-0.5 rounded-full shadow-xs border uppercase tracking-wide">
-                            ${escapeHTML(char.name)}
-                        </div>
                     </div>
                 `;
                 container.appendChild(charEl);

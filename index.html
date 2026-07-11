@@ -589,30 +589,14 @@
                         <strong>⚡ Storage Security Vault Active:</strong> Your GIF files are saved locally in a high-capacity database (IndexedDB) so they will never reset or disappear on reload!
                     </p>
 
-                    <!-- HORIZONTAL FLIP DIRECTIONAL MODIFIER -->
-                    <div class="bg-slate-50 border border-amber-100 p-4 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-amber-100 text-amber-700 p-2.5 rounded-xl text-base font-bold shrink-0">
-                                🔄
-                            </div>
-                            <div>
-                                <h4 class="cute-title text-sm font-extrabold text-slate-800">Direction Flipper (Horizontal Mirror)</h4>
-                                <p class="text-[10px] text-slate-400 font-semibold">Is your custom companion walking the wrong way? Mirror the GIF layout horizontally!</p>
-                            </div>
-                        </div>
-                        <button onclick="toggleActiveCompanionMirror()" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-2 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 shadow-3xs cute-title shrink-0">
-                            <span id="flip-status-indicator">⬅️ Facing Left</span>
-                        </button>
-                    </div>
-
-                    <!-- Customizer Selection Grid -->
+                    <!-- Customizer Selection Grid with Individual state direction toggles -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         
                         <!-- Waving / Waiting Sprite -->
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Waiting State</span>
+                                    <span class="text-xs font-bold text-amber-600 tracking-wider uppercase">Waiting State</span>
                                     <span class="text-xl">👋</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Waving / Standing</h3>
@@ -622,13 +606,18 @@
                                 <div id="preview-waving" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'waving')">
-                                    </label>
-                                    <button onclick="resetCharacterState('waving')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'waving')">
+                                        </label>
+                                        <button onclick="resetCharacterState('waving')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('waving')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-waving">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -637,7 +626,7 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">On The Way</span>
+                                    <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">On The Way</span>
                                     <span class="text-xl">🚶‍♂️</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Walking / Journey</h3>
@@ -647,13 +636,18 @@
                                 <div id="preview-walking" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'walking')">
-                                    </label>
-                                    <button onclick="resetCharacterState('walking')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'walking')">
+                                        </label>
+                                        <button onclick="resetCharacterState('walking')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('walking')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-walking">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -662,7 +656,7 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-purple-600 uppercase tracking-wider">Sleep Hours</span>
+                                    <span class="text-xs font-bold text-purple-600 tracking-wider uppercase">Sleep Hours</span>
                                     <span class="text-xl">😴</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Sleeping</h3>
@@ -672,13 +666,18 @@
                                 <div id="preview-sleeping" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'sleeping')">
-                                    </label>
-                                    <button onclick="resetCharacterState('sleeping')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'sleeping')">
+                                        </label>
+                                        <button onclick="resetCharacterState('sleeping')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('sleeping')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-sleeping">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -687,7 +686,7 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Transit Stage</span>
+                                    <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Transit Stage</span>
                                     <span class="text-xl">🚗</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Transit Car</h3>
@@ -697,13 +696,18 @@
                                 <div id="preview-transit" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'transit')">
-                                    </label>
-                                    <button onclick="resetCharacterState('transit')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'transit')">
+                                        </label>
+                                        <button onclick="resetCharacterState('transit')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('transit')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-transit">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -712,7 +716,7 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-teal-600 uppercase tracking-wider">End Trip</span>
+                                    <span class="text-xs font-bold text-teal-600 tracking-wider uppercase">End Trip</span>
                                     <span class="text-xl">🏡</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Going Home / Return</h3>
@@ -722,13 +726,18 @@
                                 <div id="preview-homebound" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'homebound')">
-                                    </label>
-                                    <button onclick="resetCharacterState('homebound')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'homebound')">
+                                        </label>
+                                        <button onclick="resetCharacterState('homebound')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('homebound')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-homebound">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -737,7 +746,7 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-rose-600 uppercase tracking-wider">Morning Prep</span>
+                                    <span class="text-xs font-bold text-rose-600 tracking-wider uppercase">Morning Prep</span>
                                     <span class="text-xl">🍳</span>
                                 </div>
                                 <h3 class="cute-title text-base font-bold text-slate-700">Preparing State</h3>
@@ -747,13 +756,18 @@
                                 <div id="preview-preparing" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
                                     <span class="text-xs text-slate-300 font-semibold">No custom GIF</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-                                        <span>Upload GIF</span>
-                                        <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'preparing')">
-                                    </label>
-                                    <button onclick="resetCharacterState('preparing')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-xl cursor-pointer text-xs transition cute-title flex items-center justify-center gap-1.5 shadow-3xs">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                            <span>Upload GIF</span>
+                                            <input type="file" accept="image/gif, image/png, image/jpeg" class="hidden" onchange="handleCharacterUpload(event, 'preparing')">
+                                        </label>
+                                        <button onclick="resetCharacterState('preparing')" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-3 py-2 rounded-xl text-xs transition font-semibold">Reset</button>
+                                    </div>
+                                    <button onclick="toggleStateFlip('preparing')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-1.5 px-3 rounded-xl transition text-xs flex items-center justify-center gap-1.5 shadow-3xs cute-title">
+                                        🔄 <span id="flip-label-preparing">Facing Left</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1680,46 +1694,53 @@
             }
 
             activeCompanions.forEach(char => {
-                const isFlipped = !!char.isFlipped;
-                const finalFlip = (scenicState === 'homebound') ? !isFlipped : isFlipped;
-                const flipStyle = finalFlip ? 'transform: scaleX(-1);' : '';
-                
                 let imgData = null;
                 let fallbackIcon = "👋";
                 let bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 let borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
+                let isFlipped = false;
 
                 if (scenicState === 'sleeping') {
                     imgData = char.sleeping;
+                    isFlipped = !!char.sleepingFlipped;
                     fallbackIcon = "😴";
                     borderTheme = "border-indigo-800 bg-indigo-950/90 text-indigo-300";
                     bgBadge = "bg-indigo-950 text-indigo-300 border-indigo-800";
                 } else if (scenicState === 'transit') {
                     imgData = char.transit;
+                    isFlipped = !!char.transitFlipped;
                     fallbackIcon = "🚗";
                     borderTheme = "border-blue-400 bg-blue-500/20 text-blue-800";
                     bgBadge = "bg-blue-100 text-blue-900 border-blue-200";
                 } else if (scenicState === 'homebound') {
                     imgData = char.homebound;
+                    isFlipped = !!char.homeboundFlipped;
                     fallbackIcon = "🏡";
                     borderTheme = "border-teal-400 bg-teal-500/20 text-teal-800";
                     bgBadge = "bg-teal-100 text-teal-900 border-teal-200";
                 } else if (scenicState === 'preparing') {
                     imgData = char.preparing;
+                    isFlipped = !!char.preparingFlipped;
                     fallbackIcon = "🍳";
                     borderTheme = "border-rose-300 bg-rose-500/20 text-rose-800";
                     bgBadge = "bg-rose-100 text-rose-900 border-rose-200";
                 } else if (scenicState === 'walking') {
                     imgData = char.walking;
+                    isFlipped = !!char.walkingFlipped;
                     fallbackIcon = "🚶‍♂️";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 } else { 
                     imgData = char.waving;
+                    isFlipped = !!char.wavingFlipped;
                     fallbackIcon = "👋";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 }
+
+                // If going home, inverse travel direction automatically relative to chosen base state direction
+                const finalFlip = (scenicState === 'homebound') ? !isFlipped : isFlipped;
+                const flipStyle = finalFlip ? 'transform: scaleX(-1);' : '';
 
                 const charEl = document.createElement('div');
                 charEl.className = "flex flex-col items-center justify-end relative transition-all duration-300";
@@ -1732,7 +1753,6 @@
                     `;
                 }
 
-                // Disabled CSS bouncing animation as requested since your customized GIFs already handle motion beautifully!
                 const bounceClass = '';
 
                 charEl.innerHTML = `
@@ -1960,10 +1980,15 @@
                 editorPlaceholder.classList.add('hidden');
                 document.getElementById('editor-active-title').innerText = `Customize "${escapeHTML(activeProfile.name)}"'s Animations 🎨`;
                 
-                const isFlipped = !!activeProfile.isFlipped;
-                document.getElementById('flip-status-indicator').innerText = isFlipped ? "➡️ Flipped (Mirror)" : "⬅️ Facing Left";
-                
                 renderCharacterCustomizer(activeProfile);
+
+                // Update mirror button states dynamically inside Customizer cards
+                ['waving', 'walking', 'sleeping', 'transit', 'homebound', 'preparing'].forEach(st => {
+                    const btnLabel = document.getElementById(`flip-label-${st}`);
+                    if (btnLabel) {
+                        btnLabel.innerText = activeProfile[st + 'Flipped'] ? "Flipped (Mirror)" : "Facing Left";
+                    }
+                });
             } else {
                 editorBlock.classList.add('hidden');
                 editorPlaceholder.classList.remove('hidden');
@@ -1990,13 +2015,12 @@
             const newChar = {
                 id: 'char_' + Date.now(),
                 name: nameVal,
-                waving: null,
-                walking: null,
-                sleeping: null,
-                transit: null,
-                homebound: null,
-                preparing: null,
-                isFlipped: false
+                waving: null, wavingFlipped: false,
+                walking: null, walkingFlipped: false,
+                sleeping: null, sleepingFlipped: false,
+                transit: null, transitFlipped: false,
+                homebound: null, homeboundFlipped: false,
+                preparing: null, preparingFlipped: false
             };
 
             characterProfiles.push(newChar);
@@ -2035,17 +2059,19 @@
             renderCharacterProfiles();
         }
 
-        async function toggleActiveCompanionMirror() {
+        async function toggleStateFlip(stateKey) {
             const activeProfile = characterProfiles.find(c => c.id === selectedCharacterId);
             if (!activeProfile) return;
 
-            activeProfile.isFlipped = !activeProfile.isFlipped;
+            const flipKey = stateKey + 'Flipped';
+            activeProfile[flipKey] = !activeProfile[flipKey];
+
             try {
                 if (databaseConnection) {
                     await saveProfileToIDB(databaseConnection, activeProfile);
                 }
             } catch (err) {
-                console.error("Failed to mirror layout", err);
+                console.error("Failed to toggle flip for state " + stateKey, err);
             }
 
             renderCharacterProfiles();
@@ -2086,7 +2112,8 @@
                 if (!previewEl) return;
                 
                 if (profile[state]) {
-                    const flipStyle = profile.isFlipped ? 'transform: scaleX(-1);' : '';
+                    const isFlipped = !!profile[state + 'Flipped'];
+                    const flipStyle = isFlipped ? 'transform: scaleX(-1);' : '';
                     previewEl.innerHTML = `<img src="${profile[state]}" style="${flipStyle}" class="max-h-full max-w-full object-contain rounded-xl p-1 shadow-xs" alt="Preview">`;
                 } else {
                     let defaultTxt = "No custom GIF";

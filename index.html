@@ -341,13 +341,13 @@
                 </div>
             </div>
 
-            <!-- DYNAMIC COMPANIONS ALIGNMENT TRACK (Fixed to absolute position at bottom of the banner) -->
+            <!-- DYNAMIC COMPANIONS ALIGNMENT TRACK -->
             <div class="absolute inset-x-0 bottom-0 h-48 flex items-end justify-center md:justify-start md:px-16 z-10 pb-[12px]">
                 <div id="active-companions-row" class="flex flex-row items-end gap-6 justify-center md:justify-start">
                     <!-- Dynamic multi-companions side-by-side -->
                 </div>
 
-                <!-- Speech Bubble (Optimized to sit perfectly above the companion sprites and name badges) -->
+                <!-- Speech Bubble -->
                 <div id="speech-bubble-wrapper" class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-[170px] sm:bottom-[215px] left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-20 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
                     <span class="shrink-0">💬</span>
                     <span id="scenic-speech-bubble-text" class="cute-title text-[11px] sm:text-xs">Ready for our journey!</span>
@@ -527,6 +527,41 @@
                             </div>
                         </div>
 
+                        <!-- LIVE TIMELINE SUMMARY ("NOW & NEXT" BOARD) -->
+                        <div id="live-summary-card" class="bg-gradient-to-tr from-amber-50 to-orange-50/40 border border-amber-200/50 rounded-3xl p-4 flex flex-col md:flex-row gap-4 items-stretch justify-between shadow-3xs">
+                            <div class="flex-1 flex items-center gap-3">
+                                <div class="bg-amber-400 text-slate-900 rounded-2xl p-2.5 flex items-center justify-center shadow-3xs shrink-0">
+                                    <i data-lucide="activity" class="w-5 h-5 animate-pulse"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <span class="text-[9px] text-amber-800 uppercase font-extrabold tracking-widest block">Happening Now</span>
+                                    <p id="live-summary-now" class="cute-title text-sm font-bold text-slate-800 truncate">No travel task active right now. Cozy free time! ☕</p>
+                                </div>
+                            </div>
+                            <div class="hidden md:block w-px bg-amber-200/60 self-stretch"></div>
+                            <div class="flex-1 flex items-center gap-3">
+                                <div class="bg-pink-100 text-pink-600 rounded-2xl p-2.5 flex items-center justify-center shadow-3xs shrink-0">
+                                    <i data-lucide="compass" class="w-5 h-5"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <span class="text-[9px] text-pink-700 uppercase font-extrabold tracking-widest block">What's Next</span>
+                                    <p id="live-summary-next" class="cute-title text-sm font-bold text-slate-700 truncate">No upcoming activities listed. Adventure awaits! 🎒</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADVANCED SEARCH & TIMELINE FILTER BAR -->
+                        <div class="bg-white p-3 rounded-2xl border border-slate-100 flex items-center gap-3 shadow-3xs">
+                            <div class="relative flex-1">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                                <input type="text" id="itinerary-search" oninput="renderActivePlan()" placeholder="Search activities, locations, notes, or time (e.g. 10:01 PM or 22:00)..." 
+                                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none transition text-xs font-semibold text-slate-700">
+                                <button onclick="clearSearchFilter()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold text-xs" title="Clear Search">
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- Days Checklist Deck -->
                         <div id="days-container" class="space-y-6"></div>
                     </div>
@@ -574,7 +609,7 @@
                     </div>
                 </div>
 
-                <!-- CUSTOMIZER GIF EDITOR BLOCK (Conditional) -->
+                <!-- CUSTOMIZER GIF EDITOR BLOCK -->
                 <div id="character-gif-editor-block" class="hidden space-y-6 pt-4 border-t border-slate-100">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <h3 class="cute-title text-lg font-bold text-slate-800" id="editor-active-title">
@@ -589,7 +624,7 @@
                         <strong>⚡ Storage Security Vault Active:</strong> Your GIF files are saved locally in a high-capacity database (IndexedDB) so they will never reset or disappear on reload!
                     </p>
 
-                    <!-- Customizer Selection Grid with Individual state direction toggles -->
+                    <!-- Customizer Selection Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         
                         <!-- Waving / Waiting Sprite -->
@@ -784,7 +819,7 @@
             </div>
         </div>
 
-        <!-- PAGE 2: ARCHIVED JOURNEYS (Cleaner, separate view) -->
+        <!-- PAGE 2: ARCHIVED JOURNEYS -->
         <div id="view-archive" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
                 <div class="flex items-center gap-3 mb-4">
@@ -956,6 +991,9 @@
             <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full p-6 border border-amber-100">
                 <h3 id="row-modal-title" class="cute-title text-xl font-bold text-slate-900 mb-4">Add Schedule Activity ⏰</h3>
                 
+                <!-- Time Overlap Realtime Alert Card Container -->
+                <div id="overlap-warning-container" class="hidden my-2"></div>
+
                 <div id="row-error-hint" class="bg-rose-50 border border-rose-100 text-rose-700 px-3 py-2 rounded-xl text-xs font-semibold hidden mb-3"></div>
                 
                 <div class="space-y-4">
@@ -990,18 +1028,18 @@
                         </div>
                     </div>
 
-                    <!-- Protected time inputs with iOS min-width styling adjustments -->
+                    <!-- Protected time inputs with iOS min-width styling adjustments and automatic realtime overlap checking -->
                     <div class="grid grid-cols-2 gap-3 bg-amber-50/40 p-3 rounded-2xl border border-amber-100">
                         <div class="min-w-0">
                             <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">Start Time ⏰</label>
                             <div class="min-w-0">
-                                <input type="time" id="row-time" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
+                                <input type="time" id="row-time" oninput="checkModalOverlaps()" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
                             </div>
                         </div>
                         <div class="min-w-0">
                             <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">End Time 🏁</label>
                             <div class="min-w-0">
-                                <input type="time" id="row-endtime" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
+                                <input type="time" id="row-endtime" oninput="checkModalOverlaps()" class="w-full px-3 py-2 bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none text-xs font-semibold text-slate-700 min-w-0">
                             </div>
                         </div>
                     </div>
@@ -1172,6 +1210,57 @@
             other: { emoji: '🏷️', label: 'Other' }
         };
 
+        // Helper to check if a plan has days and all activities are checked completed
+        function isPlanFullyCompleted(plan) {
+            if (!plan.days || plan.days.length === 0) return false;
+            let totalRows = 0;
+            let completedRows = 0;
+            plan.days.forEach(d => {
+                if (d.rows) {
+                    totalRows += d.rows.length;
+                    completedRows += d.rows.filter(r => r.completed).length;
+                }
+            });
+            return totalRows > 0 && completedRows === totalRows;
+        }
+
+        // Search helper that parses query as 12-hour/24-hour time to search intervals
+        function parseQueryToMinutesList(q) {
+            q = q.trim().toLowerCase();
+            const timeRegex = /^(\d{1,2})[:.](\d{2})\s*(am|pm)?$/;
+            const match = q.match(timeRegex);
+            if (match) {
+                let hours = parseInt(match[1]);
+                const minutes = parseInt(match[2]);
+                const ampm = match[3];
+
+                if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return [];
+
+                if (ampm) {
+                    if (ampm === 'pm' && hours < 12) hours += 12;
+                    if (ampm === 'am' && hours === 12) hours = 0;
+                    return [(hours * 60) + minutes];
+                } else {
+                    const results = [(hours * 60) + minutes];
+                    if (hours > 0 && hours < 12) {
+                        results.push(((hours + 12) * 60) + minutes);
+                    } else if (hours === 12) {
+                        results.push(minutes);
+                    }
+                    return results;
+                }
+            }
+            return [];
+        }
+
+        function clearSearchFilter() {
+            const bar = document.getElementById('itinerary-search');
+            if (bar) {
+                bar.value = '';
+                renderActivePlan();
+            }
+        }
+
         // --- IndexedDB Management Functions ---
         function initIDB() {
             return new Promise((resolve, reject) => {
@@ -1241,7 +1330,6 @@
                     activeCharacterIds = [];
                 }
 
-                // MOCHI HAS BEEN DELETED. App loads clean with NO default profiles on startup.
                 if (characterProfiles.length > 0 && !selectedCharacterId) {
                     selectedCharacterId = characterProfiles[0].id;
                 }
@@ -1544,23 +1632,16 @@
 
             let hasActiveTaskRightNow = false;
             let activeTaskStyle = 'explore'; 
-            let earlyTransitToTask = null;
+            let activeTaskRow = null;
 
+            // Strictly evaluate active plans occurring AT THIS TIME FRAME (Fixes Lookahead bug)
             if (isPlanActiveNow && activePlan.days) {
                 const activeDayIndex = getActiveDayIndexForToday(activePlan, todayStr);
                 const activeDay = activePlan.days[activeDayIndex] || activePlan.days[0];
                 
                 if (activeDay && activeDay.rows) {
-                    const sortedRows = [...activeDay.rows].sort((a, b) => {
-                        if (!a.time && !b.time) return 0;
-                        if (!a.time) return 1;
-                        if (!b.time) return -1;
-                        return a.time.localeCompare(b.time);
-                    });
-
-                    for (let i = 0; i < sortedRows.length; i++) {
-                        const row = sortedRows[i];
-                        if (row.time && row.endTime) {
+                    for (let row of activeDay.rows) {
+                        if (row.time && row.endTime && !row.completed) {
                             const startMins = timeStringToMinutes(row.time);
                             const endMins = timeStringToMinutes(row.endTime);
                             
@@ -1569,32 +1650,10 @@
                                 : (simulatedTimeMinutes >= startMins || simulatedTimeMinutes <= endMins);
                             
                             if (isInsideTime) {
-                                if (!row.completed) {
-                                    hasActiveTaskRightNow = true;
-                                    activeTaskStyle = row.activityType || 'explore';
-                                    break;
-                                } else {
-                                    for (let j = i + 1; j < sortedRows.length; j++) {
-                                        if (!sortedRows[j].completed) {
-                                            earlyTransitToTask = sortedRows[j];
-                                            break;
-                                        }
-                                    }
-                                    if (earlyTransitToTask) break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (!hasActiveTaskRightNow && !earlyTransitToTask) {
-                        for (let i = 0; i < sortedRows.length; i++) {
-                            const row = sortedRows[i];
-                            if (row.time) {
-                                const startMins = timeStringToMinutes(row.time);
-                                if (startMins > simulatedTimeMinutes && !row.completed) {
-                                    earlyTransitToTask = row;
-                                    break;
-                                }
+                                hasActiveTaskRightNow = true;
+                                activeTaskStyle = row.activityType || 'explore';
+                                activeTaskRow = row;
+                                break;
                             }
                         }
                     }
@@ -1616,60 +1675,39 @@
 
             let currentScenicState = 'waving'; 
 
-            if (isPlanActiveNow) {
-                if (earlyTransitToTask) {
-                    if (earlyTransitToTask.activityType === 'homebound') {
-                        banner.classList.add('scenic-state-walking-reverse');
-                    } else {
-                        banner.classList.add('scenic-state-walking');
-                    }
-                    currentScenicState = (earlyTransitToTask.activityType === 'transit' || earlyTransitToTask.activityType === 'homebound') ? earlyTransitToTask.activityType : 'walking';
-                } else if (hasActiveTaskRightNow) {
-                    if (activeTaskStyle === 'transit') {
-                        banner.classList.add('scenic-state-walking');
-                        currentScenicState = 'transit';
-                    } else if (activeTaskStyle === 'homebound') {
-                        banner.classList.add('scenic-state-walking-reverse');
-                        currentScenicState = 'homebound';
-                    } else if (activeTaskStyle === 'resting') {
-                        road.classList.add('hidden');
-                        banner.classList.add('scenic-state-waiting');
-                        currentScenicState = 'sleeping';
-                    } else {
-                        banner.classList.add('scenic-state-walking');
-                        currentScenicState = 'walking';
-                    }
+            if (hasActiveTaskRightNow) {
+                if (activeTaskStyle === 'transit') {
+                    banner.classList.add('scenic-state-walking');
+                    currentScenicState = 'transit';
+                } else if (activeTaskStyle === 'homebound') {
+                    banner.classList.add('scenic-state-walking-reverse');
+                    currentScenicState = 'homebound';
+                } else if (activeTaskStyle === 'resting') {
+                    road.classList.add('hidden');
+                    banner.classList.add('scenic-state-waiting');
+                    currentScenicState = 'sleeping';
                 } else {
-                    if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
-                        currentScenicState = 'sleeping';
-                        banner.classList.add('scenic-state-waiting');
-                        road.classList.add('hidden');
-                    } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes <= 480) {
-                        currentScenicState = 'preparing';
-                        banner.classList.add('scenic-state-waiting');
-                        road.classList.add('hidden');
-                    } else {
-                        banner.classList.add('scenic-state-waiting');
-                        currentScenicState = 'waving';
-                    }
+                    banner.classList.add('scenic-state-walking');
+                    currentScenicState = 'walking';
                 }
             } else {
-                if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) {
+                // Fallback strictly to user-defined idle states when no active scheduled task (No lookahead leaks)
+                if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) { // 10:00 PM - 6:00 AM
                     currentScenicState = 'sleeping';
                     banner.classList.add('scenic-state-waiting');
                     road.classList.add('hidden');
-                } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes <= 480) {
+                } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes < 480) { // 6:00 AM - 8:00 AM
                     currentScenicState = 'preparing';
                     banner.classList.add('scenic-state-waiting');
                     road.classList.add('hidden');
-                } else {
+                } else { // 8:00 AM - 10:00 PM
                     currentScenicState = 'waving';
                     banner.classList.add('scenic-state-waiting');
                 }
             }
 
             renderActiveCompanionsInBanner(currentScenicState);
-            updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, earlyTransitToTask);
+            updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, activeTaskRow);
         }
 
         function renderActiveCompanionsInBanner(scenicState) {
@@ -1738,7 +1776,6 @@
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 }
 
-                // If going home, inverse travel direction automatically relative to chosen base state direction
                 const finalFlip = (scenicState === 'homebound') ? !isFlipped : isFlipped;
                 const flipStyle = finalFlip ? 'transform: scaleX(-1);' : '';
 
@@ -1753,18 +1790,14 @@
                     `;
                 }
 
-                const bounceClass = '';
-
                 charEl.innerHTML = `
-                    <div class="flex flex-col items-center justify-end ${bounceClass}">
+                    <div class="flex flex-col items-center justify-end">
                         ${zzzMarkup}
                         
-                        <!-- Name Badge positioned ABOVE character to stop floating separation -->
                         <div class="mb-2 ${bgBadge} text-[9px] sm:text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs border uppercase tracking-wide">
                             ${escapeHTML(char.name)}
                         </div>
 
-                        <!-- Prominent, Enlarged Companion Asset resting directly on floor line -->
                         ${imgData ? `
                             <img class="h-28 sm:h-40 w-auto object-contain drop-shadow-md rounded-2xl" 
                                  style="${flipStyle}" 
@@ -1796,7 +1829,7 @@
             return null;
         }
 
-        function updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, earlyTransitToTask) {
+        function updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, activeTaskRow) {
             const speechTextEl = document.getElementById('scenic-speech-bubble-text');
             const statusTitle = document.getElementById('scenic-status-title');
             const statusDesc = document.getElementById('scenic-status-desc');
@@ -1813,58 +1846,35 @@
             }
 
             const activePlan = itineraries.find(p => p.id === activePlanId);
-            const isSleepingVisible = (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360 || (hasActiveTaskRightNow && activeTaskStyle === 'resting'));
-            const isPreparingVisible = (simulatedTimeMinutes >= 360 && simulatedTimeMinutes <= 480);
+            const isSleepingVisible = (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360);
+            const isPreparingVisible = (simulatedTimeMinutes >= 360 && simulatedTimeMinutes < 480);
 
-            if (!isPlanActiveNow && activePlan) {
-                const pDateFormatted = formatDate(activePlan.date);
-                if (isSleepingVisible) {
-                    speechTextEl.innerText = `Shh... ${namesStr} are dreaming of our upcoming trip! zZZ 😴`;
-                    statusTitle.innerText = "Dreaming 🌙";
-                    statusDesc.innerText = `Excited for travel on ${pDateFormatted}!`;
-                } else if (isPreparingVisible) {
-                    speechTextEl.innerText = `${namesStr} are getting up early and checking the map! 🍳☕`;
-                    statusTitle.innerText = "Morning Prep 🍳";
-                    statusDesc.innerText = "Readying our custom schedules!";
-                } else {
-                    speechTextEl.innerText = `${namesStr} are waiting for our trip on ${pDateFormatted}! Can't wait! 🎒✈️`;
-                    statusTitle.innerText = "Countdown Mode 📅";
-                    statusDesc.innerText = `Adventure begins on ${pDateFormatted}!`;
-                }
-                return;
-            }
-
-            if (earlyTransitToTask) {
-                const name = earlyTransitToTask.activityType === 'transit' ? earlyTransitToTask.transitTo : earlyTransitToTask.place;
-                speechTextEl.innerText = `${namesStr} are going now to ${escapeHTML(name || "next spot")}! 🚗💨`;
-                statusTitle.innerText = "Moving Now! 🎒";
-                statusDesc.innerText = `On our way to: ${escapeHTML(name)}`;
-            } else if (hasActiveTaskRightNow) {
-                const task = getActiveTaskAtThisHour();
-                if (!task) return;
-
-                if (task.activityType === 'transit') {
-                    speechTextEl.innerText = `${namesStr} are going from ${escapeHTML(task.transitFrom)} to ${escapeHTML(task.transitTo)}! 🚗`;
+            if (hasActiveTaskRightNow && activeTaskRow) {
+                if (activeTaskStyle === 'transit') {
+                    speechTextEl.innerText = `${namesStr} are going from ${escapeHTML(activeTaskRow.transitFrom)} to ${escapeHTML(activeTaskRow.transitTo)}! 🚗`;
                     statusTitle.innerText = "Road Trip leg 🚗";
-                    statusDesc.innerText = `In transit to ${escapeHTML(task.transitTo)}`;
-                } else if (task.activityType === 'homebound') {
-                    speechTextEl.innerText = `${namesStr} are heading back home from ${escapeHTML(task.transitFrom)}! 🏡`;
+                    statusDesc.innerText = `In transit to ${escapeHTML(activeTaskRow.transitTo)}`;
+                } else if (activeTaskStyle === 'homebound') {
+                    speechTextEl.innerText = `${namesStr} are heading back home from ${escapeHTML(activeTaskRow.transitFrom)}! 🏡`;
                     statusTitle.innerText = "Heading Home 🏡";
-                    statusDesc.innerText = `End of journey leg back to ${escapeHTML(task.transitTo)}`;
-                } else if (task.activityType === 'resting') {
+                    statusDesc.innerText = `End of journey leg back to ${escapeHTML(activeTaskRow.transitTo)}`;
+                } else if (activeTaskStyle === 'resting') {
                     speechTextEl.innerText = `${namesStr} are resting at the hotel room! 🏨 zZZ`;
                     statusTitle.innerText = "Resting Spot 🏨";
-                    statusDesc.innerText = `Unwinding at ${escapeHTML(task.place)}`;
+                    statusDesc.innerText = `Unwinding at ${escapeHTML(activeTaskRow.place)}`;
                 } else {
-                    speechTextEl.innerText = `${namesStr} are walking to: "${escapeHTML(task.place)}"! 🚶‍♂️`;
+                    speechTextEl.innerText = `${namesStr} are walking to: "${escapeHTML(activeTaskRow.place)}"! 🚶‍♂️`;
                     statusTitle.innerText = "On the Move 🚶‍♂️";
-                    statusDesc.innerText = `Next stop: ${escapeHTML(task.place)}`;
+                    statusDesc.innerText = `Next stop: ${escapeHTML(activeTaskRow.place)}`;
                 }
             } else {
+                // Time based idle descriptions
                 if (isSleepingVisible) {
                     speechTextEl.innerText = `Shh... ${namesStr} are fast asleep dreaming of adventure! zZZ 😴`;
                     statusTitle.innerText = "Sweet Dreams 🌙";
-                    statusDesc.innerText = "Resting up for tomorrow's itinerary";
+                    statusDesc.innerText = activePlan && !isPlanActiveNow 
+                        ? `Excited for travel on ${formatDate(activePlan.date)}!` 
+                        : "Resting up for tomorrow's itinerary";
                 } else if (isPreparingVisible) {
                     speechTextEl.innerText = `${namesStr} are preparing and packing backpacks! ☕🎒`;
                     statusTitle.innerText = "Morning Prep 🍳";
@@ -1877,34 +1887,18 @@
             }
         }
 
-        function getActiveTaskAtThisHour() {
-            const activePlan = itineraries.find(p => p.id === activePlanId);
-            if (!activePlan || !activePlan.days) return null;
-            for (let day of activePlan.days) {
-                if (day.rows) {
-                    for (let row of day.rows) {
-                        if (row.time && row.endTime) {
-                            if (row.completed) continue; 
-                            const startMins = timeStringToMinutes(row.time);
-                            const endMins = timeStringToMinutes(row.endTime);
-                            if (startMins <= endMins) {
-                                if (simulatedTimeMinutes >= startMins && simulatedTimeMinutes <= endMins) return row;
-                            } else {
-                                if (simulatedTimeMinutes >= startMins || simulatedTimeMinutes <= endMins) return row;
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
+        // Sidebar Render Function with Completed-To-Bottom sorting
         function renderPlansList() {
             const container = document.getElementById('plans-list');
             if (!container) return;
             container.innerHTML = '';
 
             const activePlans = itineraries.filter(p => !p.archived);
+
+            // Dynamic sort completed itineraries to bottom
+            activePlans.sort((a, b) => {
+                return isPlanFullyCompleted(a) - isPlanFullyCompleted(b);
+            });
 
             if (activePlans.length === 0) {
                 container.innerHTML = `
@@ -2263,13 +2257,14 @@
             const theme = THEMES[plan.theme] || THEMES.beach;
             const totalDays = plan.days ? plan.days.length : 0;
             const dateSummary = getItineraryDateSummary(plan);
+            const isCompleted = isPlanFullyCompleted(plan);
 
             const planBtn = document.createElement('div');
             planBtn.className = `list-item-transition p-3.5 rounded-2xl border cursor-pointer relative overflow-hidden group ${
                 isActive 
                     ? 'bg-white border-amber-300 shadow-md ring-2 ring-amber-100' 
                     : 'bg-slate-50 hover:bg-slate-100 border-slate-100/80'
-            }`;
+            } ${isCompleted ? 'opacity-70' : ''}`;
             
             planBtn.innerHTML = `
                 <div class="absolute left-0 top-0 bottom-0 w-1.5 ${theme.lineColor}"></div>
@@ -2277,7 +2272,10 @@
                     <div class="flex items-center gap-2.5 min-w-0">
                         <span class="text-xl shrink-0">${theme.emoji}</span>
                         <div class="text-left min-w-0">
-                            <h4 class="font-bold text-xs sm:text-sm text-slate-800 truncate group-hover:text-amber-600 transition cute-title">${escapeHTML(plan.place)}</h4>
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <h4 class="font-bold text-xs sm:text-sm text-slate-800 truncate group-hover:text-amber-600 transition cute-title">${escapeHTML(plan.place)}</h4>
+                                ${isCompleted ? '<span class="text-[10px] text-emerald-600 text-right font-extrabold select-none">✓ Done</span>' : ''}
+                            </div>
                             <p class="text-[10px] text-slate-400 font-semibold truncate mt-0.5">${dateSummary}</p>
                         </div>
                     </div>
@@ -2351,6 +2349,95 @@
             return `${startDate.toLocaleDateString('en-US', startOpt)} - ${endDate.toLocaleDateString('en-US', endOpt)}`;
         }
 
+        function updateLiveSummaryBoard(activePlan) {
+            const nowLabel = document.getElementById('live-summary-now');
+            const nextLabel = document.getElementById('live-summary-next');
+
+            if (!activePlan || !activePlan.days || activePlan.days.length === 0) {
+                if (nowLabel) nowLabel.innerText = "No active trip selected.";
+                if (nextLabel) nextLabel.innerText = "No upcoming activities.";
+                return;
+            }
+
+            let allRows = [];
+            activePlan.days.forEach((day, dIdx) => {
+                if (day.rows) {
+                    day.rows.forEach(r => {
+                        allRows.push({ ...r, dayIndex: dIdx, dayTitle: day.title });
+                    });
+                }
+            });
+
+            // Sort chronically
+            allRows.sort((a, b) => {
+                if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+                if (!a.time && !b.time) return 0;
+                if (!a.time) return 1;
+                if (!b.time) return -1;
+                return a.time.localeCompare(b.time);
+            });
+
+            let currentActiveRow = null;
+            let upcomingPendingRow = null;
+
+            for (let i = 0; i < allRows.length; i++) {
+                const r = allRows[i];
+                if (r.time && r.endTime) {
+                    const startMins = timeStringToMinutes(r.time);
+                    const endMins = timeStringToMinutes(r.endTime);
+
+                    const isInsideTime = (startMins <= endMins)
+                        ? (simulatedTimeMinutes >= startMins && simulatedTimeMinutes <= endMins)
+                        : (simulatedTimeMinutes >= startMins || simulatedTimeMinutes <= endMins);
+
+                    if (isInsideTime && !r.completed) {
+                        currentActiveRow = r;
+                    }
+                }
+                
+                if (!r.completed && !upcomingPendingRow) {
+                    if (r.time) {
+                        const startMins = timeStringToMinutes(r.time);
+                        if (startMins > simulatedTimeMinutes || currentActiveRow !== r) {
+                            upcomingPendingRow = r;
+                        }
+                    } else {
+                        upcomingPendingRow = r;
+                    }
+                }
+            }
+
+            if (!upcomingPendingRow) {
+                upcomingPendingRow = allRows.find(r => !r.completed);
+            }
+
+            if (nowLabel) {
+                if (currentActiveRow) {
+                    const cleanName = currentActiveRow.activityType === 'transit' 
+                        ? `Transit: ${currentActiveRow.transitFrom} ➜ ${currentActiveRow.transitTo}`
+                        : currentActiveRow.activityType === 'homebound'
+                            ? `Heading Home: ${currentActiveRow.transitFrom} ➜ ${currentActiveRow.transitTo}`
+                            : currentActiveRow.place;
+                    nowLabel.innerText = `[${currentActiveRow.dayTitle}] ${formatTime12Hour(currentActiveRow.time)} - ${cleanName} 🌟`;
+                } else {
+                    nowLabel.innerText = "No travel task active right now. Cozy free time! ☕";
+                }
+            }
+
+            if (nextLabel) {
+                if (upcomingPendingRow) {
+                    const cleanName = upcomingPendingRow.activityType === 'transit'
+                        ? `Transit: ${upcomingPendingRow.transitFrom} ➜ ${upcomingPendingRow.transitTo}`
+                        : upcomingPendingRow.activityType === 'homebound'
+                            ? `Heading Home: ${upcomingPendingRow.transitFrom} ➜ ${upcomingPendingRow.transitTo}`
+                            : upcomingPendingRow.place;
+                    nextLabel.innerText = `[${upcomingPendingRow.dayTitle}] ${upcomingPendingRow.time ? formatTime12Hour(upcomingPendingRow.time) : 'Flexible'} - ${cleanName} 🗺️`;
+                } else {
+                    nextLabel.innerText = "All activities completed! Have a safe trip! 🎉";
+                }
+            }
+        }
+
         function renderActivePlan() {
             const noPlanView = document.getElementById('no-plan-selected-view');
             const activeView = document.getElementById('active-plan-view');
@@ -2398,6 +2485,13 @@
             const accentBar = document.getElementById('banner-accent-bar');
             accentBar.className = `absolute left-0 top-0 bottom-0 w-3 ${theme.lineColor}`;
 
+            updateLiveSummaryBoard(activePlan);
+
+            const searchBar = document.getElementById('itinerary-search');
+            const searchQuery = searchBar ? searchBar.value.trim() : '';
+            const parsedSearchMins = parseQueryToMinutesList(searchQuery);
+            const isTimeSearch = parsedSearchMins.length > 0;
+
             const daysContainer = document.getElementById('days-container');
             daysContainer.innerHTML = '';
 
@@ -2424,16 +2518,43 @@
                 const completedRows = day.rows.filter(r => r.completed).length;
                 const percentage = totalRows > 0 ? Math.round((completedRows / totalRows) * 100) : 0;
 
+                // Sort tasks: Incomplete items strictly on top chronologically, completed items float to bottom
                 day.rows.sort((a, b) => {
+                    if (a.completed !== b.completed) {
+                        return a.completed ? 1 : -1;
+                    }
                     if (!a.time && !b.time) return 0;
                     if (!a.time) return 1;
                     if (!b.time) return -1;
                     return a.time.localeCompare(b.time);
                 });
 
+                const filteredRows = day.rows.filter(row => {
+                    if (!searchQuery) return true;
+                    if (isTimeSearch && row.time && row.endTime) {
+                        const rowStart = timeStringToMinutes(row.time);
+                        const rowEnd = timeStringToMinutes(row.endTime);
+                        return parsedSearchMins.some(min => {
+                            if (rowStart <= rowEnd) {
+                                return min >= rowStart && min <= rowEnd;
+                            } else {
+                                return min >= rowStart || min <= rowEnd;
+                            }
+                        });
+                    } else {
+                        const q = searchQuery.toLowerCase();
+                        const placeMatch = row.place && row.place.toLowerCase().includes(q);
+                        const addrMatch = row.address && row.address.toLowerCase().includes(q);
+                        const notesMatch = row.notes && row.notes.toLowerCase().includes(q);
+                        const transitFromMatch = row.transitFrom && row.transitFrom.toLowerCase().includes(q);
+                        const transitToMatch = row.transitTo && row.transitTo.toLowerCase().includes(q);
+                        return placeMatch || addrMatch || notesMatch || transitFromMatch || transitToMatch;
+                    }
+                });
+
                 let dayEstimatedTotal = 0;
                 let dayActualTotal = 0;
-                day.rows.forEach(r => {
+                filteredRows.forEach(r => {
                     dayEstimatedTotal += parseFloat(r.cost) || 0;
                     if (r.completed) {
                         dayActualTotal += parseFloat(r.actualCost) || 0;
@@ -2488,21 +2609,23 @@
                     </div>
 
                     <div class="divide-y divide-slate-100">
-                        ${totalRows === 0 ? `
+                        ${filteredRows.length === 0 ? `
                             <div class="p-8 text-center text-slate-400 text-xs font-semibold">
                                 <i data-lucide="sparkles" class="w-6 h-6 mx-auto mb-1.5 text-slate-300"></i>
-                                No activities listed yet for this day.
+                                No matching activities listed for this day.
                             </div>
-                        ` : day.rows.map((row, rowIndex) => {
+                        ` : filteredRows.map((row, rowIndex) => {
                             const costInfo = CATEGORY_MAP[row.costCategory] || CATEGORY_MAP.free;
                             const hasEstimatedCost = row.cost && parseFloat(row.cost) > 0;
                             const hasActualSpent = row.completed && row.actualCost && parseFloat(row.actualCost) > 0;
                             
+                            const actualRowIndex = day.rows.indexOf(row);
+
                             return `
                                 <div class="p-4 sm:px-6 hover:bg-slate-50/40 transition duration-150 flex items-center justify-between gap-4 ${row.completed ? 'bg-slate-50/70' : ''}">
                                     
                                     <div class="flex items-start gap-3.5 flex-1 min-w-0">
-                                        <button onclick="handleToggleRowCheck(${dayIndex}, ${rowIndex})" 
+                                        <button onclick="handleToggleRowCheck(${dayIndex}, ${actualRowIndex})" 
                                                 class="mt-1 shrink-0 flex items-center justify-center w-5 h-5 rounded-md border-2 transition ${
                                             row.completed 
                                                 ? 'bg-emerald-400 border-emerald-400 text-white' 
@@ -2517,7 +2640,7 @@
                                                     ${row.time ? formatTime12Hour(row.time) : 'Flexible'} ${row.endTime ? ' - ' + formatTime12Hour(row.endTime) : ''}
                                                 </span>
                                                 
-                                                <h4 class="font-bold text-sm sm:text-base text-slate-700 break-words ${row.completed ? 'line-through text-slate-400' : ''}">
+                                                <h4 class="font-bold text-sm sm:text-base text-slate-700 break-words ${row.completed ? 'line-through text-slate-400 font-normal' : ''}">
                                                     ${row.activityType === 'transit' 
                                                         ? `🚘 Transit: <span class="text-blue-600">${escapeHTML(row.transitFrom)}</span> to <span class="text-rose-600">${escapeHTML(row.transitTo)}</span>`
                                                         : row.activityType === 'homebound'
@@ -2571,10 +2694,10 @@
                                     </div>
 
                                     <div class="flex items-center gap-1 shrink-0">
-                                        <button onclick="triggerRowModal(${dayIndex}, ${rowIndex})" class="text-slate-400 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 transition" title="Edit Activity">
+                                        <button onclick="triggerRowModal(${dayIndex}, ${actualRowIndex})" class="text-slate-400 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 transition" title="Edit Activity">
                                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                                         </button>
-                                        <button onclick="triggerDeleteRowWarning(${dayIndex}, ${rowIndex})" class="text-slate-400 hover:text-rose-500 p-2 rounded-lg hover:bg-slate-100 transition" title="Delete Activity">
+                                        <button onclick="triggerDeleteRowWarning(${dayIndex}, ${actualRowIndex})" class="text-slate-400 hover:text-rose-500 p-2 rounded-lg hover:bg-slate-100 transition" title="Delete Activity">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>
@@ -2746,6 +2869,114 @@
             closeEditPlanModal();
         }
 
+        let overlappingRowIndexGlobal = null;
+
+        function checkModalOverlaps() {
+            const timeVal = document.getElementById('row-time').value;
+            const endtimeVal = document.getElementById('row-endtime').value;
+            const warningContainer = document.getElementById('overlap-warning-container');
+            
+            if (!warningContainer) return;
+            warningContainer.innerHTML = '';
+            warningContainer.classList.add('hidden');
+            overlappingRowIndexGlobal = null;
+
+            if (!timeVal || !endtimeVal || activeEditingDayIndex === null) return;
+
+            const activePlan = itineraries.find(p => p.id === activePlanId);
+            if (!activePlan) return;
+
+            const dayObj = activePlan.days[activeEditingDayIndex];
+            if (!dayObj || !dayObj.rows) return;
+
+            const startMins = timeStringToMinutes(timeVal);
+            const endMins = timeStringToMinutes(endtimeVal);
+
+            for (let i = 0; i < dayObj.rows.length; i++) {
+                if (i === activeEditingRowIndex) continue; // Skip comparing against self
+
+                const row = dayObj.rows[i];
+                if (!row.time || !row.endTime) continue;
+
+                const existingStart = timeStringToMinutes(row.time);
+                const existingEnd = timeStringToMinutes(row.endTime);
+
+                // Overlap calculation that supports wrap-around overnight items correctly
+                const overlaps = (startMins <= endMins)
+                    ? (existingStart <= existingEnd)
+                        ? (Math.max(startMins, existingStart) < Math.min(endMins, existingEnd))
+                        : (startMins < existingEnd || existingStart < endMins)
+                    : (existingStart <= existingEnd)
+                        ? (existingStart < endMins || startMins < existingEnd)
+                        : true; // Overnight wraps overlap by default if overlap detected
+
+                if (overlaps) {
+                    overlappingRowIndexGlobal = i;
+                    warningContainer.innerHTML = `
+                        <div class="bg-rose-50 border-2 border-rose-200 text-rose-950 p-4 rounded-2xl text-xs font-semibold flex flex-col gap-2">
+                            <p class="flex items-center gap-1.5 text-rose-800">
+                                <span>⚠️</span> <strong>Time Overlap Detected!</strong>
+                            </p>
+                            <p>This slot overlaps with: <span class="font-bold">"${escapeHTML(row.place)}"</span> (${formatTime12Hour(row.time)} - ${formatTime12Hour(row.endTime)}).</p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <button type="button" onclick="handleSwapOverlappingTimes(${i})" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-1.5 px-3 rounded-xl transition text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-3xs cute-title">
+                                    🔄 Swap Time Slots
+                                </button>
+                                <span class="text-slate-400 self-center text-[10px]">or resolve manually below.</span>
+                            </div>
+                        </div>
+                    `;
+                    warningContainer.classList.remove('hidden');
+                    break;
+                }
+            }
+        }
+
+        // Swaps scheduled times between currently being edited task and target task
+        function handleSwapOverlappingTimes(targetIndex) {
+            const activePlan = itineraries.find(p => p.id === activePlanId);
+            if (!activePlan || activeEditingDayIndex === null) return;
+
+            const dayObj = activePlan.days[activeEditingDayIndex];
+            const overlappingRow = dayObj.rows[targetIndex];
+
+            // Get current inputs inside modal
+            const currentInputTime = document.getElementById('row-time').value;
+            const currentInputEndTime = document.getElementById('row-endtime').value;
+
+            if (activeEditingRowIndex !== null) {
+                // Editing an existing task: Swap time fields directly
+                const currentRow = dayObj.rows[activeEditingRowIndex];
+                
+                const tempStart = currentRow.time;
+                const tempEnd = currentRow.endTime;
+
+                currentRow.time = overlappingRow.time;
+                currentRow.endTime = overlappingRow.endTime;
+
+                overlappingRow.time = tempStart;
+                overlappingRow.endTime = tempEnd;
+            } else {
+                // Creating a new task: Hand original slot to new task & transfer newly entered times into the overlapping row
+                const tempStart = overlappingRow.time;
+                const tempEnd = overlappingRow.endTime;
+
+                overlappingRow.time = currentInputTime;
+                overlappingRow.endTime = currentInputEndTime;
+
+                document.getElementById('row-time').value = tempStart;
+                document.getElementById('row-endtime').value = tempEnd;
+
+                checkModalOverlaps();
+                return;
+            }
+
+            saveToStorage();
+            renderActivePlan();
+            closeRowModal();
+            renderPlansList();
+        }
+
         function triggerRowModal(dayIndex, rowIndex = null) {
             activeEditingDayIndex = dayIndex;
             activeEditingRowIndex = rowIndex;
@@ -2804,6 +3035,7 @@
                 document.getElementById('row-transit-to').value = '';
             }
 
+            checkModalOverlaps();
             document.getElementById('row-modal').classList.remove('hidden');
         }
 
@@ -2833,6 +3065,13 @@
             
             if (!timeVal || !endtimeVal) {
                 errorHint.innerText = "⚠️ Please specify both Start Time and End Time!";
+                errorHint.classList.remove('hidden');
+                return;
+            }
+
+            // Strictly prevent save-actions if overlapping matches exist (Prevents overlapping creation)
+            if (overlappingRowIndexGlobal !== null) {
+                errorHint.innerText = "⚠️ Time slot overlaps with an existing activity! Please resolve the conflict or swap slots.";
                 errorHint.classList.remove('hidden');
                 return;
             }
@@ -2871,6 +3110,7 @@
                 row.transitFrom = transitFromVal;
                 row.transitTo = transitToVal;
             } else {
+                // FIXED shorthand property initializer bug here by replacing '=' assignments with ':' mapping inside object literal literal!
                 dayObj.rows.push({
                     time: timeVal,
                     endTime: endtimeVal,
@@ -2887,6 +3127,13 @@
                     transitTo: transitToVal
                 });
             }
+
+            dayObj.rows.sort((a, b) => {
+                if (!a.time && !b.time) return 0;
+                if (!a.time) return 1;
+                if (!b.time) return -1;
+                return a.time.localeCompare(b.time);
+            });
 
             saveToStorage();
             renderActivePlan();

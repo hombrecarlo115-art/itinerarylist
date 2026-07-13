@@ -391,7 +391,7 @@
                     <!-- Dynamic multi-companions side-by-side -->
                 </div>
 
-                <!-- Speech Bubble (Moved upwards to clear companion name badges) -->
+                <!-- Speech Bubble -->
                 <div id="speech-bubble-wrapper" class="bg-white/95 px-3 md:px-4 py-2 rounded-2xl border border-amber-100 shadow-md text-xs font-bold text-amber-700 animate-bounce absolute bottom-[165px] sm:bottom-[205px] left-1/2 -translate-x-1/2 md:left-48 md:translate-x-0 flex items-center justify-center gap-1.5 z-10 max-w-[85vw] sm:max-w-sm whitespace-normal text-center sm:text-left">
                     <span class="shrink-0">💬</span>
                     <span id="scenic-speech-bubble-text" class="cute-title text-[11px] sm:text-xs">Ready for our journey!</span>
@@ -571,7 +571,7 @@
                             </div>
                         </div>
 
-                        <!-- LIVE TIMELINE SUMMARY ("NOW & NEXT" BOARD) -->
+                        <!-- LIVE TIMELINE SUMMARY -->
                         <div id="live-summary-card" class="bg-gradient-to-tr from-amber-400/5 to-orange-400/5 border border-amber-200/50 rounded-3xl p-4 flex flex-col md:flex-row gap-4 items-stretch justify-between shadow-3xs">
                             <div class="flex-1 flex items-center gap-3">
                                 <div class="bg-amber-400 text-slate-900 rounded-2xl p-2.5 flex items-center justify-center shadow-3xs shrink-0">
@@ -630,7 +630,7 @@
                     </div>
                 </div>
 
-                <!-- NEW COMPREHENSIVE 7 SUNNY & 7 RAINY BACKGROUND MANAGERS -->
+                <!-- 7 SUNNY & 7 RAINY BACKGROUND MANAGERS -->
                 <div class="bg-amber-50/40 border border-amber-200/50 p-5 rounded-3xl mb-8">
                     <h3 class="cute-title text-lg font-extrabold text-amber-950 mb-1.5 flex items-center gap-2">
                         <span>🌅</span> Interactive Scenic Wallpaper Vault (7 Slots Sunny & 7 Slots Rainy)
@@ -639,14 +639,8 @@
                         Customise both states for each time period. Turn the rainy weather on or off individually for each time slot to test wallpapers & companion animations!
                     </p>
 
-                    <!-- Background Grid - 7 Cards representing each time period -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        
-                        <!-- Cards are dynamically built via JS to avoid duplication bugs -->
-                        <div id="wallpaper-slots-deck-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full">
-                            <!-- Dynamic 7 Wallpaper Period cards with independent toggles will render here -->
-                        </div>
-
+                        <div id="wallpaper-slots-deck-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full"></div>
                     </div>
                 </div>
 
@@ -698,9 +692,7 @@
                     </div>
 
                     <!-- Profiles List Gallery -->
-                    <div id="character-profiles-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                        <!-- Dynamic list populated by JS -->
-                    </div>
+                    <div id="character-profiles-gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
                 </div>
 
                 <!-- CUSTOMIZER GIF EDITOR BLOCK -->
@@ -730,7 +722,6 @@
 
                     <!-- Customizer Selection Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        
                         <!-- Waving / Waiting Sprite -->
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
@@ -910,7 +901,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -1031,6 +1021,39 @@
         </div>
     </div>
 
+    <!-- IOS EXPORT FALLBACK MODAL -->
+    <div id="ios-export-modal" class="hidden fixed inset-0 z-50 overflow-y-auto animate-fade-in" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+            <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closeIosExportModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full p-6 border-4 border-amber-400">
+                <div class="text-center mb-4">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-amber-100 text-amber-600 mb-2 animate-bounce">
+                        <i data-lucide="smartphone" class="w-6 h-6 text-amber-600"></i>
+                    </div>
+                    <h3 class="cute-title text-xl font-bold text-slate-900">iPhone Backup Vault 📱</h3>
+                    <p class="text-xs text-slate-500 mt-1">iOS Safari sometimes blocks direct file downloads. If your file didn't download automatically, use our secure copy tool below!</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Backup JSON Code:</label>
+                        <textarea id="ios-backup-textarea" readonly class="w-full h-32 p-3 bg-slate-50 border-2 border-slate-100 rounded-xl font-mono text-[10px] text-slate-600 focus:outline-none select-all" onclick="this.select()"></textarea>
+                    </div>
+                    <div class="bg-amber-50/70 border border-amber-100 p-3 rounded-xl text-[11px] text-amber-900 font-semibold">
+                        💡 <strong>Quick Tip:</strong> Tap "Copy Backup Text", then open your iPhone's <strong>Notes app</strong> and paste it there! To restore, simply copy it back from Notes and use the "Import JSON Backup" button.
+                    </div>
+                </div>
+                <div class="mt-6 flex flex-col sm:flex-row justify-end gap-2">
+                    <button onclick="closeIosExportModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cute-title">Close</button>
+                    <button onclick="handleCopyIosBackup()" class="px-5 py-2.5 bg-gradient-to-r from-amber-400 to-pink-500 hover:from-amber-500 hover:to-pink-600 text-white font-bold text-sm rounded-xl shadow-xs transition duration-150 cute-title flex items-center justify-center gap-1.5">
+                        <i data-lucide="copy" class="w-4 h-4"></i> Copy Backup Text
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- EDIT PLAN MODAL -->
     <div id="edit-plan-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
@@ -1144,7 +1167,7 @@
                         </div>
                     </div>
 
-                    <!-- Protected time inputs with iOS min-width styling adjustments and automatic realtime overlap checking -->
+                    <!-- Protected time inputs -->
                     <div class="grid grid-cols-2 gap-3 bg-amber-50/40 p-3 rounded-2xl border border-amber-100">
                         <div class="min-w-0">
                             <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">Start Time ⏰</label>
@@ -1251,7 +1274,7 @@
         const STORAGE_KEY = 'wanderplan_itineraries_v3';
         const CHAR_SELECTION_KEY = 'wanderplan_selected_char_v4';
         
-        const DB_NAME = 'WanderPlanIDB_v8'; // Incremented DB version to clean up old formats
+        const DB_NAME = 'WanderPlanIDB_v8'; 
         const STORE_NAME = 'characterProfiles';
         const BG_STORE_NAME = 'scenicBackgrounds';
         const SCENERY_LAYERS_KEY = 'wanderplan_scenery_layers_v1';
@@ -1279,10 +1302,10 @@
 
         // Custom multi-character storage state using IndexedDB
         let characterProfiles = [];
-        let activeCharacterIds = []; // Array of active companion IDs visible in the scenic banner
-        let selectedCharacterId = null; // Profile currently open for editing in the customizer
+        let activeCharacterIds = []; 
+        let selectedCharacterId = null; 
 
-        // NEW: 7 Rainy Weather Toggles per time-slot
+        // 7 Rainy Weather Toggles per time-slot
         let rainyPeriods = {
             dawn: false,
             morning: false,
@@ -1293,28 +1316,14 @@
             night: false
         };
 
-        let customizerTab = 'normal'; // 'normal' or 'rainy' to switch companion editing profiles seamlessly
+        let customizerTab = 'normal'; 
 
-        // Global cache of uploaded scenic backgrounds (Now supports Sunny & Rainy uploads for all 7 slots)
+        // Global cache of uploaded backgrounds
         let uploadedBackgrounds = {
-            dawn: null,
-            morning: null,
-            noon: null,
-            afternoon: null,
-            dusk: null,
-            evening: null,
-            night: null,
-            // Rainy Slots
-            rainy_dawn: null,
-            rainy_morning: null,
-            rainy_noon: null,
-            rainy_afternoon: null,
-            rainy_dusk: null,
-            rainy_evening: null,
-            rainy_night: null
+            dawn: null, morning: null, noon: null, afternoon: null, dusk: null, evening: null, night: null,
+            rainy_dawn: null, rainy_morning: null, rainy_noon: null, rainy_afternoon: null, rainy_dusk: null, rainy_evening: null, rainy_night: null
         };
 
-        // Immediately compute live clock configuration
         const initNow = new Date();
         let simulatedTimeMinutes = (initNow.getHours() * 60) + initNow.getMinutes();
         let simulatedSeconds = initNow.getSeconds();
@@ -1538,7 +1547,6 @@
                 databaseConnection = await initIDB();
                 characterProfiles = await loadProfilesFromIDB(databaseConnection);
                 
-                // Safe DB Shield: Only seed standard buddy if database has 0 companions
                 if (characterProfiles.length === 0) {
                     const defaultBuddy = {
                         id: 'char_default',
@@ -1576,7 +1584,6 @@
                         activeCharacterIds = typeof storedSelection === 'string' && storedSelection.startsWith('char_') ? [storedSelection] : [];
                     }
                 } else {
-                    // Activate seeded default companion on first launch
                     activeCharacterIds = ['char_default'];
                 }
 
@@ -1584,7 +1591,7 @@
                     selectedCharacterId = characterProfiles[0].id;
                 }
             } catch (err) {
-                console.error("IndexedDB startup error. Falling back to clean in-memory variables.", err);
+                console.error("IndexedDB startup error. Falling back to clean variables.", err);
                 characterProfiles = [];
                 activeCharacterIds = [];
             }
@@ -1600,7 +1607,6 @@
             renderWallpaperSlotsDeck();
             renderBackgroundPreviews();
             
-            // Background ticks
             setInterval(() => {
                 if (isLiveClock) {
                     const now = new Date();
@@ -1948,7 +1954,6 @@
 
             banner.style.backgroundImage = '';
 
-            // Update Quick Checkboxes styling in control dropdown
             const periods = ['dawn', 'morning', 'noon', 'afternoon', 'dusk', 'evening', 'night'];
             periods.forEach(p => {
                 const btn = document.getElementById(`quick-rainy-${p}`);
@@ -1961,11 +1966,9 @@
                 }
             });
 
-            // CHECK WEATHER STATUS INDEPENDENTLY PER ACTIVE TIME PERIOD
             const isCurrentRainy = rainyPeriods[periodKey];
 
             if (isCurrentRainy) {
-                // Apply Rainy backgrounds (Custom upload or FALLBACK dynamic rainy atmospheric gradient)
                 const customRainyData = uploadedBackgrounds['rainy_' + periodKey];
                 if (customRainyData) {
                     banner.style.backgroundImage = `url(${customRainyData})`;
@@ -1978,7 +1981,6 @@
                 periodBadge.className = "text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
                 periodBadge.innerText = `Stormy ${meta.label} 🌧️`;
             } else {
-                // Apply standard Sunny condition backgrounds
                 const customSunnyData = uploadedBackgrounds[periodKey];
                 if (customSunnyData) {
                     banner.style.backgroundImage = `url(${customSunnyData})`;
@@ -1992,7 +1994,6 @@
                         moon.classList.add('hidden');
                     }
                 } else {
-                    // Fallback to gorgeous hand-crafted gradients
                     banner.style.backgroundImage = meta.defaultGrad;
                     if (periodKey === "dawn") {
                         sun.classList.add('hidden');
@@ -2018,7 +2019,7 @@
                         stars.classList.remove('opacity-0');
                         stars.classList.add('opacity-60');
                         periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                    } else { // night
+                    } else { 
                         sun.classList.add('hidden');
                         stars.classList.remove('opacity-0');
                         stars.classList.add('opacity-100');
@@ -2095,21 +2096,20 @@
                     currentScenicState = 'walking';
                 }
             } else {
-                if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) { // 10:00 PM - 6:00 AM
+                if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) { 
                     currentScenicState = 'sleeping';
                     banner.classList.add('scenic-state-waiting');
                     road.classList.add('hidden');
-                } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes < 480) { // 6:00 AM - 8:00 AM
+                } else if (simulatedTimeMinutes >= 360 && simulatedTimeMinutes < 480) { 
                     currentScenicState = 'preparing';
                     banner.classList.add('scenic-state-waiting');
                     road.classList.add('hidden');
-                } else { // 8:00 AM - 10:00 PM
+                } else { 
                     currentScenicState = 'waving';
                     banner.classList.add('scenic-state-waiting');
                 }
             }
 
-            // PASS CURRENT WEATHER BOOLEAN SO MULTI-WEATHER COMPANIONS SWITCH AUTOMATICALLY
             renderActiveCompanionsInBanner(currentScenicState, isCurrentRainy);
             updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, activeTaskRow);
         }
@@ -2142,51 +2142,43 @@
                 let borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                 let isFlipped = false;
 
-                const activeStateSuffix = isRainyActiveState ? 'Rainy' : '';
-                const flipSuffix = activeStateSuffix ? 'RainyFlipped' : 'Flipped';
+                let assetKey = scenicState;
+                let flipKey = scenicState + 'Flipped';
 
-                // Cleaner, exact mirror-flip fallback check preventing true override bugs
-                const getFlipVal = (stateKey) => {
-                    const specific = char[stateKey + flipSuffix];
-                    if (specific !== undefined && specific !== null) {
-                        return !!specific;
+                if (isRainyActiveState) {
+                    if (char[scenicState + 'Rainy']) {
+                        assetKey = scenicState + 'Rainy';
+                        flipKey = scenicState + 'RainyFlipped';
+                    } else {
+                        assetKey = scenicState;
+                        flipKey = scenicState + 'Flipped';
                     }
-                    return !!char[stateKey + 'Flipped'];
-                };
+                }
+
+                imgData = char[assetKey];
+                isFlipped = !!char[flipKey];
 
                 if (scenicState === 'sleeping') {
-                    imgData = char['sleeping' + activeStateSuffix] || char['sleeping']; 
-                    isFlipped = getFlipVal('sleeping');
                     fallbackIcon = "😴";
                     borderTheme = "border-indigo-800 bg-indigo-950/90 text-indigo-300";
                     bgBadge = "bg-indigo-950 text-indigo-300 border-indigo-800";
                 } else if (scenicState === 'transit') {
-                    imgData = char['transit' + activeStateSuffix] || char['transit'];
-                    isFlipped = getFlipVal('transit');
                     fallbackIcon = "🚗";
                     borderTheme = "border-blue-400 bg-blue-500/20 text-blue-800";
                     bgBadge = "bg-blue-100 text-blue-900 border-blue-200";
                 } else if (scenicState === 'homebound') {
-                    imgData = char['homebound' + activeStateSuffix] || char['homebound'];
-                    isFlipped = getFlipVal('homebound');
                     fallbackIcon = "🏡";
                     borderTheme = "border-teal-400 bg-teal-500/20 text-teal-800";
                     bgBadge = "bg-teal-100 text-teal-900 border-teal-200";
                 } else if (scenicState === 'preparing') {
-                    imgData = char['preparing' + activeStateSuffix] || char['preparing'];
-                    isFlipped = getFlipVal('preparing');
                     fallbackIcon = "🍳";
                     borderTheme = "border-rose-300 bg-rose-50/20 text-rose-800";
                     bgBadge = "bg-rose-100 text-rose-900 border-rose-200";
                 } else if (scenicState === 'walking') {
-                    imgData = char['walking' + activeStateSuffix] || char['walking'];
-                    isFlipped = getFlipVal('walking');
                     fallbackIcon = "🚶‍♂️";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 } else { 
-                    imgData = char['waving' + activeStateSuffix] || char['waving'];
-                    isFlipped = getFlipVal('waving');
                     fallbackIcon = "👋";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
@@ -2482,7 +2474,6 @@
                 transit: null, transitFlipped: false,
                 homebound: null, homeboundFlipped: false,
                 preparing: null, preparingFlipped: false,
-                // Rainy weather profiles additions
                 wavingRainy: null, wavingRainyFlipped: false,
                 walkingRainy: null, walkingRainyFlipped: false,
                 sleepingRainy: null, sleepingRainyFlipped: false,
@@ -2676,7 +2667,6 @@
                                 <span class="text-[9px] text-slate-400 font-bold tracking-wider">${meta.hours}</span>
                             </div>
 
-                            <!-- TURN ON / TURN OFF RAINY SWITCH -->
                             <div class="flex items-center gap-1.5">
                                 <span class="text-[9px] font-extrabold ${isRainyActive ? 'text-blue-600 animate-pulse' : 'text-amber-500'} uppercase">
                                     ${isRainyActive ? '🌧️ Rainy' : '☀️ Sunny'}
@@ -2688,17 +2678,10 @@
                             </div>
                         </div>
 
-                        <!-- 2 Columns of uploads: Sunny VS Rainy -->
                         <div class="grid grid-cols-2 gap-2">
-                            
-                            <!-- SUNNY LANE -->
                             <div class="bg-amber-50/20 p-2 rounded-xl border border-amber-100/50 flex flex-col justify-between space-y-2">
                                 <span class="text-[8px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider block text-center">Sunny BG</span>
-                                
-                                <div id="bg-preview-${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">
-                                    No Image
-                                </div>
-
+                                <div id="bg-preview-${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">No Image</div>
                                 <div class="flex gap-1">
                                     <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold py-1 px-1 rounded cursor-pointer text-[8px] transition cute-title flex items-center justify-center gap-0.5">
                                         <i data-lucide="upload" class="w-2.5 h-2.5"></i> Up
@@ -2708,14 +2691,9 @@
                                 </div>
                             </div>
 
-                            <!-- RAINY LANE -->
                             <div class="bg-blue-50/20 p-2 rounded-xl border border-blue-100/50 flex flex-col justify-between space-y-2">
                                 <span class="text-[8px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider block text-center">Rainy BG</span>
-                                
-                                <div id="bg-preview-rainy_${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">
-                                    No Image
-                                </div>
-
+                                <div id="bg-preview-rainy_${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">No Image</div>
                                 <div class="flex gap-1">
                                     <label class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-1  rounded cursor-pointer text-[8px] transition cute-title flex items-center justify-center gap-0.5">
                                         <i data-lucide="upload" class="w-2.5 h-2.5"></i> Up
@@ -2724,7 +2702,6 @@
                                     <button onclick="resetBackgroundState('rainy_${slot}')" class="bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 px-1 py-1 rounded text-[8px] transition font-bold">Reset</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 `;
@@ -2744,7 +2721,6 @@
             const slots = ['dawn', 'morning', 'noon', 'afternoon', 'dusk', 'evening', 'night'];
             
             slots.forEach(slot => {
-                // Sunny preview lanes
                 const containerSunny = document.getElementById(`bg-preview-${slot}`);
                 if (containerSunny) {
                     if (uploadedBackgrounds[slot]) {
@@ -2754,7 +2730,6 @@
                     }
                 }
 
-                // Rainy preview lanes
                 const containerRainy = document.getElementById(`bg-preview-rainy_${slot}`);
                 if (containerRainy) {
                     const rainyKey = 'rainy_' + slot;
@@ -3340,7 +3315,6 @@
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </div>
-
                                 </div>
                             `;
                         }).join('')}
@@ -3683,89 +3657,70 @@
             const activePlan = itineraries.find(p => p.id === activePlanId);
             if (!activePlan || activeEditingDayIndex === null) return;
 
-            const timeVal = document.getElementById('row-time').value.trim();
-            const endtimeVal = document.getElementById('row-endtime').value.trim();
+            const timeVal = document.getElementById('row-time').value;
+            const endtimeVal = document.getElementById('row-endtime').value;
             const placeVal = document.getElementById('row-place').value.trim();
             const addressVal = document.getElementById('row-address').value.trim();
             const notesVal = document.getElementById('row-notes').value.trim();
             const costVal = document.getElementById('row-cost').value;
-            const categoryVal = document.getElementById('row-cost-category').value;
+            const costCategoryVal = document.getElementById('row-cost-category').value;
             
-            const activityType = document.querySelector('input[name="row-activity-type"]:checked').value;
+            const activityTypeVal = document.querySelector('input[name="row-activity-type"]:checked').value;
             const transitFromVal = document.getElementById('row-transit-from').value.trim();
             const transitToVal = document.getElementById('row-transit-to').value.trim();
 
             const errorHint = document.getElementById('row-error-hint');
-            
-            if (!timeVal || !endtimeVal) {
-                errorHint.innerText = "⚠️ Please specify both Start Time and End Time!";
-                errorHint.classList.remove('hidden');
-                return;
-            }
 
-            if (overlappingRowIndexGlobal !== null) {
-                errorHint.innerText = "⚠️ Time slot overlaps with an existing activity! Please resolve the conflict or swap slots.";
-                errorHint.classList.remove('hidden');
-                return;
-            }
-
-            if (activityType === 'transit' || activityType === 'homebound') {
-                if (!transitFromVal || !transitToVal) {
-                    errorHint.innerText = "⚠️ Please specify both route fields for transit!";
-                    errorHint.classList.remove('hidden');
-                    return;
-                }
-            } else {
+            // Form validations based on active selection type
+            if (activityTypeVal === 'explore' || activityTypeVal === 'resting') {
                 if (!placeVal) {
-                    errorHint.innerText = "⚠️ Please add an activity title!";
+                    errorHint.innerText = "Please fill in the Activity & Location Name!";
+                    errorHint.classList.remove('hidden');
+                    return;
+                }
+            } else if (activityTypeVal === 'transit' || activityTypeVal === 'homebound') {
+                if (!transitFromVal || !transitToVal) {
+                    errorHint.innerText = "Please fill in both original and destination locations!";
                     errorHint.classList.remove('hidden');
                     return;
                 }
             }
+
+            if (!timeVal || !endtimeVal) {
+                errorHint.innerText = "Please configure both Start Time and End Time!";
+                errorHint.classList.remove('hidden');
+                return;
+            }
+
+            const newRow = {
+                time: timeVal,
+                endTime: endtimeVal,
+                place: placeVal,
+                address: addressVal,
+                notes: notesVal,
+                cost: parseFloat(costVal) || 0,
+                costCategory: costCategoryVal,
+                activityType: activityTypeVal,
+                transitFrom: transitFromVal,
+                transitTo: transitToVal,
+                completed: false,
+                actualCost: 0,
+                completedTime: null
+            };
 
             const dayObj = activePlan.days[activeEditingDayIndex];
-            const parsedCost = parseFloat(costVal) || 0;
-
-            const generatedPlaceName = (activityType === 'transit' || activityType === 'homebound')
-                ? `From ${transitFromVal} to ${transitToVal}`
-                : placeVal;
+            if (!dayObj) return;
 
             if (activeEditingRowIndex !== null) {
-                const row = dayObj.rows[activeEditingRowIndex];
-                row.time = timeVal;
-                row.endTime = endtimeVal;
-                row.place = generatedPlaceName;
-                row.address = addressVal;
-                row.notes = notesVal;
-                row.cost = parsedCost;
-                row.costCategory = parsedCost > 0 ? categoryVal : 'free';
-                row.activityType = activityType;
-                row.transitFrom = transitFromVal;
-                row.transitTo = transitToVal;
+                const existingRow = dayObj.rows[activeEditingRowIndex];
+                newRow.completed = existingRow.completed;
+                newRow.actualCost = existingRow.actualCost;
+                newRow.completedTime = existingRow.completedTime;
+                dayObj.rows[activeEditingRowIndex] = newRow;
             } else {
-                dayObj.rows.push({
-                    time: timeVal,
-                    endTime: endtimeVal,
-                    place: generatedPlaceName,
-                    address: addressVal,
-                    notes: notesVal,
-                    completed: false,
-                    cost: parsedCost,
-                    actualCost: 0,
-                    completedTime: null,
-                    costCategory: parsedCost > 0 ? categoryVal : 'free',
-                    activityType: activityType,
-                    transitFrom: transitFromVal,
-                    transitTo: transitToVal
-                });
+                if (!dayObj.rows) dayObj.rows = [];
+                dayObj.rows.push(newRow);
             }
-
-            dayObj.rows.sort((a, b) => {
-                if (!a.time && !b.time) return 0;
-                if (!a.time) return 1;
-                if (!b.time) return -1;
-                return a.time.localeCompare(b.time);
-            });
 
             saveToStorage();
             renderActivePlan();
@@ -3780,15 +3735,77 @@
                     profiles: characterProfiles,
                     selectedCharId: activeCharacterIds
                 };
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPayload, null, 2));
-                const downloadAnchor = document.createElement('a');
-                downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", `WanderPlan_Vault_${new Date().toISOString().slice(0, 10)}.json`);
-                document.body.appendChild(downloadAnchor);
-                downloadAnchor.click();
-                downloadAnchor.remove();
+                
+                const backupString = JSON.stringify(backupPayload, null, 2);
+
+                const fallbackTextarea = document.getElementById('ios-backup-textarea');
+                if (fallbackTextarea) {
+                    fallbackTextarea.value = backupString;
+                }
+
+                try {
+                    const blob = new Blob([backupString], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const downloadAnchor = document.createElement('a');
+                    downloadAnchor.setAttribute("href", url);
+                    downloadAnchor.setAttribute("download", `WanderPlan_Vault_${new Date().toISOString().slice(0, 10)}.json`);
+                    document.body.appendChild(downloadAnchor);
+                    downloadAnchor.click();
+                    
+                    setTimeout(() => {
+                        downloadAnchor.remove();
+                        URL.revokeObjectURL(url);
+                    }, 100);
+                } catch (err) {
+                    console.warn("Direct blob download failed or was blocked by iOS security policies.", err);
+                }
+
+                const exportModal = document.getElementById('ios-export-modal');
+                if (exportModal) {
+                    exportModal.classList.remove('hidden');
+                }
+                
+                lucide.createIcons();
             } catch (err) {
-                console.error("Export error", err);
+                console.error("Export payload construction error", err);
+            }
+        }
+
+        function closeIosExportModal() {
+            const exportModal = document.getElementById('ios-export-modal');
+            if (exportModal) {
+                exportModal.classList.add('hidden');
+            }
+        }
+
+        function handleCopyIosBackup() {
+            const textarea = document.getElementById('ios-backup-textarea');
+            if (!textarea) return;
+
+            textarea.focus();
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); 
+
+            try {
+                const success = document.execCommand('copy');
+                if (success) {
+                    const copyBtn = document.querySelector('[onclick="handleCopyIosBackup()"]');
+                    if (copyBtn) {
+                        const originalHtml = copyBtn.innerHTML;
+                        copyBtn.className = "px-5 py-2.5 bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-xs transition duration-150 cute-title flex items-center justify-center gap-1.5";
+                        copyBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Copied to Clipboard!`;
+                        lucide.createIcons();
+                        
+                        setTimeout(() => {
+                            copyBtn.className = "px-5 py-2.5 bg-gradient-to-r from-amber-400 to-pink-500 hover:from-amber-500 hover:to-pink-600 text-white font-bold text-sm rounded-xl shadow-xs transition duration-150 cute-title flex items-center justify-center gap-1.5";
+                            copyBtn.innerHTML = originalHtml;
+                            lucide.createIcons();
+                            closeIosExportModal();
+                        }, 2000);
+                    }
+                }
+            } catch (err) {
+                console.error("Iframe execution copy exception fallback", err);
             }
         }
 

@@ -148,6 +148,14 @@
             min-height: 1.25em;
             text-align: left;
         }
+
+        /* Customized toggles */
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6;
+        }
+        .toggle-checkbox:checked + .toggle-label .toggle-dot {
+            transform: translateX(100%);
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
@@ -225,8 +233,8 @@
         </div>
 
         <div class="p-6 border-t border-orange-50 bg-amber-50/20 text-center">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">WanderPlan App v4.6</span>
-            <p class="text-[9px] text-slate-400 mt-0.5">Custom Scenic Wallpaper & Character Engine</p>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">WanderPlan App v5.0</span>
+            <p class="text-[9px] text-slate-400 mt-0.5">Multi-Weather & Multi-Companion Core</p>
         </div>
     </div>
 
@@ -253,7 +261,7 @@
                     <i data-lucide="cloud-lightning" class="w-3.5 h-3.5"></i> Saved
                 </span>
                 <span id="active-route-indicator" class="text-[10px] font-bold bg-pink-50 text-pink-700 border border-pink-100 px-2.5 py-1.5 rounded-xl cute-title select-none hidden sm:inline-block">
-                    iPhone Standalone Optimized 📱
+                    Standalone iPhone App Mode 📱
                 </span>
             </div>
         </div>
@@ -311,7 +319,7 @@
             <!-- Controls Deck inside Scenery -->
             <div class="z-30 relative flex flex-col md:flex-row justify-between items-start w-full pointer-events-auto gap-3">
                 <!-- Dropdown settings wrapper card -->
-                <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-orange-100 shadow-sm flex flex-col gap-3.5 w-full md:w-80 relative">
+                <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-orange-100 shadow-sm flex flex-col gap-3 w-full md:w-96 relative">
                     
                     <!-- Permanent Top Bar: Clock Readout and Toggle Action Button -->
                     <div class="flex items-center justify-between gap-4 w-full">
@@ -330,13 +338,27 @@
                         </button>
                     </div>
 
-                    <!-- Hidden Dropdown Settings Panel (starts with .hidden as requested) -->
-                    <div id="banner-controls-dropdown" class="hidden flex flex-col gap-3.5 pt-3.5 border-t border-slate-100/70">
+                    <!-- Hidden Dropdown Settings Panel -->
+                    <div id="banner-controls-dropdown" class="hidden flex flex-col gap-3 pt-3 border-t border-slate-100/70">
                         <!-- Time scrub slider -->
                         <div class="flex items-center gap-2">
                             <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
                             <input id="time-slider" type="range" min="0" max="1439" value="720" oninput="handleTimeSliderChange(this.value)" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500">
                             <i data-lucide="moon" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i>
+                        </div>
+
+                        <!-- NEW INDEPENDENT TIME-SLOT RAINY QUICK TOGGLES -->
+                        <div class="bg-blue-50/70 border border-blue-100 p-2.5 rounded-xl">
+                            <span class="text-[9px] text-blue-800 font-extrabold uppercase tracking-wide block mb-1.5">🌧️ Rainy weather per period:</span>
+                            <div class="grid grid-cols-4 sm:grid-cols-7 gap-1 text-[9px] font-bold text-slate-600">
+                                <button onclick="quickToggleRainyPeriod('dawn')" id="quick-rainy-dawn" class="py-1 rounded bg-white hover:bg-slate-100 border transition">🌅 Dawn</button>
+                                <button onclick="quickToggleRainyPeriod('morning')" id="quick-rainy-morning" class="py-1 rounded bg-white hover:bg-slate-100 border transition">☀️ Morn</button>
+                                <button onclick="quickToggleRainyPeriod('noon')" id="quick-rainy-noon" class="py-1 rounded bg-white hover:bg-slate-100 border transition">🌤️ Noon</button>
+                                <button onclick="quickToggleRainyPeriod('afternoon')" id="quick-rainy-afternoon" class="py-1 rounded bg-white hover:bg-slate-100 border transition">🌇 Aft</button>
+                                <button onclick="quickToggleRainyPeriod('dusk')" id="quick-rainy-dusk" class="py-1 rounded bg-white hover:bg-slate-100 border transition">🌆 Dusk</button>
+                                <button onclick="quickToggleRainyPeriod('evening')" id="quick-rainy-evening" class="py-1 rounded bg-white hover:bg-slate-100 border transition">🌌 Eve</button>
+                                <button onclick="quickToggleRainyPeriod('night')" id="quick-rainy-night" class="py-1 rounded bg-white hover:bg-slate-100 border transition col-span-1">🌃 Night</button>
+                            </div>
                         </div>
 
                         <!-- Options checklist -->
@@ -550,7 +572,7 @@
                         </div>
 
                         <!-- LIVE TIMELINE SUMMARY ("NOW & NEXT" BOARD) -->
-                        <div id="live-summary-card" class="bg-gradient-to-tr from-amber-50 to-orange-50/40 border border-amber-200/50 rounded-3xl p-4 flex flex-col md:flex-row gap-4 items-stretch justify-between shadow-3xs">
+                        <div id="live-summary-card" class="bg-gradient-to-tr from-amber-400/5 to-orange-400/5 border border-amber-200/50 rounded-3xl p-4 flex flex-col md:flex-row gap-4 items-stretch justify-between shadow-3xs">
                             <div class="flex-1 flex items-center gap-3">
                                 <div class="bg-amber-400 text-slate-900 rounded-2xl p-2.5 flex items-center justify-center shadow-3xs shrink-0">
                                     <i data-lucide="activity" class="w-5 h-5 animate-pulse"></i>
@@ -576,7 +598,7 @@
                         <div class="bg-white p-3 rounded-2xl border border-slate-100 flex items-center gap-3 shadow-3xs">
                             <div class="relative flex-1">
                                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
-                                <input type="text" id="itinerary-search" oninput="renderActivePlan()" placeholder="Search activities, locations, notes, or time (e.g. 10:01 PM or 22:00)..." 
+                                <input type="text" id="itinerary-search" oninput="renderActivePlan()" placeholder="Search activities, locations, notes, or time (e.g. 10:01 PM)..." 
                                     class="w-full pl-10 pr-10 py-2.5 bg-slate-50 focus:bg-white border-2 border-slate-100 focus:border-amber-300 rounded-xl outline-none transition text-xs font-semibold text-slate-700">
                                 <button onclick="clearSearchFilter()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold text-xs" title="Clear Search">
                                     ✕
@@ -591,7 +613,7 @@
             </div>
         </div>
 
-        <!-- PAGE 1.5: CHARACTER CUSTOMIZER -->
+        <!-- PAGE 1.5: CHARACTER & BACKGROUND CUSTOMIZER -->
         <div id="view-characters" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200/60 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-300 via-orange-300 to-pink-300"></div>
@@ -603,165 +625,32 @@
                         </div>
                         <div>
                             <h2 class="cute-title text-2xl font-bold text-slate-800">Companion & Scenic Backgrounds 🎨</h2>
-                            <p class="text-xs text-slate-400 font-semibold">Custom design your buddies, manage multiple active profiles, and upload covers for 7 day-to-night background slots!</p>
+                            <p class="text-xs text-slate-400 font-semibold">Upload custom landscape wallpapers for Sunny + Rainy conditions across 7 time slots, and toggle weather modes independently!</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- CUSTOM SCENIC BACKGROUND MANAGER SECTIONS -->
+                <!-- NEW COMPREHENSIVE 7 SUNNY & 7 RAINY BACKGROUND MANAGERS -->
                 <div class="bg-amber-50/40 border border-amber-200/50 p-5 rounded-3xl mb-8">
                     <h3 class="cute-title text-lg font-extrabold text-amber-950 mb-1.5 flex items-center gap-2">
-                        <span>🌅</span> Scenic Background Manager (7 Time Slots)
+                        <span>🌅</span> Interactive Scenic Wallpaper Vault (7 Slots Sunny & 7 Slots Rainy)
                     </h3>
                     <p class="text-xs text-slate-500 mb-4 font-semibold">
-                        Upload custom landscape wallpapers (JPG, PNG, GIF) matching the times of day. Uploaded files will cover the animated background at the top!
+                        Customise both states for each time period. Turn the rainy weather on or off individually for each time slot to test wallpapers & companion animations!
                     </p>
 
-                    <!-- Background Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <!-- Dawn (4:30 AM - 5:59 AM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">4:30 AM - 6:59 AM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌄 Dawn Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-dawn" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-purple-900 to-pink-500 bg-cover bg-center">
-                                    <span class="text-[10px] text-white/90 font-bold drop-shadow-xs">Default Dawn</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'dawn')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('dawn')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
+                    <!-- Background Grid - 7 Cards representing each time period -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- Cards are dynamically built via JS to avoid duplication bugs -->
+                        <div id="wallpaper-slots-deck-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full">
+                            <!-- Dynamic 7 Wallpaper Period cards with independent toggles will render here -->
                         </div>
 
-                        <!-- Morning (7:00 AM - 11:59 AM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-sky-50 text-sky-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">7:00 AM - 11:59 AM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">☀️ Morning Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-morning" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-sky-300 to-orange-100 bg-cover bg-center">
-                                    <span class="text-[10px] text-sky-950 font-bold drop-shadow-xs">Default Morning</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'morning')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('morning')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Noon (12:00 PM - 12:59 PM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">12:00 PM - 12:59 PM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌤️ Noon Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-noon" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-cyan-400 to-sky-100 bg-cover bg-center">
-                                    <span class="text-[10px] text-cyan-950 font-bold drop-shadow-xs">Default Noon</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'noon')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('noon')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Afternoon (1:00 PM - 5:59 PM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">1:00 PM - 5:59 PM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌇 Afternoon Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-afternoon" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-amber-300 to-orange-400 bg-cover bg-center">
-                                    <span class="text-[10px] text-amber-950 font-bold drop-shadow-xs">Default Afternoon</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'afternoon')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('afternoon')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Dusk (6:00 PM - 6:59 PM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">6:00 PM - 6:59 PM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌆 Dusk Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-dusk" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-purple-800 to-orange-500 bg-cover bg-center">
-                                    <span class="text-[10px] text-white font-bold drop-shadow-xs">Default Dusk</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'dusk')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('dusk')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Evening (7:00 PM - 9:59 PM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">7:00 PM - 9:59 PM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌌 Evening Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-evening" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-indigo-950 to-purple-900 bg-cover bg-center">
-                                    <span class="text-[10px] text-indigo-200 font-bold drop-shadow-xs">Default Evening</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'evening')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('evening')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Night (10:00 PM - 4:29 AM) -->
-                        <div class="bg-white p-3.5 rounded-2xl border border-slate-100 flex flex-col justify-between shadow-3xs">
-                            <div>
-                                <span class="text-[9px] bg-slate-900 text-slate-100 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">10:00 PM - 4:29 AM</span>
-                                <h4 class="cute-title text-sm font-bold text-slate-700 mt-1">🌃 Night Wallpaper</h4>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div id="bg-preview-night" class="w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b from-black to-slate-900 bg-cover bg-center">
-                                    <span class="text-[10px] text-slate-400 font-bold drop-shadow-xs">Default Night</span>
-                                </div>
-                                <div class="flex gap-1.5">
-                                    <label class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-1.5 px-2 rounded-lg cursor-pointer text-[10px] transition cute-title flex items-center justify-center gap-1">
-                                        <i data-lucide="upload" class="w-3 h-3"></i> Upload
-                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'night')">
-                                    </label>
-                                    <button onclick="resetBackgroundState('night')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-2.5 py-1.5 rounded-lg text-[10px] transition font-bold cute-title">Reset</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- INLINE SCENERY LAYERS MANAGERS (RE-ROUTE INTEGRATED FROM HEADER DRAWER) -->
+                <!-- INLINE SCENERY LAYERS MANAGERS -->
                 <div class="bg-white border border-slate-200 p-5 rounded-3xl mb-8 shadow-3xs">
                     <h3 class="cute-title text-base font-extrabold text-slate-800 mb-1 flex items-center gap-2">
                         <span>🎨</span> Active Scenery Layer Elements
@@ -817,12 +706,22 @@
                 <!-- CUSTOMIZER GIF EDITOR BLOCK -->
                 <div id="character-gif-editor-block" class="hidden space-y-6 pt-4 border-t border-slate-100">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <h3 class="cute-title text-lg font-bold text-slate-800" id="editor-active-title">
-                            Customize Companion Animations 🎨
-                        </h3>
-                        <p class="text-[10px] text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg font-bold uppercase tracking-wider">
-                            Uploading to selected profile
-                        </p>
+                        <div>
+                            <h3 class="cute-title text-lg font-bold text-slate-800" id="editor-active-title">
+                                Customize Companion Animations 🎨
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-1 max-w-lg">Configure unique animation layers for sunny cycles and rainy states!</p>
+                        </div>
+                        
+                        <!-- NEW SUNNY/RAINY ASSETS SELECTOR TAB -->
+                        <div class="flex gap-1.5 bg-slate-100 p-1.5 rounded-2xl shrink-0 shadow-3xs border border-slate-200/40">
+                            <button id="tab-normal-assets" onclick="switchCustomizerTab('normal')" class="py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1">
+                                <span>☀️</span> Sunny States
+                            </button>
+                            <button id="tab-rainy-assets" onclick="switchCustomizerTab('rainy')" class="py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1">
+                                <span>🌧️</span> Rainy States
+                            </button>
+                        </div>
                     </div>
 
                     <p class="text-xs text-slate-400 mt-0.5 bg-amber-50/50 p-3 rounded-xl border border-amber-100/50">
@@ -836,11 +735,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-amber-600 tracking-wider uppercase">Waiting State</span>
+                                    <span class="text-xs font-bold text-amber-600 tracking-wider uppercase" id="card-badge-waving">Waiting State</span>
                                     <span class="text-xl">👋</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Waving / Standing</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed when waiting if there is no active travel plan, or during simple daylight hours.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-waving">Waving / Standing</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-waving">Displayed when waiting if there is no active travel plan, or during simple daylight hours.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-waving" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -866,11 +765,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">On The Way</span>
+                                    <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase" id="card-badge-walking">On The Way</span>
                                     <span class="text-xl">🚶‍♂️</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Walking / Journey</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed when the companion is walking dynamically towards their active scheduled task.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-walking">Walking / Journey</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-walking">Displayed when the companion is walking dynamically towards their active scheduled task.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-walking" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -896,11 +795,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-purple-600 tracking-wider uppercase">Sleep Hours</span>
+                                    <span class="text-xs font-bold text-purple-600 tracking-wider uppercase" id="card-badge-sleeping">Sleep Hours</span>
                                     <span class="text-xl">😴</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Sleeping</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed during late-night bedtime or whenever resting at hotel rooms.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-sleeping">Sleeping</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-sleeping">Displayed during late-night bedtime or whenever resting at hotel rooms.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-sleeping" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -926,11 +825,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">Transit Stage</span>
+                                    <span class="text-xs font-bold text-blue-600 tracking-wider uppercase" id="card-badge-transit">Transit Stage</span>
                                     <span class="text-xl">🚗</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Transit Car</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed when travel schedule is set to transportation or flights.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-transit">Transit Car</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-transit">Displayed when travel schedule is set to transportation or flights.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-transit" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -956,11 +855,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-teal-600 tracking-wider uppercase">End Trip</span>
+                                    <span class="text-xs font-bold text-teal-600 tracking-wider uppercase" id="card-badge-homebound">End Trip</span>
                                     <span class="text-xl">🏡</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Going Home / Return</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed during return legs going back home.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-homebound">Going Home / Return</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-homebound">Displayed during return legs going back home.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-homebound" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -986,11 +885,11 @@
                         <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-bold text-rose-600 tracking-wider uppercase">Morning Prep</span>
+                                    <span class="text-xs font-bold text-rose-600 tracking-wider uppercase" id="card-badge-preparing">Morning Prep</span>
                                     <span class="text-xl">🍳</span>
                                 </div>
-                                <h3 class="cute-title text-base font-bold text-slate-700">Preparing State</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-4">Displayed during cozy morning routines (6:00 AM to 8:00 AM) while packing bags.</p>
+                                <h3 class="cute-title text-base font-bold text-slate-700" id="card-title-preparing">Preparing State</h3>
+                                <p class="text-slate-400 text-xs mt-1 mb-4" id="card-desc-preparing">Displayed during cozy morning routines (6:00 AM to 8:00 AM) while packing bags.</p>
                             </div>
                             <div class="space-y-3">
                                 <div id="preview-preparing" class="w-full h-32 bg-white rounded-xl border border-slate-200/60 flex items-center justify-center overflow-hidden">
@@ -1351,11 +1250,13 @@
     <script>
         const STORAGE_KEY = 'wanderplan_itineraries_v3';
         const CHAR_SELECTION_KEY = 'wanderplan_selected_char_v4';
-        const DB_NAME = 'WanderPlanIDB_v6';
+        
+        const DB_NAME = 'WanderPlanIDB_v8'; // Incremented DB version to clean up old formats
         const STORE_NAME = 'characterProfiles';
         const BG_STORE_NAME = 'scenicBackgrounds';
         const SCENERY_LAYERS_KEY = 'wanderplan_scenery_layers_v1';
         const SHOW_SCENERY_KEY = 'wanderplan_show_scenery_v1';
+        const RAINY_PERIODS_KEY = 'wanderplan_rainy_periods_v1';
 
         let itineraries = [];
         let activePlanId = null;
@@ -1381,7 +1282,20 @@
         let activeCharacterIds = []; // Array of active companion IDs visible in the scenic banner
         let selectedCharacterId = null; // Profile currently open for editing in the customizer
 
-        // Global cache of uploaded scenic backgrounds
+        // NEW: 7 Rainy Weather Toggles per time-slot
+        let rainyPeriods = {
+            dawn: false,
+            morning: false,
+            noon: false,
+            afternoon: false,
+            dusk: false,
+            evening: false,
+            night: false
+        };
+
+        let customizerTab = 'normal'; // 'normal' or 'rainy' to switch companion editing profiles seamlessly
+
+        // Global cache of uploaded scenic backgrounds (Now supports Sunny & Rainy uploads for all 7 slots)
         let uploadedBackgrounds = {
             dawn: null,
             morning: null,
@@ -1389,7 +1303,15 @@
             afternoon: null,
             dusk: null,
             evening: null,
-            night: null
+            night: null,
+            // Rainy Slots
+            rainy_dawn: null,
+            rainy_morning: null,
+            rainy_noon: null,
+            rainy_afternoon: null,
+            rainy_dusk: null,
+            rainy_evening: null,
+            rainy_night: null
         };
 
         // Immediately compute live clock configuration
@@ -1451,7 +1373,16 @@
             other: { emoji: '🏷️', label: 'Other' }
         };
 
-        // Toggle banner controls visibility smoothly
+        const PERIODS_META = {
+            dawn: { label: "Dawn", hours: "4:30 AM - 6:59 AM", icon: "🌄", defaultGrad: "linear-gradient(to bottom, #2e1065, #701a75, #f472b6, #ffedd5)", fallbackRainy: "linear-gradient(to bottom, #1d1b32, #3c2a4d, #5c3d68)" },
+            morning: { label: "Morning", hours: "7:00 AM - 11:59 AM", icon: "☀️", defaultGrad: "linear-gradient(to bottom, #bae6fd, #fed7aa, #fffbeb)", fallbackRainy: "linear-gradient(to bottom, #475569, #64748b, #94a3b8)" },
+            noon: { label: "Noon", hours: "12:00 PM - 12:59 PM", icon: "🌤️", defaultGrad: "linear-gradient(to bottom, #38bdf8, #bae6fd, #fefce8)", fallbackRainy: "linear-gradient(to bottom, #334155, #475569, #64748b)" },
+            afternoon: { label: "Afternoon", hours: "1:00 PM - 5:59 PM", icon: "🌇", defaultGrad: "linear-gradient(to bottom, #fde047, #f97316, #fff7ed)", fallbackRainy: "linear-gradient(to bottom, #3f3f46, #52525b, #71717a)" },
+            dusk: { label: "Dusk", hours: "6:00 PM - 6:59 PM", icon: "🌆", defaultGrad: "linear-gradient(to bottom, #4c1d95, #b91c1c, #f97316, #fef3c7)", fallbackRainy: "linear-gradient(to bottom, #2d1e3d, #442a5c, #5c3d75)" },
+            evening: { label: "Evening", hours: "7:00 PM - 9:59 PM", icon: "🌌", defaultGrad: "linear-gradient(to bottom, #1e1b4b, #4c1d95, #831843)", fallbackRainy: "linear-gradient(to bottom, #111827, #1f2937, #374151)" },
+            night: { label: "Night", hours: "10:00 PM - 4:29 AM", icon: "🌃", defaultGrad: "linear-gradient(to bottom, #030712, #0f172a, #1e293b)", fallbackRainy: "linear-gradient(to bottom, #030712, #0b0f19, #111827)" }
+        };
+
         function toggleBannerControlsDropdown() {
             const dropdown = document.getElementById('banner-controls-dropdown');
             const btnText = document.getElementById('banner-controls-btn-text');
@@ -1467,7 +1398,6 @@
             }
         }
 
-        // Helper to check if a plan has days and all activities are checked completed
         function isPlanFullyCompleted(plan) {
             if (!plan.days || plan.days.length === 0) return false;
             let totalRows = 0;
@@ -1481,7 +1411,6 @@
             return totalRows > 0 && completedRows === totalRows;
         }
 
-        // Search helper that parses query as 12-hour/24-hour time to search intervals
         function parseQueryToMinutesList(q) {
             q = q.trim().toLowerCase();
             const timeRegex = /^(\d{1,2})[:.](\d{2})\s*(am|pm)?$/;
@@ -1520,7 +1449,7 @@
 
         function initIDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 2);
+                const request = indexedDB.open(DB_NAME, 4);
                 request.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains(STORE_NAME)) {
@@ -1565,7 +1494,6 @@
             });
         }
 
-        // Background manager IDB methods
         function loadBackgroundsFromIDB(db) {
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([BG_STORE_NAME], 'readonly');
@@ -1601,8 +1529,8 @@
         window.addEventListener('DOMContentLoaded', async () => {
             loadFromStorage();
             loadSceneryLayersSettings();
+            loadRainyPeriodsSettings();
             
-            // Load show/hide setting
             showScenery = localStorage.getItem(SHOW_SCENERY_KEY) !== 'false';
             applySceneryVisibilitySetting();
             
@@ -1610,13 +1538,33 @@
                 databaseConnection = await initIDB();
                 characterProfiles = await loadProfilesFromIDB(databaseConnection);
                 
-                // Load uploaded backgrounds from database
+                // Safe DB Shield: Only seed standard buddy if database has 0 companions
+                if (characterProfiles.length === 0) {
+                    const defaultBuddy = {
+                        id: 'char_default',
+                        name: "Wander Buddy 🐰",
+                        waving: null, wavingFlipped: false,
+                        walking: null, walkingFlipped: false,
+                        sleeping: null, sleepingFlipped: false,
+                        transit: null, transitFlipped: false,
+                        homebound: null, homeboundFlipped: false,
+                        preparing: null, preparingFlipped: false,
+                        wavingRainy: null, wavingRainyFlipped: false,
+                        walkingRainy: null, walkingRainyFlipped: false,
+                        sleepingRainy: null, sleepingRainyFlipped: false,
+                        transitRainy: null, transitRainyFlipped: false,
+                        homeboundRainy: null, homeboundRainyFlipped: false,
+                        preparingRainy: null, preparingRainyFlipped: false
+                    };
+                    characterProfiles.push(defaultBuddy);
+                    await saveProfileToIDB(databaseConnection, defaultBuddy);
+                }
+                
                 const bgs = await loadBackgroundsFromIDB(databaseConnection);
                 bgs.forEach(item => {
                     uploadedBackgrounds[item.slot] = item.data;
                 });
 
-                // Read multi-selection array
                 const storedSelection = localStorage.getItem(CHAR_SELECTION_KEY);
                 if (storedSelection) {
                     try {
@@ -1628,14 +1576,15 @@
                         activeCharacterIds = typeof storedSelection === 'string' && storedSelection.startsWith('char_') ? [storedSelection] : [];
                     }
                 } else {
-                    activeCharacterIds = [];
+                    // Activate seeded default companion on first launch
+                    activeCharacterIds = ['char_default'];
                 }
 
                 if (characterProfiles.length > 0 && !selectedCharacterId) {
                     selectedCharacterId = characterProfiles[0].id;
                 }
             } catch (err) {
-                console.error("IndexedDB startup crash. Falling back to clean in-memory companions.", err);
+                console.error("IndexedDB startup error. Falling back to clean in-memory variables.", err);
                 characterProfiles = [];
                 activeCharacterIds = [];
             }
@@ -1648,9 +1597,10 @@
             updateGlobalStats();
             renderActivePlan();
             updateSkyScenery();
+            renderWallpaperSlotsDeck();
             renderBackgroundPreviews();
             
-            // Background ticking system
+            // Background ticks
             setInterval(() => {
                 if (isLiveClock) {
                     const now = new Date();
@@ -1672,7 +1622,6 @@
             lucide.createIcons();
         });
 
-        // Toggle Hamburger Drawer Menu
         function toggleDrawer(open) {
             const drawer = document.getElementById('drawer-menu');
             const backdrop = document.getElementById('drawer-backdrop');
@@ -1685,28 +1634,23 @@
             }
         }
 
-        // SPA Navigation page switcher
         function switchPage(pageId) {
             activePage = pageId;
             toggleDrawer(false);
 
-            // Hide all pages
             document.getElementById('view-mainpage').classList.add('hidden');
             document.getElementById('view-characters').classList.add('hidden');
             document.getElementById('view-archive').classList.add('hidden');
             document.getElementById('view-settings').classList.add('hidden');
 
-            // Show current active page
             document.getElementById(`view-${pageId}`).classList.remove('hidden');
 
-            // Update badge title
             const badge = document.getElementById('current-page-badge');
             if (pageId === 'mainpage') badge.innerText = "Workspace";
             else if (pageId === 'characters') badge.innerText = "Characters";
             else if (pageId === 'archive') badge.innerText = "Archives";
             else if (pageId === 'settings') badge.innerText = "Settings";
 
-            // Update button styles inside navigation drawer
             ['mainpage', 'characters', 'archive', 'settings'].forEach(id => {
                 const btn = document.getElementById(`nav-btn-${id}`);
                 if (!btn) return;
@@ -1724,6 +1668,7 @@
                 renderActivePlan();
             } else if (pageId === 'characters') {
                 renderCharacterProfiles();
+                renderWallpaperSlotsDeck();
                 renderBackgroundPreviews();
             }
         }
@@ -1825,15 +1770,19 @@
             updateSkyScenery();
         }
 
+        function getPeriodKeyByMinutes(m) {
+            if (m >= 270 && m < 420) return "dawn";
+            if (m >= 420 && m < 720) return "morning";
+            if (m >= 720 && m < 780) return "noon";
+            if (m >= 780 && m < 1080) return "afternoon";
+            if (m >= 1080 && m < 1140) return "dusk";
+            if (m >= 1140 && m < 1320) return "evening";
+            return "night";
+        }
+
         function getPeriodByMinutes(m) {
-            // Strictly Continuous 7 Slots
-            if (m >= 270 && m < 420) return "Dawn";        // 4:30 AM - 6:59 AM
-            if (m >= 420 && m < 720) return "Morning";     // 7:00 AM - 11:59 AM
-            if (m >= 720 && m < 780) return "Noon";        // 12:00 PM - 12:59 PM
-            if (m >= 780 && m < 1080) return "Afternoon";  // 1:00 PM - 5:59 PM
-            if (m >= 1080 && m < 1140) return "Dusk";      // 6:00 PM - 6:59 PM
-            if (m >= 1140 && m < 1320) return "Evening";   // 7:00 PM - 9:59 PM
-            return "Night";                                // 10:00 PM - 4:29 AM
+            const key = getPeriodKeyByMinutes(m);
+            return PERIODS_META[key].label;
         }
 
         function timeStringToMinutes(timeStr) {
@@ -1846,6 +1795,26 @@
             const hours = Math.floor(m / 60);
             const minutes = m % 60;
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+
+        function loadRainyPeriodsSettings() {
+            try {
+                const stored = localStorage.getItem(RAINY_PERIODS_KEY);
+                if (stored) {
+                    rainyPeriods = { ...rainyPeriods, ...JSON.parse(stored) };
+                }
+            } catch (e) {
+                console.error("Failed to load rainy periods toggles", e);
+            }
+        }
+
+        function saveRainyPeriods() {
+            try {
+                localStorage.setItem(RAINY_PERIODS_KEY, JSON.stringify(rainyPeriods));
+            } catch (e) {
+                console.error("Failed to save rainy periods toggles", e);
+            }
+            updateSkyScenery();
         }
 
         function getActiveDayIndexForToday(plan, todayStr) {
@@ -1883,12 +1852,9 @@
 
             for (const key in sceneryLayers) {
                 const visible = sceneryLayers[key];
-                
-                // Keep checkboxes synced
                 const checkbox = document.getElementById(`layer-${key}`);
                 if (checkbox) checkbox.checked = visible;
 
-                // Enforce style property rules override
                 const element = elements[key];
                 if (element) {
                     if (visible) {
@@ -1932,6 +1898,12 @@
             applySceneryVisibilitySetting();
         }
 
+        function quickToggleRainyPeriod(slotKey) {
+            rainyPeriods[slotKey] = !rainyPeriods[slotKey];
+            saveRainyPeriods();
+            renderWallpaperSlotsDeck();
+        }
+
         function updateSkyScenery() {
             const banner = document.getElementById('scenic-banner-container');
             if (!banner) return;
@@ -1957,8 +1929,9 @@
             if (displayHours === 0) displayHours = 12;
             clockText.innerText = `${String(displayHours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
 
-            const period = getPeriodByMinutes(simulatedTimeMinutes);
-            periodBadge.innerText = period;
+            const periodKey = getPeriodKeyByMinutes(simulatedTimeMinutes);
+            const meta = PERIODS_META[periodKey];
+            periodBadge.innerText = meta.label;
 
             const percentOfDay = (simulatedTimeMinutes / 1440) * 100;
             celestialGroup.style.left = `${Math.min(90, Math.max(5, percentOfDay))}%`;
@@ -1968,65 +1941,89 @@
 
             banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[22rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-center bg-cover";
             stars.classList.add('opacity-0');
-            stars.classList.remove('opacity-60', 'opacity-100');
+            stars.classList.remove('opacity-30', 'opacity-60', 'opacity-100');
             sun.classList.remove('hidden');
             moon.classList.remove('hidden');
             road.classList.remove('hidden');
 
-            // Reset inline styles for custom background fallback gradients
             banner.style.backgroundImage = '';
 
-            const key = period.toLowerCase();
-            if (uploadedBackgrounds[key]) {
-                // Apply custom wallpaper
-                banner.style.backgroundImage = `url(${uploadedBackgrounds[key]})`;
-                if (key === 'night' || key === 'evening' || key === 'dawn' || key === 'dusk') {
-                    stars.classList.remove('opacity-0');
-                    stars.classList.add('opacity-30'); // Keep soft stars visible
+            // Update Quick Checkboxes styling in control dropdown
+            const periods = ['dawn', 'morning', 'noon', 'afternoon', 'dusk', 'evening', 'night'];
+            periods.forEach(p => {
+                const btn = document.getElementById(`quick-rainy-${p}`);
+                if (btn) {
+                    if (rainyPeriods[p]) {
+                        btn.className = "py-1 rounded bg-blue-600 border-blue-600 text-white transition";
+                    } else {
+                        btn.className = "py-1 rounded bg-white hover:bg-slate-100 border text-slate-600 transition";
+                    }
                 }
-                if (key === 'night' || key === 'evening' || key === 'dawn') {
-                    sun.classList.add('hidden');
+            });
+
+            // CHECK WEATHER STATUS INDEPENDENTLY PER ACTIVE TIME PERIOD
+            const isCurrentRainy = rainyPeriods[periodKey];
+
+            if (isCurrentRainy) {
+                // Apply Rainy backgrounds (Custom upload or FALLBACK dynamic rainy atmospheric gradient)
+                const customRainyData = uploadedBackgrounds['rainy_' + periodKey];
+                if (customRainyData) {
+                    banner.style.backgroundImage = `url(${customRainyData})`;
                 } else {
-                    moon.classList.add('hidden');
+                    banner.style.backgroundImage = meta.fallbackRainy;
                 }
+                stars.classList.add('opacity-0');
+                sun.classList.add('hidden');
+                moon.classList.add('hidden');
+                periodBadge.className = "text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                periodBadge.innerText = `Stormy ${meta.label} 🌧️`;
             } else {
-                // Apply fallback gorgeous gradients
-                if (period === "Dawn") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #2e1065, #701a75, #f472b6, #ffedd5)';
-                    sun.classList.add('hidden');
-                    stars.classList.remove('opacity-0');
-                    stars.classList.add('opacity-60');
-                    periodBadge.className = "text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else if (period === "Morning") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #bae6fd, #fed7aa, #fffbeb)';
-                    moon.classList.add('hidden');
-                    periodBadge.className = "text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else if (period === "Noon") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #38bdf8, #bae6fd, #fefce8)';
-                    moon.classList.add('hidden');
-                    periodBadge.className = "text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else if (period === "Afternoon") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #fde047, #f97316, #fff7ed)';
-                    moon.classList.add('hidden');
-                    periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else if (period === "Dusk") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #4c1d95, #b91c1c, #f97316, #fef3c7)';
-                    moon.classList.add('hidden');
-                    stars.classList.remove('opacity-0');
-                    stars.classList.add('opacity-40');
-                    periodBadge.className = "text-[9px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else if (period === "Evening") {
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #1e1b4b, #4c1d95, #831843)';
-                    sun.classList.add('hidden');
-                    stars.classList.remove('opacity-0');
-                    stars.classList.add('opacity-60');
-                    periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
-                } else { // Night
-                    banner.style.backgroundImage = 'linear-gradient(to bottom, #030712, #0f172a, #1e293b)';
-                    sun.classList.add('hidden');
-                    stars.classList.remove('opacity-0');
-                    stars.classList.add('opacity-100');
-                    periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                // Apply standard Sunny condition backgrounds
+                const customSunnyData = uploadedBackgrounds[periodKey];
+                if (customSunnyData) {
+                    banner.style.backgroundImage = `url(${customSunnyData})`;
+                    if (['night', 'evening', 'dawn', 'dusk'].includes(periodKey)) {
+                        stars.classList.remove('opacity-0');
+                        stars.classList.add('opacity-30');
+                    }
+                    if (['night', 'evening', 'dawn'].includes(periodKey)) {
+                        sun.classList.add('hidden');
+                    } else {
+                        moon.classList.add('hidden');
+                    }
+                } else {
+                    // Fallback to gorgeous hand-crafted gradients
+                    banner.style.backgroundImage = meta.defaultGrad;
+                    if (periodKey === "dawn") {
+                        sun.classList.add('hidden');
+                        stars.classList.remove('opacity-0');
+                        stars.classList.add('opacity-60');
+                        periodBadge.className = "text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else if (periodKey === "morning") {
+                        moon.classList.add('hidden');
+                        periodBadge.className = "text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else if (periodKey === "noon") {
+                        moon.classList.add('hidden');
+                        periodBadge.className = "text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else if (periodKey === "afternoon") {
+                        moon.classList.add('hidden');
+                        periodBadge.className = "text-[9px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else if (periodKey === "dusk") {
+                        moon.classList.add('hidden');
+                        stars.classList.remove('opacity-0');
+                        stars.classList.add('opacity-40');
+                        periodBadge.className = "text-[9px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else if (periodKey === "evening") {
+                        sun.classList.add('hidden');
+                        stars.classList.remove('opacity-0');
+                        stars.classList.add('opacity-60');
+                        periodBadge.className = "text-[9px] bg-indigo-200 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    } else { // night
+                        sun.classList.add('hidden');
+                        stars.classList.remove('opacity-0');
+                        stars.classList.add('opacity-100');
+                        periodBadge.className = "text-[9px] bg-slate-800 text-slate-100 px-1.5 py-0.5 rounded font-bold uppercase cute-title";
+                    }
                 }
             }
 
@@ -2098,7 +2095,6 @@
                     currentScenicState = 'walking';
                 }
             } else {
-                // Fallback strictly to user-defined idle states when no active scheduled task
                 if (simulatedTimeMinutes >= 1320 || simulatedTimeMinutes < 360) { // 10:00 PM - 6:00 AM
                     currentScenicState = 'sleeping';
                     banner.classList.add('scenic-state-waiting');
@@ -2113,11 +2109,12 @@
                 }
             }
 
-            renderActiveCompanionsInBanner(currentScenicState);
+            // PASS CURRENT WEATHER BOOLEAN SO MULTI-WEATHER COMPANIONS SWITCH AUTOMATICALLY
+            renderActiveCompanionsInBanner(currentScenicState, isCurrentRainy);
             updateScenicBannerSpeech(hasActiveTaskRightNow, activeTaskStyle, isPlanActiveNow, activeTaskRow);
         }
 
-        function renderActiveCompanionsInBanner(scenicState) {
+        function renderActiveCompanionsInBanner(scenicState, isRainyActiveState) {
             const container = document.getElementById('active-companions-row');
             if (!container) return;
             container.innerHTML = '';
@@ -2127,7 +2124,7 @@
             if (activeCompanions.length === 0) {
                 container.innerHTML = `
                     <div class="bg-amber-400/25 border border-amber-300 text-amber-800 font-extrabold text-[10px] px-3 py-2 rounded-xl flex items-center gap-1.5 shadow-3xs cute-title">
-                        <span class="text-xs animate-bounce">✨</span> No active companions. Create & activate some below!
+                        <span class="text-xs animate-bounce">✨</span> No active companions. Create & activate some in the panel!
                     </div>
                 `;
                 const bubble = document.getElementById('speech-bubble-wrapper');
@@ -2145,39 +2142,51 @@
                 let borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                 let isFlipped = false;
 
+                const activeStateSuffix = isRainyActiveState ? 'Rainy' : '';
+                const flipSuffix = activeStateSuffix ? 'RainyFlipped' : 'Flipped';
+
+                // Cleaner, exact mirror-flip fallback check preventing true override bugs
+                const getFlipVal = (stateKey) => {
+                    const specific = char[stateKey + flipSuffix];
+                    if (specific !== undefined && specific !== null) {
+                        return !!specific;
+                    }
+                    return !!char[stateKey + 'Flipped'];
+                };
+
                 if (scenicState === 'sleeping') {
-                    imgData = char.sleeping;
-                    isFlipped = !!char.sleepingFlipped;
+                    imgData = char['sleeping' + activeStateSuffix] || char['sleeping']; 
+                    isFlipped = getFlipVal('sleeping');
                     fallbackIcon = "😴";
                     borderTheme = "border-indigo-800 bg-indigo-950/90 text-indigo-300";
                     bgBadge = "bg-indigo-950 text-indigo-300 border-indigo-800";
                 } else if (scenicState === 'transit') {
-                    imgData = char.transit;
-                    isFlipped = !!char.transitFlipped;
+                    imgData = char['transit' + activeStateSuffix] || char['transit'];
+                    isFlipped = getFlipVal('transit');
                     fallbackIcon = "🚗";
                     borderTheme = "border-blue-400 bg-blue-500/20 text-blue-800";
                     bgBadge = "bg-blue-100 text-blue-900 border-blue-200";
                 } else if (scenicState === 'homebound') {
-                    imgData = char.homebound;
-                    isFlipped = !!char.homeboundFlipped;
+                    imgData = char['homebound' + activeStateSuffix] || char['homebound'];
+                    isFlipped = getFlipVal('homebound');
                     fallbackIcon = "🏡";
                     borderTheme = "border-teal-400 bg-teal-500/20 text-teal-800";
                     bgBadge = "bg-teal-100 text-teal-900 border-teal-200";
                 } else if (scenicState === 'preparing') {
-                    imgData = char.preparing;
-                    isFlipped = !!char.preparingFlipped;
+                    imgData = char['preparing' + activeStateSuffix] || char['preparing'];
+                    isFlipped = getFlipVal('preparing');
                     fallbackIcon = "🍳";
-                    borderTheme = "border-rose-300 bg-rose-500/20 text-rose-800";
+                    borderTheme = "border-rose-300 bg-rose-50/20 text-rose-800";
                     bgBadge = "bg-rose-100 text-rose-900 border-rose-200";
                 } else if (scenicState === 'walking') {
-                    imgData = char.walking;
-                    isFlipped = !!char.walkingFlipped;
+                    imgData = char['walking' + activeStateSuffix] || char['walking'];
+                    isFlipped = getFlipVal('walking');
                     fallbackIcon = "🚶‍♂️";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
                 } else { 
-                    imgData = char.waving;
-                    isFlipped = !!char.wavingFlipped;
+                    imgData = char['waving' + activeStateSuffix] || char['waving'];
+                    isFlipped = getFlipVal('waving');
                     fallbackIcon = "👋";
                     borderTheme = "border-amber-300 bg-amber-400/20 text-amber-800";
                     bgBadge = "bg-amber-100 text-amber-900 border-amber-200";
@@ -2275,7 +2284,6 @@
                     statusDesc.innerText = `Next stop: ${escapeHTML(activeTaskRow.place)}`;
                 }
             } else {
-                // Time based idle descriptions
                 if (isSleepingVisible) {
                     speechTextEl.innerText = `Shh... ${namesStr} are fast asleep dreaming of adventure! zZZ 😴`;
                     statusTitle.innerText = "Sweet Dreams 🌙";
@@ -2293,11 +2301,9 @@
                 }
             }
             
-            // Enforce layer visibility configs as master post-process
             applySceneryLayers();
         }
 
-        // Sidebar Render Function with Completed-To-Bottom sorting
         function renderPlansList() {
             const container = document.getElementById('plans-list');
             if (!container) return;
@@ -2305,7 +2311,6 @@
 
             const activePlans = itineraries.filter(p => !p.archived);
 
-            // Dynamic sort completed itineraries to bottom
             activePlans.sort((a, b) => {
                 return isPlanFullyCompleted(a) - isPlanFullyCompleted(b);
             });
@@ -2326,6 +2331,57 @@
             updateSkyScenery();
         }
 
+        function switchCustomizerTab(tab) {
+            customizerTab = tab;
+            const btnNormal = document.getElementById('tab-normal-assets');
+            const btnRainy = document.getElementById('tab-rainy-assets');
+            
+            if (tab === 'normal') {
+                btnNormal.className = "py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1 bg-white text-slate-800 shadow-3xs";
+                btnRainy.className = "py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1 text-slate-500 hover:text-slate-800";
+            } else {
+                btnNormal.className = "py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1 text-slate-500 hover:text-slate-800";
+                btnRainy.className = "py-2 px-3.5 rounded-xl font-bold text-xs cute-title transition duration-150 flex items-center gap-1 bg-blue-600 text-white shadow-3xs";
+            }
+
+            const labels = {
+                waving: { badge: "Waiting State", title: "Waving / Standing", desc: "Displayed when waiting if there is no active travel plan, or during simple daylight hours." },
+                walking: { badge: "On The Way", title: "Walking / Journey", desc: "Displayed when the companion is walking dynamically towards their active scheduled task." },
+                sleeping: { badge: "Sleep Hours", title: "Sleeping", desc: "Displayed during late-night bedtime or whenever resting at hotel rooms." },
+                transit: { badge: "Transit Stage", title: "Transit Car", desc: "Displayed when travel schedule is set to transportation or flights." },
+                homebound: { badge: "End Trip", title: "Going Home / Return", desc: "Displayed during return legs going back home." },
+                preparing: { badge: "Morning Prep", title: "Preparing State", desc: "Displayed during cozy morning routines (6:00 AM to 8:00 AM) while packing bags." }
+            };
+
+            for (const key in labels) {
+                const elBadge = document.getElementById(`card-badge-${key}`);
+                const elTitle = document.getElementById(`card-title-${key}`);
+                const elDesc = document.getElementById(`card-desc-${key}`);
+                
+                const decorator = tab === 'rainy' ? ' 🌧️' : ' ☀️';
+                const badgeDecorator = tab === 'rainy' ? ' [RAINY]' : '';
+
+                if (elBadge) elBadge.innerText = labels[key].badge + badgeDecorator;
+                if (elTitle) elTitle.innerText = labels[key].title + decorator;
+                if (elDesc) elDesc.innerText = labels[key].desc.replace("daylight hours", "rainy daylight hours").replace("bedtime", "rainy bedtime");
+            }
+
+            renderCharacterProfiles();
+        }
+
+        function getActiveStateKeys(stateKey) {
+            if (customizerTab === 'rainy') {
+                return {
+                    asset: stateKey + 'Rainy',
+                    flip: stateKey + 'RainyFlipped'
+                };
+            }
+            return {
+                asset: stateKey,
+                flip: stateKey + 'Flipped'
+            };
+        }
+
         function renderCharacterProfiles() {
             const gallery = document.getElementById('character-profiles-gallery');
             if (!gallery) return;
@@ -2335,7 +2391,8 @@
                 const isActive = activeCharacterIds.includes(char.id);
                 
                 let uploadCount = 0;
-                ['waving', 'walking', 'sleeping', 'transit', 'homebound', 'preparing'].forEach(st => {
+                ['waving', 'walking', 'sleeping', 'transit', 'homebound', 'preparing',
+                 'wavingRainy', 'walkingRainy', 'sleepingRainy', 'transitRainy', 'homeboundRainy', 'preparingRainy'].forEach(st => {
                     if (char[st]) uploadCount++;
                 });
 
@@ -2350,7 +2407,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-1 min-w-0">
                             <h4 class="cute-title text-sm font-extrabold text-slate-800 truncate">${escapeHTML(char.name)}</h4>
-                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">${uploadCount}/6 GIFs</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">${uploadCount}/12 GIFs</span>
                         </div>
                         <p class="text-[10px] text-slate-400 font-semibold mb-3">Custom transparent animation GIFs saved locally.</p>
                     </div>
@@ -2386,11 +2443,11 @@
                 
                 renderCharacterCustomizer(activeProfile);
 
-                // Update mirror button states dynamically inside Customizer cards
                 ['waving', 'walking', 'sleeping', 'transit', 'homebound', 'preparing'].forEach(st => {
                     const btnLabel = document.getElementById(`flip-label-${st}`);
+                    const keys = getActiveStateKeys(st);
                     if (btnLabel) {
-                        btnLabel.innerText = activeProfile[st + 'Flipped'] ? "Flipped (Mirror)" : "Facing Left";
+                        btnLabel.innerText = activeProfile[keys.flip] ? "Flipped (Mirror)" : "Facing Left";
                     }
                 });
             } else {
@@ -2424,13 +2481,19 @@
                 sleeping: null, sleepingFlipped: false,
                 transit: null, transitFlipped: false,
                 homebound: null, homeboundFlipped: false,
-                preparing: null, preparingFlipped: false
+                preparing: null, preparingFlipped: false,
+                // Rainy weather profiles additions
+                wavingRainy: null, wavingRainyFlipped: false,
+                walkingRainy: null, walkingRainyFlipped: false,
+                sleepingRainy: null, sleepingRainyFlipped: false,
+                transitRainy: null, transitRainyFlipped: false,
+                homeboundRainy: null, homeboundRainyFlipped: false,
+                preparingRainy: null, preparingRainyFlipped: false
             };
 
             characterProfiles.push(newChar);
             selectedCharacterId = newChar.id; 
             
-            // Automatically make the first created character active
             if (!activeCharacterIds.includes(newChar.id)) {
                 activeCharacterIds.push(newChar.id);
             }
@@ -2467,8 +2530,8 @@
             const activeProfile = characterProfiles.find(c => c.id === selectedCharacterId);
             if (!activeProfile) return;
 
-            const flipKey = stateKey + 'Flipped';
-            activeProfile[flipKey] = !activeProfile[flipKey];
+            const keys = getActiveStateKeys(stateKey);
+            activeProfile[keys.flip] = !activeProfile[keys.flip];
 
             try {
                 if (databaseConnection) {
@@ -2515,10 +2578,13 @@
                 const previewEl = document.getElementById(`preview-${state}`);
                 if (!previewEl) return;
                 
-                if (profile[state]) {
-                    const isFlipped = !!profile[state + 'Flipped'];
+                const keys = getActiveStateKeys(state);
+                const asset = profile[keys.asset];
+
+                if (asset) {
+                    const isFlipped = !!profile[keys.flip];
                     const flipStyle = isFlipped ? 'transform: scaleX(-1);' : '';
-                    previewEl.innerHTML = `<img src="${profile[state]}" style="${flipStyle}" class="max-h-full max-w-full object-contain rounded-xl p-1 shadow-xs" alt="Preview">`;
+                    previewEl.innerHTML = `<img src="${asset}" style="${flipStyle}" class="max-h-full max-w-full object-contain rounded-xl p-1 shadow-xs" alt="Preview">`;
                 } else {
                     let defaultTxt = "No custom GIF";
                     if (state === 'waving') defaultTxt = "Waiting Silhouette 👋";
@@ -2527,6 +2593,11 @@
                     else if (state === 'transit') defaultTxt = "Transit Bubble 🚗";
                     else if (state === 'homebound') defaultTxt = "Heading Home Bubble 🏡";
                     else if (state === 'preparing') defaultTxt = "Morning Prep Bubble 🍳";
+                    
+                    if (customizerTab === 'rainy') {
+                        defaultTxt += " (Rainy)";
+                    }
+
                     previewEl.innerHTML = `<span class="text-xs text-slate-400 font-semibold text-center px-2">${defaultTxt}</span>`;
                 }
             });
@@ -2551,7 +2622,8 @@
 
             const reader = new FileReader();
             reader.onload = async function(e) {
-                activeProfile[stateKey] = e.target.result;
+                const keys = getActiveStateKeys(stateKey);
+                activeProfile[keys.asset] = e.target.result;
                 try {
                     if (databaseConnection) {
                         await saveProfileToIDB(databaseConnection, activeProfile);
@@ -2568,7 +2640,8 @@
             const activeProfile = characterProfiles.find(c => c.id === selectedCharacterId);
             if (!activeProfile) return;
 
-            activeProfile[stateKey] = null;
+            const keys = getActiveStateKeys(stateKey);
+            activeProfile[keys.asset] = null;
             try {
                 if (databaseConnection) {
                     await saveProfileToIDB(databaseConnection, activeProfile);
@@ -2579,26 +2652,117 @@
             renderCharacterProfiles();
         }
 
+        function renderWallpaperSlotsDeck() {
+            const deck = document.getElementById('wallpaper-slots-deck-container');
+            if (!deck) return;
+            deck.innerHTML = '';
+
+            const keys = ['dawn', 'morning', 'noon', 'afternoon', 'dusk', 'evening', 'night'];
+
+            keys.forEach(slot => {
+                const meta = PERIODS_META[slot];
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-3xs flex flex-col justify-between";
+                
+                const isRainyActive = rainyPeriods[slot];
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between gap-2 border-b border-orange-50 pb-2">
+                            <div>
+                                <h4 class="cute-title text-sm font-extrabold text-slate-800 flex items-center gap-1">
+                                    <span>${meta.icon}</span> <span>${meta.label}</span>
+                                </h4>
+                                <span class="text-[9px] text-slate-400 font-bold tracking-wider">${meta.hours}</span>
+                            </div>
+
+                            <!-- TURN ON / TURN OFF RAINY SWITCH -->
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-extrabold ${isRainyActive ? 'text-blue-600 animate-pulse' : 'text-amber-500'} uppercase">
+                                    ${isRainyActive ? '🌧️ Rainy' : '☀️ Sunny'}
+                                </span>
+                                <div class="relative inline-block w-9 align-middle select-none">
+                                    <input type="checkbox" id="toggle-rainy-${slot}" ${isRainyActive ? 'checked' : ''} onchange="toggleSlotWeather('${slot}', this.checked)" class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-4 border-slate-200 appearance-none cursor-pointer left-0 top-0 transition-transform duration-200 ease-in-out"/>
+                                    <label for="toggle-rainy-${slot}" class="toggle-label block overflow-hidden h-4 rounded-full bg-slate-200 cursor-pointer transition-colors duration-200"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 Columns of uploads: Sunny VS Rainy -->
+                        <div class="grid grid-cols-2 gap-2">
+                            
+                            <!-- SUNNY LANE -->
+                            <div class="bg-amber-50/20 p-2 rounded-xl border border-amber-100/50 flex flex-col justify-between space-y-2">
+                                <span class="text-[8px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider block text-center">Sunny BG</span>
+                                
+                                <div id="bg-preview-${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">
+                                    No Image
+                                </div>
+
+                                <div class="flex gap-1">
+                                    <label class="flex-1 text-center bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold py-1 px-1 rounded cursor-pointer text-[8px] transition cute-title flex items-center justify-center gap-0.5">
+                                        <i data-lucide="upload" class="w-2.5 h-2.5"></i> Up
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, '${slot}')">
+                                    </label>
+                                    <button onclick="resetBackgroundState('${slot}')" class="bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 px-1 py-1 rounded text-[8px] transition font-bold">Reset</button>
+                                </div>
+                            </div>
+
+                            <!-- RAINY LANE -->
+                            <div class="bg-blue-50/20 p-2 rounded-xl border border-blue-100/50 flex flex-col justify-between space-y-2">
+                                <span class="text-[8px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider block text-center">Rainy BG</span>
+                                
+                                <div id="bg-preview-rainy_${slot}" class="w-full h-16 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 text-[8px] font-bold text-slate-400 border border-slate-200/50">
+                                    No Image
+                                </div>
+
+                                <div class="flex gap-1">
+                                    <label class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-1  rounded cursor-pointer text-[8px] transition cute-title flex items-center justify-center gap-0.5">
+                                        <i data-lucide="upload" class="w-2.5 h-2.5"></i> Up
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleBackgroundUpload(event, 'rainy_${slot}')">
+                                    </label>
+                                    <button onclick="resetBackgroundState('rainy_${slot}')" class="bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 px-1 py-1 rounded text-[8px] transition font-bold">Reset</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+                deck.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function toggleSlotWeather(slot, activeChecked) {
+            rainyPeriods[slot] = activeChecked;
+            saveRainyPeriods();
+            renderWallpaperSlotsDeck();
+        }
+
         function renderBackgroundPreviews() {
             const slots = ['dawn', 'morning', 'noon', 'afternoon', 'dusk', 'evening', 'night'];
+            
             slots.forEach(slot => {
-                const container = document.getElementById(`bg-preview-${slot}`);
-                if (!container) return;
+                // Sunny preview lanes
+                const containerSunny = document.getElementById(`bg-preview-${slot}`);
+                if (containerSunny) {
+                    if (uploadedBackgrounds[slot]) {
+                        containerSunny.innerHTML = `<div class="w-full h-full bg-cover bg-center" style="background-image: url(${uploadedBackgrounds[slot]})"></div>`;
+                    } else {
+                        containerSunny.innerHTML = `<span class="text-slate-400">Default Grad</span>`;
+                    }
+                }
 
-                if (uploadedBackgrounds[slot]) {
-                    container.innerHTML = `<div class="w-full h-full bg-cover bg-center" style="background-image: url(${uploadedBackgrounds[slot]})"></div>`;
-                } else {
-                    let fallbackText = "Default Dawn";
-                    let grad = "from-purple-900 to-pink-500";
-                    if (slot === 'morning') { fallbackText = "Default Morning"; grad = "from-sky-300 to-orange-100"; }
-                    else if (slot === 'noon') { fallbackText = "Default Noon"; grad = "from-cyan-400 to-sky-100"; }
-                    else if (slot === 'afternoon') { fallbackText = "Default Afternoon"; grad = "from-amber-300 to-orange-400"; }
-                    else if (slot === 'dusk') { fallbackText = "Default Dusk"; grad = "from-purple-800 to-orange-500"; }
-                    else if (slot === 'evening') { fallbackText = "Default Evening"; grad = "from-indigo-950 to-purple-900"; }
-                    else if (slot === 'night') { fallbackText = "Default Night"; grad = "from-black to-slate-900"; }
-
-                    container.className = `w-full h-20 rounded-xl border border-slate-200/60 overflow-hidden flex items-center justify-center bg-gradient-to-b ${grad} bg-cover bg-center`;
-                    container.innerHTML = `<span class="text-[10px] text-white/90 font-bold drop-shadow-xs">${fallbackText}</span>`;
+                // Rainy preview lanes
+                const containerRainy = document.getElementById(`bg-preview-rainy_${slot}`);
+                if (containerRainy) {
+                    const rainyKey = 'rainy_' + slot;
+                    if (uploadedBackgrounds[rainyKey]) {
+                        containerRainy.innerHTML = `<div class="w-full h-full bg-cover bg-center" style="background-image: url(${uploadedBackgrounds[rainyKey]})"></div>`;
+                    } else {
+                        containerRainy.innerHTML = `<span class="text-slate-400">Default Storm</span>`;
+                    }
                 }
             });
         }
@@ -2845,7 +3009,6 @@
                 }
             });
 
-            // Sort chronically
             allRows.sort((a, b) => {
                 if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
                 if (!a.time && !b.time) return 0;
@@ -2995,7 +3158,6 @@
                 const completedRows = day.rows.filter(r => r.completed).length;
                 const percentage = totalRows > 0 ? Math.round((completedRows / totalRows) * 100) : 0;
 
-                // Sort tasks: Incomplete items strictly on top chronologically, completed items float to bottom
                 day.rows.sort((a, b) => {
                     if (a.completed !== b.completed) {
                         return a.completed ? 1 : -1;
@@ -3370,7 +3532,7 @@
             const endMins = timeStringToMinutes(endtimeVal);
 
             for (let i = 0; i < dayObj.rows.length; i++) {
-                if (i === activeEditingRowIndex) continue; // Skip comparing against self
+                if (i === activeEditingRowIndex) continue;
 
                 const row = dayObj.rows[i];
                 if (!row.time || !row.endTime) continue;
@@ -3378,14 +3540,13 @@
                 const existingStart = timeStringToMinutes(row.time);
                 const existingEnd = timeStringToMinutes(row.endTime);
 
-                // Overlap calculation that supports wrap-around overnight items correctly
                 const overlaps = (startMins <= endMins)
                     ? (existingStart <= existingEnd)
                         ? (Math.max(startMins, existingStart) < Math.min(endMins, existingEnd))
                         : (startMins < existingEnd || existingStart < endMins)
                     : (existingStart <= existingEnd)
                         ? (existingStart < endMins || startMins < existingEnd)
-                        : true; // Overnight wraps overlap by default if overlap detected
+                        : true; 
 
                 if (overlaps) {
                     overlappingRowIndexGlobal = i;
@@ -3409,7 +3570,6 @@
             }
         }
 
-        // Swaps scheduled times between currently being edited task and target task
         function handleSwapOverlappingTimes(targetIndex) {
             const activePlan = itineraries.find(p => p.id === activePlanId);
             if (!activePlan || activeEditingDayIndex === null) return;
@@ -3417,12 +3577,10 @@
             const dayObj = activePlan.days[activeEditingDayIndex];
             const overlappingRow = dayObj.rows[targetIndex];
 
-            // Get current inputs inside modal
             const currentInputTime = document.getElementById('row-time').value;
             const currentInputEndTime = document.getElementById('row-endtime').value;
 
             if (activeEditingRowIndex !== null) {
-                // Editing an existing task: Swap time fields directly
                 const currentRow = dayObj.rows[activeEditingRowIndex];
                 
                 const tempStart = currentRow.time;
@@ -3434,7 +3592,6 @@
                 overlappingRow.time = tempStart;
                 overlappingRow.endTime = tempEnd;
             } else {
-                // Creating a new task: Hand original slot to new task & transfer newly entered times into the overlapping row
                 const tempStart = overlappingRow.time;
                 const tempEnd = overlappingRow.endTime;
 
@@ -3546,7 +3703,6 @@
                 return;
             }
 
-            // Strictly prevent save-actions if overlapping matches exist (Prevents overlapping creation)
             if (overlappingRowIndexGlobal !== null) {
                 errorHint.innerText = "⚠️ Time slot overlaps with an existing activity! Please resolve the conflict or swap slots.";
                 errorHint.classList.remove('hidden');
@@ -3822,18 +3978,28 @@
             );
         }
 
-        function resetAllDataWithWarning() {
+        async function resetAllDataWithWarning() {
             openWarningModal(
                 "Reset and Clear All Itineraries?",
                 "This completely erases every active and archived plan inside WanderPlan. Perfect for starting entirely fresh!",
                 async () => {
                     localStorage.removeItem(STORAGE_KEY);
                     localStorage.removeItem(CHAR_SELECTION_KEY);
+                    localStorage.removeItem(RAINY_PERIODS_KEY);
                     
                     itineraries = [];
                     characterProfiles = [];
                     activeCharacterIds = [];
                     selectedCharacterId = null;
+                    rainyPeriods = {
+                        dawn: false,
+                        morning: false,
+                        noon: false,
+                        afternoon: false,
+                        dusk: false,
+                        evening: false,
+                        night: false
+                    };
 
                     try {
                         if (databaseConnection) {
@@ -3850,7 +4016,8 @@
                     }
                     
                     uploadedBackgrounds = {
-                        dawn: null, morning: null, noon: null, afternoon: null, dusk: null, evening: null, night: null
+                        dawn: null, morning: null, noon: null, afternoon: null, dusk: null, evening: null, night: null,
+                        rainy_dawn: null, rainy_morning: null, rainy_noon: null, rainy_afternoon: null, rainy_dusk: null, rainy_evening: null, rainy_night: null
                     };
 
                     saveToStorage();

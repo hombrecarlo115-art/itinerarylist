@@ -24,7 +24,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS @import Fallback for font rendering on iOS standalone home screens */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:wght@300..800&display=swap');
 
         body {
@@ -233,8 +232,8 @@
         </div>
 
         <div class="p-6 border-t border-orange-50 bg-amber-50/20 text-center">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">WanderPlan App v5.0</span>
-            <p class="text-[9px] text-slate-400 mt-0.5">Multi-Weather & Multi-Companion Core</p>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">WanderPlan App v6.0</span>
+            <p class="text-[9px] text-slate-400 mt-0.5">Multi-Weather & Custom Sound Studio Core</p>
         </div>
     </div>
 
@@ -266,6 +265,22 @@
             </div>
         </div>
     </nav>
+
+    <!-- Floating Tap-To-Enable-Audio banner overlay if autoplay is restricted -->
+    <div id="audio-optin-banner" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-500 to-pink-500 text-white font-bold text-xs px-5 py-2.5 rounded-2xl shadow-lg border-2 border-white/80 cute-title flex items-center gap-2 animate-bounce cursor-pointer" onclick="forceUnlockAudioContext()">
+        <span>🎵 Tap to Enable Immersive Soundscape!</span>
+    </div>
+
+    <!-- Floating Audio Widget (Vinyl Deck style) -->
+    <div id="floating-audio-widget" class="fixed bottom-4 right-4 z-40 flex items-center gap-2 bg-white/95 backdrop-blur-md p-2.5 rounded-2xl border border-amber-100 shadow-md select-none">
+        <button onclick="toggleGlobalMute()" id="global-mute-btn" class="w-9 h-9 bg-amber-400 hover:bg-amber-500 text-slate-900 rounded-xl flex items-center justify-center transition shadow-3xs" title="Toggle Soundscape Audio">
+            <i data-lucide="volume-2" id="global-mute-icon" class="w-4 h-4"></i>
+        </button>
+        <div class="flex flex-col pr-1 text-left">
+            <span class="text-[8px] text-slate-400 font-extrabold uppercase tracking-wide">Soundscape</span>
+            <span id="floating-audio-status" class="text-[9px] text-slate-700 font-bold max-w-[90px] truncate leading-tight">Click to Start</span>
+        </div>
+    </div>
 
     <main class="max-w-6xl mx-auto px-4 mt-8">
 
@@ -625,7 +640,100 @@
                         </div>
                         <div>
                             <h2 class="cute-title text-2xl font-bold text-slate-800">Companion & Scenic Backgrounds 🎨</h2>
-                            <p class="text-xs text-slate-400 font-semibold">Upload custom landscape wallpapers for Sunny + Rainy conditions across 7 time slots, and toggle weather modes independently!</p>
+                            <p class="text-xs text-slate-400 font-semibold">Upload custom landscape wallpapers for Sunny + Rainy conditions, manage 12 animations per companion, and configure loop MP3 soundscapes!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW MP3 AUDIO SOUNDSCAPE MANAGEMENT STUDIO CARD -->
+                <div class="bg-gradient-to-tr from-amber-400/5 to-pink-500/5 border border-amber-200/50 p-5 rounded-3xl mb-8 relative">
+                    <div class="absolute top-2 right-2 flex items-center gap-1 text-[9px] bg-amber-400/20 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">
+                        <span>🎵 Sound Studio Active</span>
+                    </div>
+
+                    <h3 class="cute-title text-lg font-extrabold text-amber-950 mb-1 flex items-center gap-2">
+                        <span>🎵</span> Immersive Soundscape Studio
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4 font-semibold">
+                        Bring your journeys to life! Upload custom MP3 loops for continuous environment rainfall audio and companion vocal loops. These sounds are securely saved locally inside your iPhone database!
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Column A: Rain Ambient -->
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col justify-between space-y-3">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider">🌧️ Weather Ambience</span>
+                                    <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold" id="rain-audio-status-badge">Empty</span>
+                                </div>
+                                <h4 class="cute-title text-sm font-bold text-slate-800 mt-1">Continuous Rainfall Loop</h4>
+                                <p class="text-[11px] text-slate-400">Upload any soothing background rain MP3. Fits perfectly alongside your 12 rainy animations!</p>
+                            </div>
+
+                            <div class="space-y-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/40">
+                                <div class="flex items-center justify-between text-[11px] font-semibold text-slate-600">
+                                    <span class="truncate max-w-[170px]" id="rain-audio-filename">No MP3 Uploaded</span>
+                                    <span id="rain-play-indicator" class="text-slate-400 text-[10px]">⏹️ Stopped</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="volume" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                    <input type="range" id="volume-rain-slider" min="0" max="100" value="50" oninput="handleVolumeChange('rain', this.value)" class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                                    <span class="text-[10px] font-bold text-slate-500 w-8 text-right" id="volume-rain-label">50%</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 text-[11px]">
+                                <label class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-xl cursor-pointer transition cute-title flex items-center justify-center gap-1 shadow-3xs">
+                                    <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+                                    <span>Upload MP3</span>
+                                    <input type="file" accept="audio/mpeg, audio/mp3, audio/wav" class="hidden" onchange="handleAudioUpload(event, 'rain')">
+                                </label>
+                                <button onclick="triggerAudioPlayback('rain')" id="btn-play-rain" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3.5 py-2 rounded-xl transition">Play</button>
+                                <button onclick="clearAudioFile('rain')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold px-3 py-2 rounded-xl transition" title="Delete Audio">Reset</button>
+                            </div>
+
+                            <label class="flex items-center gap-2 text-[10px] text-slate-500 font-semibold cursor-pointer select-none pt-1">
+                                <input type="checkbox" id="rain-conditional-play" checked onchange="handleRainConditionalChange(this.checked)" class="rounded text-blue-500 focus:ring-blue-400 w-3.5 h-3.5 cursor-pointer">
+                                <span>Play ONLY when active slot is set to Stormy/Rainy 🌧️</span>
+                            </label>
+                        </div>
+
+                        <!-- Column B: Companion vocal -->
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col justify-between space-y-3">
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-extrabold text-pink-600 uppercase tracking-wider">🦊 Companion Sound</span>
+                                    <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold" id="char-audio-status-badge">Empty</span>
+                                </div>
+                                <h4 class="cute-title text-sm font-bold text-slate-800 mt-1">Character Vocals / Music Loop</h4>
+                                <p class="text-[11px] text-slate-400">Upload a cute chime, melody, or vocal MP3 that loops continuously behind your Wander Buddy.</p>
+                            </div>
+
+                            <div class="space-y-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/40">
+                                <div class="flex items-center justify-between text-[11px] font-semibold text-slate-600">
+                                    <span class="truncate max-w-[170px]" id="char-audio-filename">No MP3 Uploaded</span>
+                                    <span id="char-play-indicator" class="text-slate-400 text-[10px]">⏹️ Stopped</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="volume" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                    <input type="range" id="volume-char-slider" min="0" max="100" value="50" oninput="handleVolumeChange('char', this.value)" class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-pink-500">
+                                    <span class="text-[10px] font-bold text-slate-500 w-8 text-right" id="volume-char-label">50%</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 text-[11px]">
+                                <label class="flex-1 text-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-3 rounded-xl cursor-pointer transition cute-title flex items-center justify-center gap-1 shadow-3xs">
+                                    <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+                                    <span>Upload MP3</span>
+                                    <input type="file" accept="audio/mpeg, audio/mp3, audio/wav" class="hidden" onchange="handleAudioUpload(event, 'char')">
+                                </label>
+                                <button onclick="triggerAudioPlayback('char')" id="btn-play-char" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3.5 py-2 rounded-xl transition">Play</button>
+                                <button onclick="clearAudioFile('char')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold px-3 py-2 rounded-xl transition" title="Delete Audio">Reset</button>
+                            </div>
+
+                            <div class="text-[10px] text-slate-400 font-medium pt-1">
+                                💡 Playback status will loop seamlessly when starting the application!
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1274,7 +1382,8 @@
         const STORAGE_KEY = 'wanderplan_itineraries_v3';
         const CHAR_SELECTION_KEY = 'wanderplan_selected_char_v4';
         
-        const DB_NAME = 'WanderPlanIDB_v8'; 
+        // UPGRADE DB TO v9 FOR PERSISTING appAudio MP3 BINARIES
+        const DB_NAME = 'WanderPlanIDB_v9'; 
         const STORE_NAME = 'characterProfiles';
         const BG_STORE_NAME = 'scenicBackgrounds';
         const SCENERY_LAYERS_KEY = 'wanderplan_scenery_layers_v1';
@@ -1323,6 +1432,20 @@
             dawn: null, morning: null, noon: null, afternoon: null, dusk: null, evening: null, night: null,
             rainy_dawn: null, rainy_morning: null, rainy_noon: null, rainy_afternoon: null, rainy_dusk: null, rainy_evening: null, rainy_night: null
         };
+
+        // Soundscape Studio Audio Engines
+        let rainAudio = new Audio();
+        let charAudio = new Audio();
+        rainAudio.loop = true;
+        charAudio.loop = true;
+
+        let rainAudioName = '';
+        let charAudioName = '';
+        let rainVolume = 0.5;
+        let charVolume = 0.5;
+        let isAudioMuted = true; // Started muted for standard safe loading
+        let audioStarted = false;
+        let rainConditionalOnly = true;
 
         const initNow = new Date();
         let simulatedTimeMinutes = (initNow.getHours() * 60) + initNow.getMinutes();
@@ -1458,7 +1581,7 @@
 
         function initIDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 4);
+                const request = indexedDB.open(DB_NAME, 9);
                 request.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains(STORE_NAME)) {
@@ -1466,6 +1589,9 @@
                     }
                     if (!db.objectStoreNames.contains(BG_STORE_NAME)) {
                         db.createObjectStore(BG_STORE_NAME, { keyPath: 'slot' });
+                    }
+                    if (!db.objectStoreNames.contains('appAudio')) {
+                        db.createObjectStore('appAudio', { keyPath: 'id' });
                     }
                 };
                 request.onsuccess = (e) => resolve(e.target.result);
@@ -1533,12 +1659,43 @@
             });
         }
 
+        function saveAudioToIDB(db, idKey, dataUrl, fileName) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['appAudio'], 'readwrite');
+                const store = transaction.objectStore('appAudio');
+                const request = store.put({ id: idKey, data: dataUrl, name: fileName });
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function loadAudioFromIDB(db) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['appAudio'], 'readonly');
+                const store = transaction.objectStore('appAudio');
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function deleteAudioFromIDB(db, idKey) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['appAudio'], 'readwrite');
+                const store = transaction.objectStore('appAudio');
+                const request = store.delete(idKey);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
         let databaseConnection = null;
 
         window.addEventListener('DOMContentLoaded', async () => {
             loadFromStorage();
             loadSceneryLayersSettings();
             loadRainyPeriodsSettings();
+            loadAudioSettings();
             
             showScenery = localStorage.getItem(SHOW_SCENERY_KEY) !== 'false';
             applySceneryVisibilitySetting();
@@ -1573,6 +1730,18 @@
                     uploadedBackgrounds[item.slot] = item.data;
                 });
 
+                // Retrieve audio loops from DB
+                const audios = await loadAudioFromIDB(databaseConnection);
+                audios.forEach(item => {
+                    if (item.id === 'rain') {
+                        rainAudio.src = item.data;
+                        rainAudioName = item.name;
+                    } else if (item.id === 'char') {
+                        charAudio.src = item.data;
+                        charAudioName = item.name;
+                    }
+                });
+
                 const storedSelection = localStorage.getItem(CHAR_SELECTION_KEY);
                 if (storedSelection) {
                     try {
@@ -1601,11 +1770,16 @@
             simulatedSeconds = startNow.getSeconds();
             
             renderPlansList();
-            updateGlobalStats();
             renderActivePlan();
             updateSkyScenery();
             renderWallpaperSlotsDeck();
             renderBackgroundPreviews();
+            renderAudioControls();
+            updateFloatingAudioWidget();
+
+            // Set up autoplay gesture trigger listeners for continuous audio loops
+            document.body.addEventListener('click', forceUnlockAudioContext, { once: false });
+            document.body.addEventListener('touchstart', forceUnlockAudioContext, { once: false });
             
             setInterval(() => {
                 if (isLiveClock) {
@@ -1623,10 +1797,325 @@
                     }
                 }
                 updateSkyScenery();
+                maintainDynamicAudioStates();
             }, 1000);
 
             lucide.createIcons();
         });
+
+        function loadAudioSettings() {
+            rainVolume = parseFloat(localStorage.getItem('wp_rain_volume') || '0.5');
+            charVolume = parseFloat(localStorage.getItem('wp_char_volume') || '0.5');
+            isAudioMuted = localStorage.getItem('wp_audio_muted') === 'true';
+            rainConditionalOnly = localStorage.getItem('wp_rain_conditional') !== 'false';
+
+            rainAudio.volume = isAudioMuted ? 0 : rainVolume;
+            charAudio.volume = isAudioMuted ? 0 : charVolume;
+
+            const rainSlider = document.getElementById('volume-rain-slider');
+            if (rainSlider) rainSlider.value = Math.round(rainVolume * 100);
+            const charSlider = document.getElementById('volume-char-slider');
+            if (charSlider) charSlider.value = Math.round(charVolume * 100);
+            
+            const condToggle = document.getElementById('rain-conditional-play');
+            if (condToggle) condToggle.checked = rainConditionalOnly;
+        }
+
+        function saveAudioSettings() {
+            localStorage.setItem('wp_rain_volume', rainVolume.toString());
+            localStorage.setItem('wp_char_volume', charVolume.toString());
+            localStorage.setItem('wp_audio_muted', isAudioMuted.toString());
+            localStorage.setItem('wp_rain_conditional', rainConditionalOnly.toString());
+        }
+
+        function forceUnlockAudioContext() {
+            if (audioStarted) return;
+            audioStarted = true;
+            
+            // Hide the opt-in banner cleanly
+            const banner = document.getElementById('audio-optin-banner');
+            if (banner) banner.classList.add('hidden');
+
+            isAudioMuted = false;
+            saveAudioSettings();
+
+            // Attempt initial play for both audio tracks
+            playAudioTrack('char', charAudio);
+            playAudioTrack('rain', rainAudio);
+
+            updateFloatingAudioWidget();
+            renderAudioControls();
+        }
+
+        function playAudioTrack(id, audioEl) {
+            if (!audioEl.src || audioEl.src.endsWith('#') || audioEl.src === window.location.href) {
+                return;
+            }
+
+            if (id === 'rain' && rainConditionalOnly) {
+                const currentPeriod = getPeriodKeyByMinutes(simulatedTimeMinutes);
+                if (!rainyPeriods[currentPeriod]) {
+                    audioEl.pause();
+                    return;
+                }
+            }
+
+            audioEl.volume = isAudioMuted ? 0 : (id === 'rain' ? rainVolume : charVolume);
+            
+            audioEl.play().then(() => {
+                console.log(`Soundscape ${id} playing successfully`);
+            }).catch(e => {
+                console.warn(`Soundscape ${id} blocked or not ready:`, e);
+            });
+        }
+
+        function toggleGlobalMute() {
+            isAudioMuted = !isAudioMuted;
+            saveAudioSettings();
+
+            if (isAudioMuted) {
+                rainAudio.volume = 0;
+                charAudio.volume = 0;
+                rainAudio.pause();
+                charAudio.pause();
+            } else {
+                audioStarted = true;
+                const banner = document.getElementById('audio-optin-banner');
+                if (banner) banner.classList.add('hidden');
+
+                rainAudio.volume = rainVolume;
+                charAudio.volume = charVolume;
+                playAudioTrack('rain', rainAudio);
+                playAudioTrack('char', charAudio);
+            }
+
+            updateFloatingAudioWidget();
+            renderAudioControls();
+        }
+
+        function handleVolumeChange(type, value) {
+            const vol = parseFloat(value) / 100;
+            if (type === 'rain') {
+                rainVolume = vol;
+                if (!isAudioMuted) rainAudio.volume = vol;
+                document.getElementById('volume-rain-label').innerText = `${value}%`;
+            } else {
+                charVolume = vol;
+                if (!isAudioMuted) charAudio.volume = vol;
+                document.getElementById('volume-char-label').innerText = `${value}%`;
+            }
+            saveAudioSettings();
+            updateFloatingAudioWidget();
+        }
+
+        function handleRainConditionalChange(checked) {
+            rainConditionalOnly = checked;
+            saveAudioSettings();
+            maintainDynamicAudioStates();
+        }
+
+        function maintainDynamicAudioStates() {
+            if (isAudioMuted || !audioStarted) return;
+
+            // Handle rain ambient dynamic playing states
+            if (rainAudio.src && rainAudio.src !== window.location.href) {
+                const currentPeriod = getPeriodKeyByMinutes(simulatedTimeMinutes);
+                const isCurrentlyRainy = rainyPeriods[currentPeriod];
+
+                if (rainConditionalOnly) {
+                    if (isCurrentlyRainy) {
+                        if (rainAudio.paused) {
+                            rainAudio.volume = rainVolume;
+                            rainAudio.play().catch(e => {});
+                        }
+                    } else {
+                        if (!rainAudio.paused) {
+                            rainAudio.pause();
+                        }
+                    }
+                } else {
+                    if (rainAudio.paused) {
+                        rainAudio.volume = rainVolume;
+                        rainAudio.play().catch(e => {});
+                    }
+                }
+            }
+
+            // Always loop companion vocal if present and audio running
+            if (charAudio.src && charAudio.src !== window.location.href && charAudio.paused) {
+                charAudio.volume = charVolume;
+                charAudio.play().catch(e => {});
+            }
+
+            renderAudioControls();
+        }
+
+        function triggerAudioPlayback(type) {
+            audioStarted = true;
+            isAudioMuted = false;
+            saveAudioSettings();
+
+            const optIn = document.getElementById('audio-optin-banner');
+            if (optIn) optIn.classList.add('hidden');
+
+            const targetAudio = type === 'rain' ? rainAudio : charAudio;
+            if (targetAudio.paused) {
+                targetAudio.volume = type === 'rain' ? rainVolume : charVolume;
+                targetAudio.play().then(() => {
+                    renderAudioControls();
+                    updateFloatingAudioWidget();
+                }).catch(e => {
+                    openWarningModal("Sound Blocked", "Your browser blocks sound before you touch the page. Tap anywhere first!", () => {});
+                });
+            } else {
+                targetAudio.pause();
+                renderAudioControls();
+                updateFloatingAudioWidget();
+            }
+        }
+
+        async function clearAudioFile(type) {
+            if (type === 'rain') {
+                rainAudio.pause();
+                rainAudio.removeAttribute('src');
+                rainAudio.load();
+                rainAudioName = '';
+                if (databaseConnection) {
+                    await deleteAudioFromIDB(databaseConnection, 'rain');
+                }
+            } else {
+                charAudio.pause();
+                charAudio.removeAttribute('src');
+                charAudio.load();
+                charAudioName = '';
+                if (databaseConnection) {
+                    await deleteAudioFromIDB(databaseConnection, 'char');
+                }
+            }
+            renderAudioControls();
+            updateFloatingAudioWidget();
+        }
+
+        function handleAudioUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 20 * 1024 * 1024) {
+                openWarningModal(
+                    "File size warning",
+                    "To ensure smooth local saving speeds, please keep your audio uploads below 20MB.",
+                    () => {}
+                );
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                audioStarted = true;
+                isAudioMuted = false;
+                saveAudioSettings();
+
+                const optIn = document.getElementById('audio-optin-banner');
+                if (optIn) optIn.classList.add('hidden');
+
+                if (type === 'rain') {
+                    rainAudio.src = e.target.result;
+                    rainAudioName = file.name;
+                    if (databaseConnection) {
+                        await saveAudioToIDB(databaseConnection, 'rain', e.target.result, file.name);
+                    }
+                    playAudioTrack('rain', rainAudio);
+                } else {
+                    charAudio.src = e.target.result;
+                    charAudioName = file.name;
+                    if (databaseConnection) {
+                        await saveAudioToIDB(databaseConnection, 'char', e.target.result, file.name);
+                    }
+                    playAudioTrack('char', charAudio);
+                }
+                renderAudioControls();
+                updateFloatingAudioWidget();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderAudioControls() {
+            // Update Rain state elements
+            const rainStatusBadge = document.getElementById('rain-audio-status-badge');
+            const rainFileNameLabel = document.getElementById('rain-audio-filename');
+            const rainPlayIndicator = document.getElementById('rain-play-indicator');
+            const btnPlayRain = document.getElementById('btn-play-rain');
+
+            if (rainAudio.src && rainAudio.src !== window.location.href) {
+                if (rainStatusBadge) rainStatusBadge.innerText = "Loaded";
+                if (rainFileNameLabel) rainFileNameLabel.innerText = rainAudioName || "rain_loop.mp3";
+                
+                if (rainAudio.paused) {
+                    if (rainPlayIndicator) rainPlayIndicator.innerText = "⏸️ Paused";
+                    if (btnPlayRain) btnPlayRain.innerText = "Play";
+                } else {
+                    if (rainPlayIndicator) rainPlayIndicator.innerText = "🔊 Playing";
+                    if (btnPlayRain) btnPlayRain.innerText = "Pause";
+                }
+            } else {
+                if (rainStatusBadge) rainStatusBadge.innerText = "Empty";
+                if (rainFileNameLabel) rainFileNameLabel.innerText = "No MP3 Uploaded";
+                if (rainPlayIndicator) rainPlayIndicator.innerText = "⏹️ Stopped";
+                if (btnPlayRain) btnPlayRain.innerText = "Play";
+            }
+
+            // Update Char state elements
+            const charStatusBadge = document.getElementById('char-audio-status-badge');
+            const charFileNameLabel = document.getElementById('char-audio-filename');
+            const charPlayIndicator = document.getElementById('char-play-indicator');
+            const btnPlayChar = document.getElementById('btn-play-char');
+
+            if (charAudio.src && charAudio.src !== window.location.href) {
+                if (charStatusBadge) charStatusBadge.innerText = "Loaded";
+                if (charFileNameLabel) charFileNameLabel.innerText = charAudioName || "buddy_vocal.mp3";
+                
+                if (charAudio.paused) {
+                    if (charPlayIndicator) charPlayIndicator.innerText = "⏸️ Paused";
+                    if (btnPlayChar) btnPlayChar.innerText = "Play";
+                } else {
+                    if (charPlayIndicator) charPlayIndicator.innerText = "🔊 Playing";
+                    if (btnPlayChar) btnPlayChar.innerText = "Pause";
+                }
+            } else {
+                if (charStatusBadge) charStatusBadge.innerText = "Empty";
+                if (charFileNameLabel) charFileNameLabel.innerText = "No MP3 Uploaded";
+                if (charPlayIndicator) charPlayIndicator.innerText = "⏹️ Stopped";
+                if (btnPlayChar) btnPlayChar.innerText = "Play";
+            }
+        }
+
+        function updateFloatingAudioWidget() {
+            const label = document.getElementById('floating-audio-status');
+            const icon = document.getElementById('global-mute-icon');
+            const btn = document.getElementById('global-mute-btn');
+
+            if (!audioStarted) {
+                if (label) label.innerText = "Click to Start";
+                if (btn) btn.className = "w-9 h-9 bg-amber-400 hover:bg-amber-500 text-slate-900 rounded-xl flex items-center justify-center transition shadow-3xs animate-pulse";
+                return;
+            }
+
+            if (isAudioMuted) {
+                if (label) label.innerText = "Soundscape Muted";
+                if (icon) icon.setAttribute('data-lucide', 'volume-x');
+                if (btn) btn.className = "w-9 h-9 bg-slate-200 text-slate-500 hover:bg-slate-300 rounded-xl flex items-center justify-center transition shadow-3xs";
+            } else {
+                let countActive = 0;
+                let text = "Silence";
+                if (charAudio && !charAudio.paused) { countActive++; text = "Buddy Music"; }
+                if (rainAudio && !rainAudio.paused) { countActive++; text = countActive > 1 ? "Storm & Vocals" : "Rain Loop"; }
+                
+                if (label) label.innerText = text;
+                if (icon) icon.setAttribute('data-lucide', 'volume-2');
+                if (btn) btn.className = "w-9 h-9 bg-pink-500 text-white hover:bg-pink-600 rounded-xl flex items-center justify-center transition shadow-3xs";
+            }
+            lucide.createIcons();
+        }
 
         function toggleDrawer(open) {
             const drawer = document.getElementById('drawer-menu');
@@ -1676,6 +2165,7 @@
                 renderCharacterProfiles();
                 renderWallpaperSlotsDeck();
                 renderBackgroundPreviews();
+                renderAudioControls();
             }
         }
 
@@ -1946,8 +2436,7 @@
             celestialGroup.style.bottom = `${heightPx}px`;
 
             banner.className = "w-full rounded-3xl p-4 md:p-6 mb-8 shadow-md border relative overflow-hidden min-h-[22rem] md:h-72 flex flex-col justify-between transition-all duration-700 bg-center bg-cover";
-            stars.classList.add('opacity-0');
-            stars.classList.remove('opacity-30', 'opacity-60', 'opacity-100');
+            stars.className = "absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700";
             sun.classList.remove('hidden');
             moon.classList.remove('hidden');
             road.classList.remove('hidden');
